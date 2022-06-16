@@ -97,6 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
+                                    setState(() {
+                                      saveFileName = "";
+                                      prettyprint = "";
+                                    });
                                     String? outputFile = await FilePicker.platform.getDirectoryPath(
                                         dialogTitle: 'Select Directory', lockParentWindow: false);
                                     try {
@@ -200,6 +204,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
+                                    setState(() {
+                                      saveFileName = "";
+                                      prettyprint = "";
+                                    });
                                     String? outputFile = await FilePicker.platform.getDirectoryPath(
                                         dialogTitle: 'Select Directory', lockParentWindow: false);
                                     try {

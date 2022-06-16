@@ -507,129 +507,126 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                           width: 2,
                                         ),
                                       ),
-                                      child: Row(
+                                      child: Column(
                                         children: [
-                                          Expanded(
-                                              child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Text Stickers',
-                                                    style: TextStyle(
-                                                        fontSize: 18.0,
-                                                        fontFamily: 'Sans',
-                                                        fontStyle: FontStyle.normal,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Utils.getTextColor()),
-                                                  ),
-                                                ),
-                                                Align(
-                                                    alignment: Alignment.centerRight,
-                                                    child: ElevatedButton.icon(
-                                                      style: TextButton.styleFrom(
-                                                        elevation: 0.0,
-                                                        backgroundColor: Utils.getAccentColor(),
-                                                        padding: const EdgeInsets.symmetric(
-                                                          horizontal: 24.0,
-                                                          vertical: 18.0,
-                                                        ),
-                                                      ),
-                                                      onPressed: () async {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (BuildContext context) {
-                                                              return DialogTextSticker(
-                                                                textSticker: (TextSticker val) {
-                                                                  if (kDebugMode) {
-                                                                    print(
-                                                                        "Print: " + val.toString());
-                                                                  }
-                                                                  setState(() {
-                                                                    textStickers.add(val);
-                                                                  });
-                                                                },
-                                                              );
-                                                            });
-                                                      },
-                                                      icon: const Icon(Icons.add, size: 20.0),
-                                                      label: Text(
-                                                        "Add",
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
+                                                child: Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                        'Text Stickers',
                                                         style: TextStyle(
-                                                            fontSize: 16.0,
+                                                            fontSize: 18.0,
                                                             fontFamily: 'Sans',
                                                             fontStyle: FontStyle.normal,
-                                                            fontWeight: FontWeight.w300,
+                                                            fontWeight: FontWeight.w500,
                                                             color: Utils.getTextColor()),
                                                       ),
-                                                    ))
-                                              ],
+                                                    ),
+                                                    Align(
+                                                        alignment: Alignment.centerRight,
+                                                        child: ElevatedButton.icon(
+                                                          style: TextButton.styleFrom(
+                                                            elevation: 0.0,
+                                                            backgroundColor: Utils.getAccentColor(),
+                                                            padding: const EdgeInsets.symmetric(
+                                                              horizontal: 24.0,
+                                                              vertical: 18.0,
+                                                            ),
+                                                          ),
+                                                          onPressed: () async {
+                                                            showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return DialogTextSticker(
+                                                                    textSticker: (TextSticker val) {
+                                                                      if (kDebugMode) {
+                                                                        print(
+                                                                            "Print: " + val.toString());
+                                                                      }
+                                                                      setState(() {
+                                                                        textStickers.add(val);
+                                                                      });
+                                                                    },
+                                                                  );
+                                                                });
+                                                          },
+                                                          icon: const Icon(Icons.add, size: 20.0),
+                                                          label: Text(
+                                                            "Add",
+                                                            style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontFamily: 'Sans',
+                                                                fontStyle: FontStyle.normal,
+                                                                fontWeight: FontWeight.w300,
+                                                                color: Utils.getTextColor()),
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                              ))
+                                            ],
+                                          ),
+                                          if (textStickers.isNotEmpty) ...[
+                                            Container(height: 2.0, color: Utils.getHintColor(),),
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(maxHeight: 150),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Scrollbar(
+                                                  thickness: 8,
+                                                  isAlwaysShown: true,
+                                                  interactive: true,
+                                                  controller: scText,
+                                                  child: ListView.separated(
+                                                    shrinkWrap: true,
+                                                    controller: scText,
+                                                    scrollDirection: Axis.vertical,
+                                                    itemCount: textStickers.length,
+                                                    itemBuilder: (context, index) => Container(
+                                                        height: 42.0,
+                                                        decoration: BoxDecoration(
+                                                          color: Utils.getBGColor().withOpacity(0.5),
+                                                          borderRadius: const BorderRadius.all(
+                                                              Radius.circular(4.0)),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.symmetric(
+                                                            horizontal: 24.0,
+                                                            vertical: 10.0,
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              textStickers[index].textString!,
+                                                              style: TextStyle(
+                                                                  fontSize: 16.0,
+                                                                  fontFamily: 'Sans',
+                                                                  fontStyle: FontStyle.normal,
+                                                                  fontWeight: FontWeight.w300,
+                                                                  color: Utils.getTextColor()),
+                                                            ),
+                                                          ),
+                                                        )),
+                                                    separatorBuilder:
+                                                        (BuildContext context, int index) {
+                                                      return Container(
+                                                          height: 4.0, color: Colors.transparent);
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ))
+                                          ],
                                         ],
                                       ),
                                     ),
-                                    if (textStickers.isNotEmpty) ...[
-                                      SizedBox(height: heightSize * 0.01),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Utils.getBGColor(),
-                                          borderRadius:
-                                              const BorderRadius.all(Radius.circular(4.0)),
-                                        ),
-                                        child: ConstrainedBox(
-                                          constraints: const BoxConstraints(maxHeight: 150),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Scrollbar(
-                                              thickness: 8,
-                                              isAlwaysShown: true,
-                                              interactive: true,
-                                              controller: scText,
-                                              child: ListView.separated(
-                                                shrinkWrap: true,
-                                                controller: scText,
-                                                scrollDirection: Axis.vertical,
-                                                itemCount: textStickers.length,
-                                                itemBuilder: (context, index) => Container(
-                                                    height: 42.0,
-                                                    decoration: BoxDecoration(
-                                                      color: Utils.getCardColor(),
-                                                      borderRadius: const BorderRadius.all(
-                                                          Radius.circular(4.0)),
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.symmetric(
-                                                        horizontal: 24.0,
-                                                        vertical: 10.0,
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          textStickers[index].textString!,
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontFamily: 'Sans',
-                                                              fontStyle: FontStyle.normal,
-                                                              fontWeight: FontWeight.w300,
-                                                              color: Utils.getTextColor()),
-                                                        ),
-                                                      ),
-                                                    )),
-                                                separatorBuilder:
-                                                    (BuildContext context, int index) {
-                                                  return Container(
-                                                      height: 4.0, color: Colors.transparent);
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
                                     SizedBox(height: heightSize * 0.02),
                                     Container(
                                       decoration: BoxDecoration(
@@ -640,130 +637,128 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                           width: 2,
                                         ),
                                       ),
-                                      child: Row(
+                                      child: Column(
                                         children: [
-                                          Expanded(
-                                              child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
-                                            child: Stack(
-                                              alignment: Alignment.center,
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text(
-                                                    'Image Stickers',
-                                                    style: TextStyle(
-                                                        fontSize: 18.0,
-                                                        fontFamily: 'Sans',
-                                                        fontStyle: FontStyle.normal,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Utils.getTextColor()),
-                                                  ),
-                                                ),
-                                                Align(
-                                                    alignment: Alignment.centerRight,
-                                                    child: ElevatedButton.icon(
-                                                      style: TextButton.styleFrom(
-                                                        elevation: 0.0,
-                                                        backgroundColor: Utils.getAccentColor(),
-                                                        padding: const EdgeInsets.symmetric(
-                                                          horizontal: 24.0,
-                                                          vertical: 18.0,
-                                                        ),
-                                                      ),
-                                                      onPressed: () async {
-                                                        showDialog(
-                                                            context: context,
-                                                            useSafeArea: true,
-                                                            builder: (BuildContext context) {
-                                                              return DialogImageSticker(
-                                                                imageSticker: (ImageSticker val) {
-                                                                  if (kDebugMode) {
-                                                                    print(
-                                                                        "Print: " + val.toString());
-                                                                  }
-                                                                  setState(() {
-                                                                    imageStickers.add(val);
-                                                                  });
-                                                                },
-                                                              );
-                                                            });
-                                                      },
-                                                      icon: const Icon(Icons.add, size: 20.0),
-                                                      label: Text(
-                                                        "Add",
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
+                                                child: Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    Align(
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(
+                                                        'Image Stickers',
                                                         style: TextStyle(
-                                                            fontSize: 16.0,
+                                                            fontSize: 18.0,
                                                             fontFamily: 'Sans',
                                                             fontStyle: FontStyle.normal,
-                                                            fontWeight: FontWeight.w300,
+                                                            fontWeight: FontWeight.w500,
                                                             color: Utils.getTextColor()),
                                                       ),
-                                                    ))
-                                              ],
+                                                    ),
+                                                    Align(
+                                                        alignment: Alignment.centerRight,
+                                                        child: ElevatedButton.icon(
+                                                          style: TextButton.styleFrom(
+                                                            elevation: 0.0,
+                                                            backgroundColor: Utils.getAccentColor(),
+                                                            padding: const EdgeInsets.symmetric(
+                                                              horizontal: 24.0,
+                                                              vertical: 18.0,
+                                                            ),
+                                                          ),
+                                                          onPressed: () async {
+                                                            showDialog(
+                                                                context: context,
+                                                                useSafeArea: true,
+                                                                builder: (BuildContext context) {
+                                                                  return DialogImageSticker(
+                                                                    imageSticker: (ImageSticker val) {
+                                                                      if (kDebugMode) {
+                                                                        print(
+                                                                            "Print: " + val.toString());
+                                                                      }
+                                                                      setState(() {
+                                                                        imageStickers.add(val);
+                                                                      });
+                                                                    },
+                                                                  );
+                                                                });
+                                                          },
+                                                          icon: const Icon(Icons.add, size: 20.0),
+                                                          label: Text(
+                                                            "Add",
+                                                            style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontFamily: 'Sans',
+                                                                fontStyle: FontStyle.normal,
+                                                                fontWeight: FontWeight.w300,
+                                                                color: Utils.getTextColor()),
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                              ))
+                                            ],
+                                          ),
+                                          if (imageStickers.isNotEmpty) ...[
+                                            Container(height: 2.0, color: Utils.getHintColor(),),
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(maxHeight: 150),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Scrollbar(
+                                                  thickness: 8,
+                                                  isAlwaysShown: true,
+                                                  interactive: true,
+                                                  controller: scImage,
+                                                  child: ListView.separated(
+                                                    shrinkWrap: true,
+                                                    controller: scImage,
+                                                    scrollDirection: Axis.vertical,
+                                                    itemCount: imageStickers.length,
+                                                    itemBuilder: (context, index) => Container(
+                                                        height: 42.0,
+                                                        decoration: BoxDecoration(
+                                                          color: Utils.getBGColor().withOpacity(0.5),
+                                                          borderRadius: const BorderRadius.all(
+                                                              Radius.circular(4.0)),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.symmetric(
+                                                            horizontal: 24.0,
+                                                            vertical: 10.0,
+                                                          ),
+                                                          child: Center(
+                                                            child: Text(
+                                                              imageStickers[index].stickerPath!,
+                                                              style: TextStyle(
+                                                                  fontSize: 16.0,
+                                                                  fontFamily: 'Sans',
+                                                                  fontStyle: FontStyle.normal,
+                                                                  fontWeight: FontWeight.w300,
+                                                                  color: Utils.getTextColor()),
+                                                            ),
+                                                          ),
+                                                        )),
+                                                    separatorBuilder:
+                                                        (BuildContext context, int index) {
+                                                      return Container(
+                                                          height: 4.0, color: Colors.transparent);
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ))
+                                          ],
                                         ],
                                       ),
                                     ),
-                                    if (imageStickers.isNotEmpty) ...[
-                                      SizedBox(height: heightSize * 0.01),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Utils.getBGColor(),
-                                          borderRadius:
-                                              const BorderRadius.all(Radius.circular(4.0)),
-                                        ),
-                                        child: ConstrainedBox(
-                                          constraints: const BoxConstraints(maxHeight: 150),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Scrollbar(
-                                              thickness: 8,
-                                              isAlwaysShown: true,
-                                              interactive: true,
-                                              controller: scImage,
-                                              child: ListView.separated(
-                                                shrinkWrap: true,
-                                                controller: scImage,
-                                                scrollDirection: Axis.vertical,
-                                                itemCount: imageStickers.length,
-                                                itemBuilder: (context, index) => Container(
-                                                    height: 42.0,
-                                                    decoration: BoxDecoration(
-                                                      color: Utils.getCardColor(),
-                                                      borderRadius: const BorderRadius.all(
-                                                          Radius.circular(4.0)),
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.symmetric(
-                                                        horizontal: 24.0,
-                                                        vertical: 10.0,
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          imageStickers[index].stickerPath!,
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontFamily: 'Sans',
-                                                              fontStyle: FontStyle.normal,
-                                                              fontWeight: FontWeight.w300,
-                                                              color: Utils.getTextColor()),
-                                                        ),
-                                                      ),
-                                                    )),
-                                                separatorBuilder:
-                                                    (BuildContext context, int index) {
-                                                  return Container(
-                                                      height: 4.0, color: Colors.transparent);
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+
                                     SizedBox(height: heightSize * 0.04),
                                     Align(
                                         alignment: Alignment.centerRight,
