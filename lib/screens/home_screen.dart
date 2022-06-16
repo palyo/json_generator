@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../controller/menu_controller.dart';
 import '../display/responsive.dart';
+import '../model/backgrounds.dart';
 import '../model/poster_template.dart';
 import '../util/utils.dart';
 
@@ -27,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String language = 'json';
   String theme = 'androidstudio';
   final scText = ScrollController(initialScrollOffset: 0);
+
+  String saveFileName = "posterStudioTemplates.json";
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               onPressed: () async {
                                 String? outputFile = await FilePicker.platform.getDirectoryPath(
-                                    dialogTitle: 'Select Directory', lockParentWindow: false);
+                                    dialogTitle: 'Select Directory',
+                                    lockParentWindow: false);
                                 try {
                                   var posterTemplate = PosterCategory();
                                   var categories = <Categories>[];
                                   var parentUrl =
-                                      "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
+                                      "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
                                   Directory directory = Directory('$outputFile');
                                   List<FileSystemEntity> files =
                                       directory.listSync(recursive: false);
@@ -161,14 +165,93 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   JsonEncoder encoder = const JsonEncoder.withIndent('  ');
                                   setState(() {
+                                    saveFileName = "posterStudioTemplates.json";
                                     prettyprint = encoder.convert(posterTemplate.toJson());
                                   });
                                 } catch (e) {}
                               },
-                              icon: Icon(Icons.folder,
+                              icon: Icon(Icons.dashboard_outlined,
                                   size: (Responsive.isMobile(context) ? 12.0 : 20.0)),
                               label: Text(
-                                "Choose Directory",
+                                "Choose Poster Directory",
+                                style: TextStyle(
+                                    fontSize: (Responsive.isMobile(context) ? 10.0 : 16.0),
+                                    fontFamily: 'Sans',
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w300,
+                                    color: Utils.getTextColor()),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 12.0,
+                            ),
+                            ElevatedButton.icon(
+                              style: TextButton.styleFrom(
+                                elevation: 0.0,
+                                backgroundColor: Utils.getAccentColor(),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: (Responsive.isMobile(context)) ? 8.0 : 24.0,
+                                  vertical: (Responsive.isMobile(context)) ? 4.0 : 18.0,
+                                ),
+                              ),
+                              onPressed: () async {
+                                String? outputFile = await FilePicker.platform.getDirectoryPath(
+                                    dialogTitle: 'Select Directory', lockParentWindow: false);
+                                try {
+                                  var backgroundCategory = BackgroundCategory();
+                                  var categories = <BGCategories>[];
+                                  var parentUrl =
+                                      "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
+                                  Directory directory = Directory('$outputFile');
+                                  List<FileSystemEntity> files =
+                                      directory.listSync(recursive: false);
+                                  int categoryId = 0;
+                                  for (FileSystemEntity file in files) {
+                                    var category = BGCategories();
+                                    FileStat fileStat = file.statSync();
+                                    if (fileStat.type.toString() == "directory") {
+                                      categoryId++;
+                                      var path = file.path;
+                                      var filename = path.split("\\").last;
+                                      category.bgCategoryName = filename;
+                                      category.bgCategoryId = categoryId;
+
+                                      var backgrounds = <Backgrounds>[];
+                                      Directory subDirs = Directory(file.path);
+                                      List<FileSystemEntity> subFiles =
+                                          subDirs.listSync(recursive: false);
+                                      int backgroundId = 0;
+                                      for (FileSystemEntity file in subFiles) {
+                                        backgroundId++;
+                                        var background = Backgrounds();
+                                        background.backgroundId = backgroundId;
+
+                                        var bgPath = file.path
+                                            .replaceAll(file.parent.parent.parent.path, "");
+                                        var bgChildUrl = bgPath.replaceAll("\\", "/");
+                                        var bgFinalURL = parentUrl + bgChildUrl;
+                                        background.backgroundImage = Uri.encodeFull(bgFinalURL);
+
+                                        background.isPremium = 0;
+                                        backgrounds.add(background);
+                                      }
+                                      category.backgrounds = backgrounds;
+                                    }
+                                    categories.add(category);
+                                  }
+                                  backgroundCategory.categories = categories;
+
+                                  JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                  setState(() {
+                                    saveFileName = "posterStudioBackgrounds.json";
+                                    prettyprint = encoder.convert(backgroundCategory.toJson());
+                                  });
+                                } catch (e) {}
+                              },
+                              icon: Icon(Icons.image_outlined,
+                                  size: (Responsive.isMobile(context) ? 12.0 : 20.0)),
+                              label: Text(
+                                "Choose Background Directory",
                                 style: TextStyle(
                                     fontSize: (Responsive.isMobile(context) ? 10.0 : 16.0),
                                     fontFamily: 'Sans',
@@ -225,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onPressed: () async {
                                           String? outputFile = await FilePicker.platform.saveFile(
                                               dialogTitle: 'Save your json to desire location',
-                                              fileName: "posterStudio.json");
+                                              fileName: saveFileName);
                                           try {
                                             File returnedFile = File('$outputFile');
                                             await returnedFile.writeAsString(prettyprint);
