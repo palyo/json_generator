@@ -14,8 +14,8 @@ class BackgroundCategory {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+    if (categories != null) {
+      data['categories'] = categories!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -41,10 +41,10 @@ class BGCategories {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['bg_category_id'] = this.bgCategoryId;
-    data['bg_category_name'] = this.bgCategoryName;
-    if (this.backgrounds != null) {
-      data['backgrounds'] = this.backgrounds!.map((v) => v.toJson()).toList();
+    data['bg_category_id'] = bgCategoryId;
+    data['bg_category_name'] = bgCategoryName;
+    if (backgrounds != null) {
+      data['backgrounds'] = backgrounds!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -53,21 +53,24 @@ class BGCategories {
 class Backgrounds {
   int? backgroundId;
   String? backgroundImage;
+  String? backgroundThumbImage;
   int? isPremium;
 
-  Backgrounds({this.backgroundId, this.backgroundImage, this.isPremium});
+  Backgrounds({this.backgroundId, this.backgroundImage,this.backgroundThumbImage, this.isPremium});
 
   Backgrounds.fromJson(Map<String, dynamic> json) {
     backgroundId = json['background_id'];
     backgroundImage = json['background_image'];
+    backgroundThumbImage = json['background_thumb_image'];
     isPremium = json['isPremium'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['background_id'] = this.backgroundId;
-    data['background_image'] = this.backgroundImage;
-    data['isPremium'] = this.isPremium;
+    data['background_id'] = backgroundId;
+    data['background_image'] = backgroundImage;
+    data['background_thumb_image'] = backgroundThumbImage;
+    data['isPremium'] = isPremium;
     return data;
   }
 }

@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
+import 'package:flutter_poster_studio_json_generator/model/sticker_pack.dart';
 import 'package:flutter_poster_studio_json_generator/views/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
             child: Container(
           decoration: BoxDecoration(
-              color: Utils.getCardColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+              color: Utils.getCardColor(),
+              borderRadius: const BorderRadius.all(Radius.circular(2.0))),
           child: Center(
             child: SizedBox(
                 height: heightSize * 0.90,
@@ -182,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                   icon: const Icon(Icons.dashboard_outlined, size: 20.0),
                                   label: Text(
-                                    "Choose Poster Directory",
+                                    "Create Posters Json",
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -235,18 +237,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                               subDirs.listSync(recursive: false);
                                           int backgroundId = 0;
                                           for (FileSystemEntity file in subFiles) {
-                                            backgroundId++;
-                                            var background = Backgrounds();
-                                            background.backgroundId = backgroundId;
-
-                                            var bgPath = file.path
-                                                .replaceAll(file.parent.parent.parent.path, "");
-                                            var bgChildUrl = bgPath.replaceAll("\\", "/");
-                                            var bgFinalURL = parentUrl + bgChildUrl;
-                                            background.backgroundImage = Uri.encodeFull(bgFinalURL);
-
-                                            background.isPremium = 0;
-                                            backgrounds.add(background);
+                                            FileStat subFileStat = file.statSync();
+                                            if (subFileStat.type.toString() != "directory") {
+                                              backgroundId++;
+                                              var background = Backgrounds();
+                                              background.backgroundId = backgroundId;
+                                              var bgPath = file.path
+                                                  .replaceAll(file.parent.parent.parent.path, "");
+                                              var bgChildUrl = bgPath.replaceAll("\\", "/");
+                                              var bgFinalURL = parentUrl + bgChildUrl;
+                                              background.backgroundImage =
+                                                  Uri.encodeFull(bgFinalURL);
+                                              String fileName = file.path.split("\\").last;
+                                              var bgThumbPath = "${file.parent.path}/thumb/${fileName.replaceAll("jpg", "png")}"
+                                                  .replaceAll(file.parent.parent.parent.path, "");
+                                              var bgThumbChildUrl = bgThumbPath.replaceAll("\\", "/");
+                                              var bgThumbFinalURL = parentUrl + bgThumbChildUrl;
+                                              background.backgroundThumbImage =
+                                                  Uri.encodeFull(bgThumbFinalURL);
+                                              background.isPremium = 0;
+                                              backgrounds.add(background);
+                                            }
                                           }
                                           category.backgrounds = backgrounds;
                                         }
@@ -263,7 +274,95 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                   icon: const Icon(Icons.image_outlined, size: 20.0),
                                   label: Text(
-                                    "Choose Background Directory",
+                                    "Create Backgrounds Json",
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: Utils.getTextColor()),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12.0,
+                                ),
+                                ElevatedButton.icon(
+                                  style: TextButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Utils.getAccentColor(),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0,
+                                      vertical: 18.0,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    setState(() {
+                                      saveFileName = "";
+                                      prettyprint = "";
+                                    });
+                                    String? outputFile = await FilePicker.platform.getDirectoryPath(
+                                        dialogTitle: 'Select Directory', lockParentWindow: false);
+                                    try {
+                                      var stickers = Stickers();
+                                      var stickerPacks = <StickerPacks>[];
+                                      var parentUrl =
+                                          "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
+                                      Directory directory = Directory('$outputFile');
+                                      List<FileSystemEntity> files =
+                                          directory.listSync(recursive: false);
+                                      int categoryId = 0;
+                                      for (FileSystemEntity file in files) {
+                                        var stickerPack = StickerPacks();
+                                        FileStat fileStat = file.statSync();
+                                        if (fileStat.type.toString() == "directory") {
+                                          categoryId++;
+                                          var path = file.path;
+                                          var filename = path.split("\\").last;
+                                          stickerPack.stickerPackName = filename;
+                                          stickerPack.stickerPackId = categoryId;
+
+                                          Directory subDirs = Directory(file.path);
+                                          List<FileSystemEntity> subFiles =
+                                              subDirs.listSync(recursive: false);
+                                          for (FileSystemEntity file in subFiles) {
+                                            if (file.path.split("\\").last.startsWith("thumb")) {
+                                              var imageUrl = file.path
+                                                  .replaceAll(file.parent.parent.parent.path, "");
+                                              var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                              var imageFinalURL = parentUrl + imageChildUrl;
+                                              stickerPack.thumbUrl = Uri.encodeFull(imageFinalURL);
+                                            } else if (file.path.split("\\").last.endsWith("zip")) {
+                                              var zipUrl = file.path
+                                                  .replaceAll(file.parent.parent.parent.path, "");
+                                              var zipChildUrl = zipUrl.replaceAll("\\", "/");
+                                              var zipFinalURL = parentUrl + zipChildUrl;
+                                              stickerPack.zipUrl = Uri.encodeFull(zipFinalURL);
+                                            } else if (file.path
+                                                .split("\\")
+                                                .last
+                                                .endsWith("isPremium")) {
+                                              stickerPack.isPremium = 1;
+                                            }
+                                          }
+                                        }
+
+                                        stickerPack.thumbUrl = stickerPack.thumbUrl ?? "";
+                                        stickerPack.zipUrl = stickerPack.zipUrl ?? "";
+                                        stickerPack.isPremium = stickerPack.isPremium ?? 0;
+                                        stickerPacks.add(stickerPack);
+                                      }
+                                      stickers.stickerPacks = stickerPacks;
+
+                                      JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                      setState(() {
+                                        saveFileName = "posterStudioStickers.json";
+                                        prettyprint = encoder.convert(stickers.toJson());
+                                      });
+                                    } catch (e) {}
+                                  },
+                                  icon: const Icon(Icons.image_outlined, size: 20.0),
+                                  label: Text(
+                                    "Create Stickers Json",
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',

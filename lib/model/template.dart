@@ -37,17 +37,17 @@ class Template {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['bgImage'] = this.bgImage;
-    data['bgColor'] = this.bgColor;
-    data['posterWidth'] = this.posterWidth;
-    data['posterHeight'] = this.posterHeight;
-    data['posterType'] = this.posterType;
-    if (this.textSticker != null) {
-      data['text_sticker'] = this.textSticker!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['bgImage'] = bgImage;
+    data['bgColor'] = bgColor;
+    data['posterWidth'] = posterWidth;
+    data['posterHeight'] = posterHeight;
+    data['posterType'] = posterType;
+    if (textSticker != null) {
+      data['text_sticker'] = textSticker!.map((v) => v.toJson()).toList();
     }
-    if (this.imageSticker != null) {
-      data['image_sticker'] = this.imageSticker!.map((v) => v.toJson()).toList();
+    if (imageSticker != null) {
+      data['image_sticker'] = imageSticker!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -112,24 +112,24 @@ class TextSticker {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['textString'] = this.textString;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['posY'] = this.posY;
-    data['posX'] = this.posX;
-    data['fontName'] = this.fontName;
-    data['textAlpha'] = this.textAlpha;
-    data['textColor'] = this.textColor;
-    data['type'] = this.type;
-    data['rotation'] = this.rotation;
-    data['shadowColor'] = this.shadowColor;
-    data['shadowProg'] = this.shadowProg;
-    data['bgColor'] = this.bgColor;
-    data['bgDrawable'] = this.bgDrawable;
-    data['bgAlpha'] = this.bgAlpha;
-    data['isBold'] = this.isBold;
-    data['isItalic'] = this.isItalic;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['textString'] = textString;
+    data['width'] = width;
+    data['height'] = height;
+    data['posY'] = posY;
+    data['posX'] = posX;
+    data['fontName'] = fontName;
+    data['textAlpha'] = textAlpha;
+    data['textColor'] = textColor;
+    data['type'] = type;
+    data['rotation'] = rotation;
+    data['shadowColor'] = shadowColor;
+    data['shadowProg'] = shadowProg;
+    data['bgColor'] = bgColor;
+    data['bgDrawable'] = bgDrawable;
+    data['bgAlpha'] = bgAlpha;
+    data['isBold'] = isBold;
+    data['isItalic'] = isItalic;
     return data;
   }
 
@@ -180,18 +180,18 @@ class ImageSticker {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['stickerPath'] = this.stickerPath;
-    data['width'] = this.width;
-    data['height'] = this.height;
-    data['posY'] = this.posY;
-    data['posX'] = this.posX;
-    data['stcOpacity'] = this.stcOpacity;
-    data['rotation'] = this.rotation;
-    data['colorType'] = this.colorType;
-    data['type'] = this.type;
-    data['stcColor'] = this.stcColor;
-    data['stcHue'] = this.stcHue;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['stickerPath'] = stickerPath;
+    data['width'] = width;
+    data['height'] = height;
+    data['posY'] = posY;
+    data['posX'] = posX;
+    data['stcOpacity'] = stcOpacity;
+    data['rotation'] = rotation;
+    data['colorType'] = colorType;
+    data['type'] = type;
+    data['stcColor'] = stcColor;
+    data['stcHue'] = stcHue;
     return data;
   }
 }

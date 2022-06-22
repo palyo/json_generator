@@ -7,15 +7,15 @@ class PosterCategory {
     if (json['categories'] != null) {
       categories = <Categories>[];
       json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
+        categories!.add(Categories.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (categories != null) {
+      data['categories'] = categories!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -40,11 +40,11 @@ class Categories {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['categoryName'] = this.categoryName;
-    data['categoryId'] = this.categoryId;
-    if (this.templates != null) {
-      data['templates'] = this.templates!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['categoryName'] = categoryName;
+    data['categoryId'] = categoryId;
+    if (templates != null) {
+      data['templates'] = templates!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -66,11 +66,11 @@ class Templates {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['demoUrl'] = this.demoUrl;
-    data['zipUrl'] = this.zipUrl;
-    data['isPremium'] = this.isPremium;
-    data['isTrending'] = this.isTrending;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['demoUrl'] = demoUrl;
+    data['zipUrl'] = zipUrl;
+    data['isPremium'] = isPremium;
+    data['isTrending'] = isTrending;
     return data;
   }
 }
