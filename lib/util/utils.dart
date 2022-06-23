@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +19,7 @@ class Utils {
   static Color colorFromHex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');
     if (hexColor.length == 6) {
-      hexColor = 'FF' + hexColor; // FF as the opacity value if you don't add it.
+      hexColor = 'FF$hexColor';
     }
     return Color(int.parse('FF$hexCode', radix: 16));
   }

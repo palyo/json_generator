@@ -18,6 +18,7 @@ class SideMenu extends StatelessWidget {
         child: ListView(
           children: [
             DrawerHeader(
+              padding: const EdgeInsets.only(bottom: 36.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,7 +30,6 @@ class SideMenu extends StatelessWidget {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.only(bottom: 36.0),
             ),
             DrawerListTile(
               title: "Home",

@@ -19,10 +19,10 @@ class GenerateJsonScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GenerateJsonState createState() => _GenerateJsonState();
+  GenerateJsonState createState() => GenerateJsonState();
 }
 
-class _GenerateJsonState extends State<GenerateJsonScreen> {
+class GenerateJsonState extends State<GenerateJsonScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _bgImageController = TextEditingController(text: "bg.png");
@@ -549,7 +549,7 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                                                     textSticker: (TextSticker val) {
                                                                       if (kDebugMode) {
                                                                         print(
-                                                                            "Print: " + val.toString());
+                                                                            "Print: ${val.toString()}");
                                                                       }
                                                                       setState(() {
                                                                         textStickers.add(val);
@@ -575,14 +575,17 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                             ],
                                           ),
                                           if (textStickers.isNotEmpty) ...[
-                                            Container(height: 2.0, color: Utils.getHintColor(),),
+                                            Container(
+                                              height: 2.0,
+                                              color: Utils.getHintColor(),
+                                            ),
                                             ConstrainedBox(
                                               constraints: const BoxConstraints(maxHeight: 150),
                                               child: Padding(
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Scrollbar(
                                                   thickness: 8,
-                                                  isAlwaysShown: true,
+                                                  thumbVisibility: true,
                                                   interactive: true,
                                                   controller: scText,
                                                   child: ListView.separated(
@@ -593,7 +596,8 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                                     itemBuilder: (context, index) => Container(
                                                         height: 42.0,
                                                         decoration: BoxDecoration(
-                                                          color: Utils.getBGColor().withOpacity(0.5),
+                                                          color:
+                                                              Utils.getBGColor().withOpacity(0.5),
                                                           borderRadius: const BorderRadius.all(
                                                               Radius.circular(4.0)),
                                                         ),
@@ -677,10 +681,10 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                                                 useSafeArea: true,
                                                                 builder: (BuildContext context) {
                                                                   return DialogImageSticker(
-                                                                    imageSticker: (ImageSticker val) {
+                                                                    imageSticker:
+                                                                        (ImageSticker val) {
                                                                       if (kDebugMode) {
-                                                                        print(
-                                                                            "Print: " + val.toString());
+                                                                        print("Print: ${val.toString()}");
                                                                       }
                                                                       setState(() {
                                                                         imageStickers.add(val);
@@ -706,14 +710,17 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                             ],
                                           ),
                                           if (imageStickers.isNotEmpty) ...[
-                                            Container(height: 2.0, color: Utils.getHintColor(),),
+                                            Container(
+                                              height: 2.0,
+                                              color: Utils.getHintColor(),
+                                            ),
                                             ConstrainedBox(
                                               constraints: const BoxConstraints(maxHeight: 150),
                                               child: Padding(
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Scrollbar(
                                                   thickness: 8,
-                                                  isAlwaysShown: true,
+                                                  thumbVisibility: true,
                                                   interactive: true,
                                                   controller: scImage,
                                                   child: ListView.separated(
@@ -724,7 +731,8 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                                     itemBuilder: (context, index) => Container(
                                                         height: 42.0,
                                                         decoration: BoxDecoration(
-                                                          color: Utils.getBGColor().withOpacity(0.5),
+                                                          color:
+                                                              Utils.getBGColor().withOpacity(0.5),
                                                           borderRadius: const BorderRadius.all(
                                                               Radius.circular(4.0)),
                                                         ),
@@ -758,7 +766,6 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                         ],
                                       ),
                                     ),
-
                                     SizedBox(height: heightSize * 0.04),
                                     Align(
                                         alignment: Alignment.centerRight,
@@ -783,7 +790,8 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                               textSticker: textStickers,
                                               imageSticker: imageStickers,
                                             );
-                                            JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                            JsonEncoder encoder =
+                                                const JsonEncoder.withIndent('  ');
                                             String prettyprint = encoder.convert(template.toJson());
 
                                             String? outputFile = await FilePicker.platform.saveFile(
@@ -795,7 +803,7 @@ class _GenerateJsonState extends State<GenerateJsonScreen> {
                                               await returnedFile.writeAsString(prettyprint);
                                             } catch (e) {}
                                             if (kDebugMode) {
-                                              print("TEMPLATE: " + prettyprint);
+                                              print("TEMPLATE: $prettyprint");
                                             }
                                           },
                                           icon: const Icon(Icons.save_outlined, size: 20.0),

@@ -13,10 +13,10 @@ class DialogImageSticker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DialogImageStickerState createState() => _DialogImageStickerState();
+  DialogImageStickerState createState() => DialogImageStickerState();
 }
 
-class _DialogImageStickerState extends State<DialogImageSticker> {
+class DialogImageStickerState extends State<DialogImageSticker> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController imageNameController = TextEditingController(text: "sticker1.png");

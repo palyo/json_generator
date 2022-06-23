@@ -54,14 +54,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.1
-  msix: ^3.6.2
 
-msix_config:
-  display_name: Poster Studio
-  publisher_display_name: Poster Studio
-  identity_name: com.example.flutterposterstudiojsongenerator
-  msix_version: 1.0.0.0
-  logo_path: E:/Resources/POSTER UI/SplashActivity/ic_splash_icon.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

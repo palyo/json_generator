@@ -1,5 +1,5 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_poster_studio_json_generator/util/utils.dart';
 import 'package:highlight/highlight.dart' show highlight, Node;
 
@@ -13,13 +13,13 @@ class HighlightView extends StatelessWidget {
   final TextStyle? textStyle;
 
   HighlightView(
-    String input, {
+    String input, {Key? key,
     this.language,
     this.theme = const {},
     this.padding,
     this.textStyle,
     int tabSize = 8,
-  }) : source = input.replaceAll('\t', ' ' * tabSize);
+  }) : source = input.replaceAll('\t', ' ' * tabSize), super(key: key);
 
   List<TextSpan> _convert(List<Node> nodes) {
     List<TextSpan> spans = [];
@@ -37,12 +37,12 @@ class HighlightView extends StatelessWidget {
         stack.add(currentSpans);
         currentSpans = tmp;
 
-        node.children!.forEach((n) {
+        for (var n in node.children!) {
           _traverse(n);
           if (n == node.children!.last) {
             currentSpans = stack.isEmpty ? spans : stack.removeLast();
           }
-        });
+        }
       }
     }
 
@@ -55,19 +55,16 @@ class HighlightView extends StatelessWidget {
 
   static const _rootKey = 'root';
   static const _defaultFontColor = Color(0xff000000);
-  static const _defaultBackgroundColor = Color(0xffffffff);
 
   static const _defaultFontFamily = 'monospace';
 
   @override
   Widget build(BuildContext context) {
-    var _textStyle = TextStyle(
+    var textStyle = TextStyle(
       fontFamily: _defaultFontFamily,
       color: theme[_rootKey]?.color ?? _defaultFontColor,
     );
-    if (textStyle != null) {
-      _textStyle = _textStyle.merge(textStyle);
-    }
+    textStyle = textStyle.merge(textStyle);
 
     return Container(
       decoration: BoxDecoration(
@@ -75,7 +72,7 @@ class HighlightView extends StatelessWidget {
       padding: padding,
       child: SelectableText.rich(
         TextSpan(
-          style: _textStyle,
+          style: textStyle,
           children: _convert(highlight.parse(source, language: language).nodes!),
         ),
       ),

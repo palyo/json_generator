@@ -13,10 +13,10 @@ class DialogTextSticker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DialogTextStickerState createState() => _DialogTextStickerState();
+  DialogTextStickerState createState() => DialogTextStickerState();
 }
 
-class _DialogTextStickerState extends State<DialogTextSticker> {
+class DialogTextStickerState extends State<DialogTextSticker> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController textController = TextEditingController();

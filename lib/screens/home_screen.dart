@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
+import 'package:flutter_poster_studio_json_generator/model/fonts.dart';
 import 'package:flutter_poster_studio_json_generator/model/sticker_pack.dart';
 import 'package:flutter_poster_studio_json_generator/views/flutter_highlight.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +21,10 @@ class HomeScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   String prettyprint = "";
   String language = 'json';
   String theme = 'androidstudio';
@@ -89,57 +90,272 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: heightSize * 0.04),
                             Row(
                               children: [
-                                ElevatedButton.icon(
-                                  style: TextButton.styleFrom(
-                                    elevation: 0.0,
-                                    backgroundColor: Utils.getAccentColor(),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0,
-                                      vertical: 18.0,
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    style: TextButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Utils.getAccentColor(),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0,
+                                        vertical: 18.0,
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        saveFileName = "";
+                                        prettyprint = "";
+                                      });
+                                      String? outputFile = await FilePicker.platform
+                                          .getDirectoryPath(
+                                              dialogTitle: 'Select Directory',
+                                              lockParentWindow: false);
+                                      try {
+                                        var posterTemplate = PosterCategory();
+                                        var categories = <Categories>[];
+                                        var parentUrl =
+                                            "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
+                                        Directory directory = Directory('$outputFile');
+                                        List<FileSystemEntity> files =
+                                            directory.listSync(recursive: false);
+                                        int categoryId = 0;
+                                        for (FileSystemEntity file in files) {
+                                          var category = Categories();
+                                          FileStat fileStat = file.statSync();
+                                          if (fileStat.type.toString() == "directory") {
+                                            categoryId++;
+                                            var path = file.path;
+                                            var filename = path.split("\\").last;
+                                            category.categoryName = filename;
+                                            category.categoryId = categoryId;
+
+                                            var templates = <Templates>[];
+                                            Directory subDirs = Directory(file.path);
+                                            List<FileSystemEntity> subFiles =
+                                                subDirs.listSync(recursive: false);
+                                            for (FileSystemEntity file in subFiles) {
+                                              Directory childDirs = Directory(file.path);
+                                              List<FileSystemEntity> childFiles =
+                                                  childDirs.listSync(recursive: false);
+                                              var template = Templates();
+                                              for (FileSystemEntity file in childFiles) {
+                                                if (file.path
+                                                    .split("\\")
+                                                    .last
+                                                    .startsWith("thumb")) {
+                                                  var imageUrl = file.path.replaceAll(
+                                                      file.parent.parent.parent.path, "");
+                                                  var imageChildUrl =
+                                                      imageUrl.replaceAll("\\", "/");
+                                                  var imageFinalURL = parentUrl + imageChildUrl;
+                                                  template.demoUrl = Uri.encodeFull(imageFinalURL);
+                                                } else if (file.path
+                                                    .split("\\")
+                                                    .last
+                                                    .endsWith("zip")) {
+                                                  var zipUrl = file.path.replaceAll(
+                                                      file.parent.parent.parent.path, "");
+                                                  var zipChildUrl = zipUrl.replaceAll("\\", "/");
+                                                  var zipFinalURL = parentUrl + zipChildUrl;
+                                                  template.zipUrl = Uri.encodeFull(zipFinalURL);
+                                                } else if (file.path
+                                                    .split("\\")
+                                                    .last
+                                                    .endsWith("isPremium")) {
+                                                  template.isPremium = 1;
+                                                } else if (file.path
+                                                    .split("\\")
+                                                    .last
+                                                    .endsWith("isTrending")) {
+                                                  template.isTrending = 1;
+                                                }
+                                              }
+
+                                              template.demoUrl = template.demoUrl ?? "";
+                                              template.zipUrl = template.zipUrl ?? "";
+                                              template.isPremium = template.isPremium ?? 0;
+                                              template.isTrending = template.isTrending ?? 0;
+
+                                              templates.add(template);
+                                            }
+                                            category.templates = templates;
+                                            categories.add(category);
+                                          }
+                                        }
+                                        posterTemplate.categories = categories;
+
+                                        JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                        setState(() {
+                                          saveFileName = "posterStudioTemplates.json";
+                                          prettyprint = encoder.convert(posterTemplate.toJson());
+                                        });
+                                      } catch (e) {}
+                                    },
+                                    icon: const Icon(Icons.dashboard_outlined, size: 20.0),
+                                    label: Text(
+                                      "Posters Json",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w300,
+                                          color: Utils.getTextColor()),
                                     ),
                                   ),
-                                  onPressed: () async {
-                                    setState(() {
-                                      saveFileName = "";
-                                      prettyprint = "";
-                                    });
-                                    String? outputFile = await FilePicker.platform.getDirectoryPath(
-                                        dialogTitle: 'Select Directory', lockParentWindow: false);
-                                    try {
-                                      var posterTemplate = PosterCategory();
-                                      var categories = <Categories>[];
-                                      var parentUrl =
-                                          "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
-                                      Directory directory = Directory('$outputFile');
-                                      List<FileSystemEntity> files =
-                                          directory.listSync(recursive: false);
-                                      int categoryId = 0;
-                                      for (FileSystemEntity file in files) {
-                                        var category = Categories();
-                                        FileStat fileStat = file.statSync();
-                                        if (fileStat.type.toString() == "directory") {
-                                          categoryId++;
-                                          var path = file.path;
-                                          var filename = path.split("\\").last;
-                                          category.categoryName = filename;
-                                          category.categoryId = categoryId;
+                                ),
+                                const SizedBox(
+                                  width: 12.0,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    style: TextButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Utils.getAccentColor(),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0,
+                                        vertical: 18.0,
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        saveFileName = "";
+                                        prettyprint = "";
+                                      });
+                                      String? outputFile = await FilePicker.platform
+                                          .getDirectoryPath(
+                                              dialogTitle: 'Select Directory',
+                                              lockParentWindow: false);
+                                      try {
+                                        var backgroundCategory = BackgroundCategory();
+                                        var categories = <BGCategories>[];
+                                        var parentUrl =
+                                            "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
+                                        Directory directory = Directory('$outputFile');
+                                        List<FileSystemEntity> files =
+                                            directory.listSync(recursive: false);
+                                        int categoryId = 0;
+                                        for (FileSystemEntity file in files) {
+                                          var category = BGCategories();
+                                          FileStat fileStat = file.statSync();
+                                          if (fileStat.type.toString() == "directory") {
+                                            categoryId++;
+                                            var path = file.path;
+                                            var filename = path.split("\\").last;
+                                            category.bgCategoryName = filename;
+                                            category.bgCategoryId = categoryId;
 
-                                          var templates = <Templates>[];
-                                          Directory subDirs = Directory(file.path);
-                                          List<FileSystemEntity> subFiles =
-                                              subDirs.listSync(recursive: false);
-                                          for (FileSystemEntity file in subFiles) {
-                                            Directory childDirs = Directory(file.path);
-                                            List<FileSystemEntity> childFiles =
-                                                childDirs.listSync(recursive: false);
-                                            var template = Templates();
-                                            for (FileSystemEntity file in childFiles) {
+                                            var backgrounds = <Backgrounds>[];
+                                            Directory subDirs = Directory(file.path);
+                                            List<FileSystemEntity> subFiles =
+                                                subDirs.listSync(recursive: false);
+                                            int backgroundId = 0;
+                                            for (FileSystemEntity file in subFiles) {
+                                              FileStat subFileStat = file.statSync();
+                                              if (subFileStat.type.toString() != "directory") {
+                                                backgroundId++;
+                                                var background = Backgrounds();
+                                                background.backgroundId = backgroundId;
+                                                var bgPath = file.path
+                                                    .replaceAll(file.parent.parent.parent.path, "");
+                                                var bgChildUrl = bgPath.replaceAll("\\", "/");
+                                                var bgFinalURL = parentUrl + bgChildUrl;
+                                                background.backgroundImage =
+                                                    Uri.encodeFull(bgFinalURL);
+                                                String fileName = file.path.split("\\").last;
+                                                var bgThumbPath =
+                                                    "${file.parent.path}/thumb/${fileName.replaceAll("jpg", "png")}"
+                                                        .replaceAll(
+                                                            file.parent.parent.parent.path, "");
+                                                var bgThumbChildUrl =
+                                                    bgThumbPath.replaceAll("\\", "/");
+                                                var bgThumbFinalURL = parentUrl + bgThumbChildUrl;
+                                                background.backgroundThumbImage =
+                                                    Uri.encodeFull(bgThumbFinalURL);
+                                                background.isPremium = 0;
+                                                backgrounds.add(background);
+                                              }
+                                            }
+                                            category.backgrounds = backgrounds;
+                                          }
+                                          categories.add(category);
+                                        }
+                                        backgroundCategory.categories = categories;
+
+                                        JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                        setState(() {
+                                          saveFileName = "posterStudioBackgrounds.json";
+                                          prettyprint =
+                                              encoder.convert(backgroundCategory.toJson());
+                                        });
+                                      } catch (e) {}
+                                    },
+                                    icon: const Icon(Icons.image_outlined, size: 20.0),
+                                    label: Text(
+                                      "Backgrounds Json",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w300,
+                                          color: Utils.getTextColor()),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12.0,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    style: TextButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Utils.getAccentColor(),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0,
+                                        vertical: 18.0,
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        saveFileName = "";
+                                        prettyprint = "";
+                                      });
+                                      String? outputFile = await FilePicker.platform
+                                          .getDirectoryPath(
+                                              dialogTitle: 'Select Directory',
+                                              lockParentWindow: false);
+                                      try {
+                                        var stickers = Stickers();
+                                        var stickerPacks = <StickerPacks>[];
+                                        var parentUrl =
+                                            "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
+                                        Directory directory = Directory('$outputFile');
+                                        List<FileSystemEntity> files =
+                                            directory.listSync(recursive: false);
+                                        int categoryId = 0;
+                                        for (FileSystemEntity file in files) {
+                                          var stickerPack = StickerPacks();
+                                          FileStat fileStat = file.statSync();
+                                          if (fileStat.type.toString() == "directory") {
+                                            categoryId++;
+                                            var path = file.path;
+                                            var filename = path.split("\\").last;
+                                            stickerPack.stickerPackName = filename;
+                                            stickerPack.stickerPackId = categoryId;
+
+                                            Directory subDirs = Directory(file.path);
+                                            List<FileSystemEntity> subFiles =
+                                                subDirs.listSync(recursive: false);
+                                            for (FileSystemEntity file in subFiles) {
                                               if (file.path.split("\\").last.startsWith("thumb")) {
                                                 var imageUrl = file.path
                                                     .replaceAll(file.parent.parent.parent.path, "");
                                                 var imageChildUrl = imageUrl.replaceAll("\\", "/");
                                                 var imageFinalURL = parentUrl + imageChildUrl;
-                                                template.demoUrl = Uri.encodeFull(imageFinalURL);
+                                                stickerPack.thumbUrl =
+                                                    Uri.encodeFull(imageFinalURL);
                                               } else if (file.path
                                                   .split("\\")
                                                   .last
@@ -148,227 +364,132 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .replaceAll(file.parent.parent.parent.path, "");
                                                 var zipChildUrl = zipUrl.replaceAll("\\", "/");
                                                 var zipFinalURL = parentUrl + zipChildUrl;
-                                                template.zipUrl = Uri.encodeFull(zipFinalURL);
+                                                stickerPack.zipUrl = Uri.encodeFull(zipFinalURL);
                                               } else if (file.path
                                                   .split("\\")
                                                   .last
                                                   .endsWith("isPremium")) {
-                                                template.isPremium = 1;
-                                              } else if (file.path
-                                                  .split("\\")
-                                                  .last
-                                                  .endsWith("isTrending")) {
-                                                template.isTrending = 1;
+                                                stickerPack.isPremium = 1;
+                                              }
+                                            }
+                                          }
+
+                                          stickerPack.thumbUrl = stickerPack.thumbUrl ?? "";
+                                          stickerPack.zipUrl = stickerPack.zipUrl ?? "";
+                                          stickerPack.isPremium = stickerPack.isPremium ?? 0;
+                                          stickerPacks.add(stickerPack);
+                                        }
+                                        stickers.stickerPacks = stickerPacks;
+
+                                        JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                        setState(() {
+                                          saveFileName = "posterStudioStickers.json";
+                                          prettyprint = encoder.convert(stickers.toJson());
+                                        });
+                                      } catch (e) {}
+                                    },
+                                    icon: const Icon(Icons.theater_comedy_rounded, size: 20.0),
+                                    label: Text(
+                                      "Stickers Json",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w300,
+                                          color: Utils.getTextColor()),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12.0,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    style: TextButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Utils.getAccentColor(),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0,
+                                        vertical: 18.0,
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        saveFileName = "";
+                                        prettyprint = "";
+                                      });
+                                      String? outputFile = await FilePicker.platform
+                                          .getDirectoryPath(
+                                              dialogTitle: 'Select Directory',
+                                              lockParentWindow: false);
+                                      try {
+                                        var fonts = Fonts();
+                                        var fontList = <Font>[];
+                                        var parentUrl =
+                                            "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
+                                        Directory directory = Directory('$outputFile');
+                                        List<FileSystemEntity> files =
+                                            directory.listSync(recursive: false);
+                                        int fontId = 0;
+                                        for (FileSystemEntity file in files) {
+                                          FileStat fileStat = file.statSync();
+                                          if (fileStat.type.toString() == "directory") {
+                                            var font = Font();
+                                            fontId++;
+                                            var path = file.path;
+                                            var filename = path.split("\\").last;
+                                            font.fontName = filename;
+                                            font.fontId = fontId;
+                                            Directory subDirs = Directory(file.path);
+                                            List<FileSystemEntity> subFiles =
+                                                subDirs.listSync(recursive: false);
+                                            for (FileSystemEntity file in subFiles) {
+                                              if (file.path.split("\\").last.endsWith("png")) {
+                                                var fontUrl = file.path
+                                                    .replaceAll(file.parent.parent.parent.path, "");
+                                                var fontChildUrl = fontUrl.replaceAll("\\", "/");
+                                                var fontFinalURL = parentUrl + fontChildUrl;
+                                                font.thumbUrl = Uri.encodeFull(fontFinalURL);
+                                              }
+                                              if (file.path.split("\\").last.endsWith("ttf") ||
+                                                  file.path.split("\\").last.endsWith("otf") ||
+                                                  file.path.split("\\").last.endsWith("TTF") ||
+                                                  file.path.split("\\").last.endsWith("OTF")) {
+                                                var fontUrl = file.path
+                                                    .replaceAll(file.parent.parent.parent.path, "");
+                                                var fontChildUrl = fontUrl.replaceAll("\\", "/");
+                                                var fontFinalURL = parentUrl + fontChildUrl;
+                                                font.fontUrl = Uri.encodeFull(fontFinalURL);
                                               }
                                             }
 
-                                            template.demoUrl = template.demoUrl ?? "";
-                                            template.zipUrl = template.zipUrl ?? "";
-                                            template.isPremium = template.isPremium ?? 0;
-                                            template.isTrending = template.isTrending ?? 0;
-
-                                            templates.add(template);
+                                            font.fontName = font.fontName ?? "";
+                                            font.fontUrl = font.fontUrl ?? "";
+                                            fontList.add(font);
                                           }
-                                          category.templates = templates;
-                                          categories.add(category);
                                         }
-                                      }
-                                      posterTemplate.categories = categories;
-
-                                      JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-                                      setState(() {
-                                        saveFileName = "posterStudioTemplates.json";
-                                        prettyprint = encoder.convert(posterTemplate.toJson());
-                                      });
-                                    } catch (e) {}
-                                  },
-                                  icon: const Icon(Icons.dashboard_outlined, size: 20.0),
-                                  label: Text(
-                                    "Create Posters Json",
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: Utils.getTextColor()),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 12.0,
-                                ),
-                                ElevatedButton.icon(
-                                  style: TextButton.styleFrom(
-                                    elevation: 0.0,
-                                    backgroundColor: Utils.getAccentColor(),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0,
-                                      vertical: 18.0,
+                                        fonts.fonts = fontList;
+                                        JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                        setState(() {
+                                          saveFileName = "posterStudioFonts.json";
+                                          prettyprint = encoder.convert(fonts.toJson());
+                                        });
+                                      } catch (e) {}
+                                    },
+                                    icon: const Icon(Icons.text_fields_rounded, size: 20.0),
+                                    label: Text(
+                                      "Fonts Json",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w300,
+                                          color: Utils.getTextColor()),
                                     ),
-                                  ),
-                                  onPressed: () async {
-                                    setState(() {
-                                      saveFileName = "";
-                                      prettyprint = "";
-                                    });
-                                    String? outputFile = await FilePicker.platform.getDirectoryPath(
-                                        dialogTitle: 'Select Directory', lockParentWindow: false);
-                                    try {
-                                      var backgroundCategory = BackgroundCategory();
-                                      var categories = <BGCategories>[];
-                                      var parentUrl =
-                                          "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
-                                      Directory directory = Directory('$outputFile');
-                                      List<FileSystemEntity> files =
-                                          directory.listSync(recursive: false);
-                                      int categoryId = 0;
-                                      for (FileSystemEntity file in files) {
-                                        var category = BGCategories();
-                                        FileStat fileStat = file.statSync();
-                                        if (fileStat.type.toString() == "directory") {
-                                          categoryId++;
-                                          var path = file.path;
-                                          var filename = path.split("\\").last;
-                                          category.bgCategoryName = filename;
-                                          category.bgCategoryId = categoryId;
-
-                                          var backgrounds = <Backgrounds>[];
-                                          Directory subDirs = Directory(file.path);
-                                          List<FileSystemEntity> subFiles =
-                                              subDirs.listSync(recursive: false);
-                                          int backgroundId = 0;
-                                          for (FileSystemEntity file in subFiles) {
-                                            FileStat subFileStat = file.statSync();
-                                            if (subFileStat.type.toString() != "directory") {
-                                              backgroundId++;
-                                              var background = Backgrounds();
-                                              background.backgroundId = backgroundId;
-                                              var bgPath = file.path
-                                                  .replaceAll(file.parent.parent.parent.path, "");
-                                              var bgChildUrl = bgPath.replaceAll("\\", "/");
-                                              var bgFinalURL = parentUrl + bgChildUrl;
-                                              background.backgroundImage =
-                                                  Uri.encodeFull(bgFinalURL);
-                                              String fileName = file.path.split("\\").last;
-                                              var bgThumbPath = "${file.parent.path}/thumb/${fileName.replaceAll("jpg", "png")}"
-                                                  .replaceAll(file.parent.parent.parent.path, "");
-                                              var bgThumbChildUrl = bgThumbPath.replaceAll("\\", "/");
-                                              var bgThumbFinalURL = parentUrl + bgThumbChildUrl;
-                                              background.backgroundThumbImage =
-                                                  Uri.encodeFull(bgThumbFinalURL);
-                                              background.isPremium = 0;
-                                              backgrounds.add(background);
-                                            }
-                                          }
-                                          category.backgrounds = backgrounds;
-                                        }
-                                        categories.add(category);
-                                      }
-                                      backgroundCategory.categories = categories;
-
-                                      JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-                                      setState(() {
-                                        saveFileName = "posterStudioBackgrounds.json";
-                                        prettyprint = encoder.convert(backgroundCategory.toJson());
-                                      });
-                                    } catch (e) {}
-                                  },
-                                  icon: const Icon(Icons.image_outlined, size: 20.0),
-                                  label: Text(
-                                    "Create Backgrounds Json",
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: Utils.getTextColor()),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 12.0,
-                                ),
-                                ElevatedButton.icon(
-                                  style: TextButton.styleFrom(
-                                    elevation: 0.0,
-                                    backgroundColor: Utils.getAccentColor(),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0,
-                                      vertical: 18.0,
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    setState(() {
-                                      saveFileName = "";
-                                      prettyprint = "";
-                                    });
-                                    String? outputFile = await FilePicker.platform.getDirectoryPath(
-                                        dialogTitle: 'Select Directory', lockParentWindow: false);
-                                    try {
-                                      var stickers = Stickers();
-                                      var stickerPacks = <StickerPacks>[];
-                                      var parentUrl =
-                                          "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
-                                      Directory directory = Directory('$outputFile');
-                                      List<FileSystemEntity> files =
-                                          directory.listSync(recursive: false);
-                                      int categoryId = 0;
-                                      for (FileSystemEntity file in files) {
-                                        var stickerPack = StickerPacks();
-                                        FileStat fileStat = file.statSync();
-                                        if (fileStat.type.toString() == "directory") {
-                                          categoryId++;
-                                          var path = file.path;
-                                          var filename = path.split("\\").last;
-                                          stickerPack.stickerPackName = filename;
-                                          stickerPack.stickerPackId = categoryId;
-
-                                          Directory subDirs = Directory(file.path);
-                                          List<FileSystemEntity> subFiles =
-                                              subDirs.listSync(recursive: false);
-                                          for (FileSystemEntity file in subFiles) {
-                                            if (file.path.split("\\").last.startsWith("thumb")) {
-                                              var imageUrl = file.path
-                                                  .replaceAll(file.parent.parent.parent.path, "");
-                                              var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                              var imageFinalURL = parentUrl + imageChildUrl;
-                                              stickerPack.thumbUrl = Uri.encodeFull(imageFinalURL);
-                                            } else if (file.path.split("\\").last.endsWith("zip")) {
-                                              var zipUrl = file.path
-                                                  .replaceAll(file.parent.parent.parent.path, "");
-                                              var zipChildUrl = zipUrl.replaceAll("\\", "/");
-                                              var zipFinalURL = parentUrl + zipChildUrl;
-                                              stickerPack.zipUrl = Uri.encodeFull(zipFinalURL);
-                                            } else if (file.path
-                                                .split("\\")
-                                                .last
-                                                .endsWith("isPremium")) {
-                                              stickerPack.isPremium = 1;
-                                            }
-                                          }
-                                        }
-
-                                        stickerPack.thumbUrl = stickerPack.thumbUrl ?? "";
-                                        stickerPack.zipUrl = stickerPack.zipUrl ?? "";
-                                        stickerPack.isPremium = stickerPack.isPremium ?? 0;
-                                        stickerPacks.add(stickerPack);
-                                      }
-                                      stickers.stickerPacks = stickerPacks;
-
-                                      JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-                                      setState(() {
-                                        saveFileName = "posterStudioStickers.json";
-                                        prettyprint = encoder.convert(stickers.toJson());
-                                      });
-                                    } catch (e) {}
-                                  },
-                                  icon: const Icon(Icons.image_outlined, size: 20.0),
-                                  label: Text(
-                                    "Create Stickers Json",
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: Utils.getTextColor()),
                                   ),
                                 ),
                               ],
