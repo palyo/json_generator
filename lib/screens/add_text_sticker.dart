@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_poster_studio_json_generator/model/template.dart';
@@ -5,10 +6,14 @@ import 'package:flutter_poster_studio_json_generator/model/template.dart';
 import '../util/utils.dart';
 
 class DialogTextSticker extends StatefulWidget {
-  Function(TextSticker) textSticker;
+  Function(TextSticker, int) textSticker;
+  TextSticker? sticker;
+  int? stickerPos = -1;
 
   DialogTextSticker({
     Key? key,
+    required this.sticker,
+    required this.stickerPos,
     required this.textSticker,
   }) : super(key: key);
 
@@ -58,12 +63,37 @@ class DialogTextStickerState extends State<DialogTextSticker> {
   bool isBoldText = false;
   bool isItalicText = false;
 
-  Function(TextSticker)? textSticker;
+  Function(TextSticker,int)? textSticker;
+  TextSticker? sticker;
 
+  int? stickerPos = -1;
+  String? status;
   @override
   void initState() {
     super.initState();
     textSticker = widget.textSticker;
+    sticker = widget.sticker;
+    stickerPos = widget.stickerPos;
+    if (sticker == null) {
+      status = "Add";
+    } else {
+      textController = TextEditingController(text: sticker!.textString);
+      widthController = TextEditingController(text: sticker!.width.toString());
+      heightController = TextEditingController(text: sticker!.height.toString());
+      posXController = TextEditingController(text: sticker!.posX.toString());
+      posYController = TextEditingController(text: sticker!.posY.toString());
+      fontNameController = TextEditingController(text: sticker!.fontName);
+      alphaController = TextEditingController(text: sticker!.textAlpha.toString());
+      textColorController = TextEditingController(text: sticker!.textColor);
+      rotationController = TextEditingController(text: sticker!.rotation.toString());
+      if (sticker!.isBold == 1) {
+        isBoldText = true;
+      }
+      if (sticker!.isItalic == 1) {
+        isItalicText = true;
+      }
+      status = "Update";
+    }
   }
 
   @override
@@ -109,7 +139,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Add Text Sticker',
+                              '$status Text Sticker',
                               style: TextStyle(
                                   fontSize: 36.0,
                                   fontFamily: 'Sans',
@@ -916,11 +946,11 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   bgAlpha: 0,
                                   isBold: (isBoldText ? 1 : 0),
                                   isItalic: (isItalicText ? 1 : 0));
-                              textSticker!(text);
+                              textSticker!(text,stickerPos!);
                               Navigator.pop(context, true);
                             },
                             child: Text(
-                              'Add Text',
+                              '$status Text',
                               style: TextStyle(
                                   fontSize: 16.0,
                                   fontFamily: 'Sans',
