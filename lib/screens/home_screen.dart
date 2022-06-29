@@ -52,8 +52,7 @@ class HomeScreenState extends State<HomeScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Opacity(
-                          opacity: 0.02,
-                          child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
+                          opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
                     ),
                   ),
                   Padding(
@@ -64,7 +63,9 @@ class HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        const SizedBox(height: 100.0,),
+                        const SizedBox(
+                          height: 100.0,
+                        ),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -109,10 +110,9 @@ class HomeScreenState extends State<HomeScreen> {
                                   try {
                                     var posterTemplate = PosterCategory();
                                     var categories = <Categories>[];
-                                    var parentUrl =
-                                        "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
+                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var category = Categories();
@@ -126,15 +126,14 @@ class HomeScreenState extends State<HomeScreen> {
 
                                         var templates = <Templates>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false);
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                         for (FileSystemEntity file in subFiles) {
                                           Directory childDirs = Directory(file.path);
                                           List<FileSystemEntity> childFiles = childDirs.listSync(recursive: false);
                                           var template = Templates();
                                           for (FileSystemEntity file in childFiles) {
                                             if (file.path.split("\\").last.startsWith("thumb")) {
-                                              var imageUrl =
-                                                  file.path.replaceAll(file.parent.parent.parent.path, "");
+                                              var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
                                               var imageChildUrl = imageUrl.replaceAll("\\", "/");
                                               var imageFinalURL = parentUrl + imageChildUrl;
                                               template.demoUrl = Uri.encodeFull(imageFinalURL);
@@ -209,7 +208,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     var categories = <BGCategories>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var category = BGCategories();
@@ -298,7 +297,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     var stickerPacks = <StickerPacks>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var stickerPack = StickerPacks();
@@ -382,7 +381,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     var fontList = <Font>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int fontId = 0;
                                     for (FileSystemEntity file in files) {
                                       FileStat fileStat = file.statSync();
@@ -486,8 +485,7 @@ class HomeScreenState extends State<HomeScreen> {
                                         ),
                                         onPressed: () async {
                                           String? outputFile = await FilePicker.platform.saveFile(
-                                              dialogTitle: 'Save your json to desire location',
-                                              fileName: saveFileName);
+                                              dialogTitle: 'Save your json to desire location', fileName: saveFileName);
                                           try {
                                             File returnedFile = File('$outputFile');
                                             await returnedFile.writeAsString(prettyprint);
