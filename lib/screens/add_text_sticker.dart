@@ -28,6 +28,10 @@ class DialogTextStickerState extends State<DialogTextSticker> {
   FocusNode textFocusNode = FocusNode();
   bool textValid = false;
 
+  TextEditingController textPointsController = TextEditingController();
+  FocusNode textPointsFocusNode = FocusNode();
+  bool textPointsValid = false;
+
   TextEditingController widthController = TextEditingController();
   FocusNode widthFocusNode = FocusNode();
   bool widthValid = false;
@@ -63,11 +67,14 @@ class DialogTextStickerState extends State<DialogTextSticker> {
   bool isBoldText = false;
   bool isItalicText = false;
 
-  Function(TextSticker,int)? textSticker;
+  Function(TextSticker, int)? textSticker;
   TextSticker? sticker;
 
   int? stickerPos = -1;
   String? status;
+
+  var textAlign = "left";
+
   @override
   void initState() {
     super.initState();
@@ -92,6 +99,8 @@ class DialogTextStickerState extends State<DialogTextSticker> {
       if (sticker!.isItalic == 1) {
         isItalicText = true;
       }
+
+      textAlign = sticker!.textGravity!;
       status = "Update";
     }
   }
@@ -100,6 +109,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
   Widget build(BuildContext context) {
     final double widthSize = MediaQuery.of(context).size.width;
     final double heightSize = MediaQuery.of(context).size.height;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -117,20 +127,14 @@ class DialogTextStickerState extends State<DialogTextSticker> {
               elevation: 0,
               margin: EdgeInsets.zero,
               clipBehavior: Clip.antiAlias,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16.0))),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.0))),
               color: Utils.getCardColor(),
               child: Stack(
                 children: [
-                  Opacity(
-                      opacity: 0.02,
-                      child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
+                  Opacity(opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
                   Padding(
                     padding: EdgeInsets.only(
-                        left: widthSize * 0.05,
-                        right: widthSize * 0.05,
-                        top: heightSize * 0,
-                        bottom: heightSize * 0),
+                        left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -190,9 +194,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: textValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: textValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -204,28 +206,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -236,6 +233,188 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   },
                                 ),
                               ),
+                            ],
+                          ),
+                          SizedBox(height: heightSize * 0.02),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('Align Left',
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w500,
+                                          color: Utils.getTextColor())),
+                                  leading: Radio(
+                                    value: "left",
+                                    groupValue: textAlign,
+                                    activeColor: Utils.getAccentColor(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        textAlign = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('Align Center',
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w500,
+                                          color: Utils.getTextColor())),
+                                  leading: Radio(
+                                    value: "center",
+                                    groupValue: textAlign,
+                                    activeColor: Utils.getAccentColor(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        textAlign = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('Align Right',
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontFamily: 'Sans',
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.w500,
+                                          color: Utils.getTextColor())),
+                                  leading: Radio(
+                                    value: "right",
+                                    groupValue: textAlign,
+                                    activeColor: Utils.getAccentColor(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        textAlign = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: heightSize * 0.02),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: TextFormField(
+                                  focusNode: textPointsFocusNode,
+                                  controller: textPointsController,
+                                  cursorColor: Utils.getAccentColor(),
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty && textPointsValid) {
+                                      setState(() {
+                                        textPointsValid = false;
+                                      });
+                                    }
+                                  },
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontFamily: 'Sans',
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      color: Utils.getTextColor()),
+                                  decoration: InputDecoration(
+                                    labelText: "Points",
+                                    errorText: textPointsValid ? "Enter Points" : null,
+                                    errorStyle: TextStyle(
+                                        fontSize: 12.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: textValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: textPointsFocusNode.hasFocus
+                                            ? textPointsValid
+                                                ? Utils.getErrorColor()
+                                                : Utils.getAccentColor()
+                                            : Utils.getHintColor()),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      FocusScope.of(context).requestFocus(textPointsFocusNode);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: widthSize * 0.01),
+                              MaterialButton(
+                                color: Utils.getAccentColor(),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+                                padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
+                                onPressed: () async {
+                                  String points = textPointsController.text;
+                                  var split = points.split(";");
+                                  var height, width, left, top;
+                                  for (String value in split) {
+                                    if (value.contains("height")) {
+                                      height = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                    if (value.contains("width")) {
+                                      width = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                    if (value.contains("left")) {
+                                      left = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                    if (value.contains("top")) {
+                                      top = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                  }
+                                  setState(() {
+                                    widthController = TextEditingController(text: double.parse(width).toStringAsFixed(2).toString());
+                                    heightController = TextEditingController(text: double.parse(height).toStringAsFixed(2).toString());
+                                    posXController = TextEditingController(text: double.parse(left).toStringAsFixed(2).toString());
+                                    posYController = TextEditingController(text: double.parse(top).toStringAsFixed(2).toString());
+                                  });
+                                },
+                                child: Text(
+                                  'Evaluate',
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontFamily: 'Sans',
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.getTextColor()),
+                                ),
+                              )
                             ],
                           ),
                           SizedBox(height: heightSize * 0.02),
@@ -273,9 +452,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: widthValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: widthValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -287,28 +464,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -352,9 +524,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: heightValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: heightValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -366,28 +536,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -431,9 +596,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: posYValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: posYValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -445,28 +608,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -510,9 +668,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: posXValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: posXValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -524,28 +680,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -584,16 +735,13 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Font name with extension",
-                                    errorText:
-                                        fontNameValid ? "Enter Font name with extension" : null,
+                                    errorText: fontNameValid ? "Enter Font name with extension" : null,
                                     errorStyle: TextStyle(
                                         fontSize: 12.0,
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: fontNameValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: fontNameValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -605,28 +753,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -670,9 +813,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: alphaValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: alphaValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -684,28 +825,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -746,9 +882,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: textColorValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: textColorValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -760,28 +894,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -825,9 +954,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: rotationValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: rotationValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -839,28 +966,23 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -879,8 +1001,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                               Checkbox(
                                 checkColor: Utils.getWhiteColor(),
                                 activeColor: Utils.getAccentColor(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                                 value: isBoldText,
                                 onChanged: (value) {
                                   setState(() {
@@ -894,15 +1015,13 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                     fontFamily: 'Sans',
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.w500,
-                                    color:
-                                        isBoldText ? Utils.getAccentColor() : Utils.getTextColor()),
+                                    color: isBoldText ? Utils.getAccentColor() : Utils.getTextColor()),
                               ),
                               SizedBox(width: widthSize * 0.01),
                               Checkbox(
                                 checkColor: Utils.getWhiteColor(),
                                 activeColor: Utils.getAccentColor(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                                 value: isItalicText,
                                 onChanged: (value) {
                                   setState(() {
@@ -916,9 +1035,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                     fontFamily: 'Sans',
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.w500,
-                                    color: isItalicText
-                                        ? Utils.getAccentColor()
-                                        : Utils.getTextColor()),
+                                    color: isItalicText ? Utils.getAccentColor() : Utils.getTextColor()),
                               ),
                             ],
                           ),
@@ -937,6 +1054,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   fontName: fontNameController.text,
                                   textAlpha: int.parse(alphaController.text),
                                   textColor: textColorController.text,
+                                  textGravity: textAlign,
                                   type: "TEXT",
                                   rotation: int.parse(rotationController.text),
                                   shadowColor: 0,
@@ -946,7 +1064,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   bgAlpha: 0,
                                   isBold: (isBoldText ? 1 : 0),
                                   isItalic: (isItalicText ? 1 : 0));
-                              textSticker!(text,stickerPos!);
+                              textSticker!(text, stickerPos!);
                               Navigator.pop(context, true);
                             },
                             child: Text(

@@ -69,6 +69,7 @@ class TextSticker {
   int? bgColor;
   String? bgDrawable;
   int? bgAlpha;
+  String? textGravity;
   int? isBold;
   int? isItalic;
 
@@ -81,6 +82,7 @@ class TextSticker {
       this.fontName,
       this.textAlpha,
       this.textColor,
+      this.textGravity,
       this.type,
       this.rotation,
       this.shadowColor,
@@ -100,6 +102,7 @@ class TextSticker {
     fontName = json['fontName'];
     textAlpha = json['textAlpha'];
     textColor = json['textColor'];
+    textGravity = json['gravity'];
     type = json['type'];
     rotation = json['rotation'];
     shadowColor = json['shadowColor'];
@@ -121,6 +124,7 @@ class TextSticker {
     data['fontName'] = fontName;
     data['textAlpha'] = textAlpha;
     data['textColor'] = textColor;
+    data['gravity'] = textGravity;
     data['type'] = type;
     data['rotation'] = rotation;
     data['shadowColor'] = shadowColor;
@@ -135,7 +139,7 @@ class TextSticker {
 
   @override
   String toString() {
-    return 'TextSticker{textString: $textString, width: $width, height: $height, posY: $posY, posX: $posX, fontName: $fontName, textAlpha: $textAlpha, textColor: $textColor, type: $type, rotation: $rotation, shadowColor: $shadowColor, shadowProg: $shadowProg, bgColor: $bgColor, bgDrawable: $bgDrawable, bgAlpha: $bgAlpha, isBold: $isBold, isItalic: $isItalic}';
+    return '{ width: $width, height: $height, posY: $posY, posX: $posX, fontName: $fontName, textColor: $textColor }';
   }
 }
 

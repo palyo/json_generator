@@ -24,6 +24,8 @@ class PosterCategory {
 class Categories {
   String? categoryName;
   int? categoryId;
+  String? date = "";
+  String? type = "";
   List<Templates>? templates;
 
   Categories({this.categoryName, this.categoryId, this.templates});
@@ -31,6 +33,8 @@ class Categories {
   Categories.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
     categoryId = json['categoryId'];
+    date = json['date'];
+    type = json['type'];
     if (json['templates'] != null) {
       templates = <Templates>[];
       json['templates'].forEach((v) {
@@ -43,6 +47,8 @@ class Categories {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['categoryName'] = categoryName;
     data['categoryId'] = categoryId;
+    data['date'] = date;
+    data['type'] = type;
     if (templates != null) {
       data['templates'] = templates!.map((v) => v.toJson()).toList();
     }

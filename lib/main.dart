@@ -17,7 +17,7 @@ void main() {
   if (Platform.isFuchsia || Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
     doWhenWindowReady(() {
       final win = appWindow;
-      const initialSize = Size(1200, 800);
+      const initialSize = Size(700, 800);
       win.minSize = initialSize;
       win.alignment = Alignment.center;
       win.title = "Poster Studio";

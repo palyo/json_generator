@@ -47,6 +47,8 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
   List<TextSticker> textStickers = [];
   List<ImageSticker> imageStickers = [];
 
+  int isTextPosition = -1;
+
   @override
   Widget build(BuildContext context) {
     final double widthSize = MediaQuery.of(context).size.width;
@@ -61,7 +63,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
               BoxDecoration(color: Utils.getCardColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
           child: SizedBox(
               height: heightSize,
-              width: widthSize ,
+              width: widthSize,
               child: Stack(
                 children: [
                   Align(
@@ -69,24 +71,22 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Opacity(
-                          opacity: 0.02,
-                          child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
+                          opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
                     ),
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: widthSize * 0.05,
-                          right: widthSize * 0.05,
-                          top: heightSize * 0,
-                          bottom: heightSize * 0),
+                          left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          const SizedBox(height: 100.0,),
+                          const SizedBox(
+                            height: 100.0,
+                          ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -141,8 +141,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color:
-                                            _isBgImageValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                        color: _isBgImageValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -210,9 +209,8 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: _bgColorFocusNode.hasFocus
-                                            ? Utils.getAccentColor()
-                                            : Utils.getHintColor()),
+                                        color:
+                                            _bgColorFocusNode.hasFocus ? Utils.getAccentColor() : Utils.getHintColor()),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
@@ -263,9 +261,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: _isPosterTypeValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: _isPosterTypeValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -341,9 +337,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: _isPosterWidthValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: _isPosterWidthValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -415,9 +409,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: _isPosterHeightValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getHintColor()),
+                                        color: _isPosterHeightValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -473,67 +465,67 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                 Row(
                                   children: [
                                     Expanded(
+                                        flex: 1,
                                         child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Text Stickers',
-                                              style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontFamily: 'Sans',
-                                                  fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Utils.getTextColor()),
-                                            ),
-                                          ),
-                                          Align(
-                                              alignment: Alignment.centerRight,
-                                              child: ElevatedButton.icon(
-                                                style: TextButton.styleFrom(
-                                                  elevation: 0.0,
-                                                  backgroundColor: Utils.getAccentColor(),
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 24.0,
-                                                    vertical: 18.0,
-                                                  ),
-                                                ),
-                                                onPressed: () async {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) {
-                                                        return DialogTextSticker(
-                                                          sticker: null,
-                                                          stickerPos: -1,
-                                                          textSticker: (TextSticker val, int pos) {
-                                                            if (kDebugMode) {
-                                                              print("Print: ${val.toString()}");
-                                                            }
-                                                            setState(() {
-                                                              textStickers.add(val);
-                                                            });
-                                                          },
-                                                        );
-                                                      });
-                                                },
-                                                icon: const Icon(Icons.add, size: 20.0),
-                                                label: Text(
-                                                  "Add",
+                                          padding: const EdgeInsets.only(left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'Text Stickers',
                                                   style: TextStyle(
-                                                      fontSize: 16.0,
+                                                      fontSize: 18.0,
                                                       fontFamily: 'Sans',
                                                       fontStyle: FontStyle.normal,
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight: FontWeight.w500,
                                                       color: Utils.getTextColor()),
                                                 ),
-                                              ))
-                                        ],
-                                      ),
-                                    ))
+                                              ),
+                                              Align(
+                                                  alignment: Alignment.centerRight,
+                                                  child: ElevatedButton.icon(
+                                                    style: TextButton.styleFrom(
+                                                      elevation: 0.0,
+                                                      backgroundColor: Utils.getAccentColor(),
+                                                      padding: const EdgeInsets.symmetric(
+                                                        horizontal: 24.0,
+                                                        vertical: 18.0,
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) {
+                                                            return DialogTextSticker(
+                                                              sticker: null,
+                                                              stickerPos: -1,
+                                                              textSticker: (TextSticker val, int pos) {
+                                                                if (kDebugMode) {
+                                                                  print("Print: ${val.toString()}");
+                                                                }
+                                                                setState(() {
+                                                                  textStickers.add(val);
+                                                                });
+                                                              },
+                                                            );
+                                                          });
+                                                    },
+                                                    icon: const Icon(Icons.add, size: 20.0),
+                                                    label: Text(
+                                                      "Add",
+                                                      style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          fontFamily: 'Sans',
+                                                          fontStyle: FontStyle.normal,
+                                                          fontWeight: FontWeight.w300,
+                                                          color: Utils.getTextColor()),
+                                                    ),
+                                                  ))
+                                            ],
+                                          ),
+                                        ))
                                   ],
                                 ),
                                 if (textStickers.isNotEmpty) ...[
@@ -550,118 +542,138 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         thumbVisibility: true,
                                         interactive: true,
                                         controller: scText,
-                                        child: ListView.separated(
-                                          shrinkWrap: true,
-                                          controller: scText,
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: textStickers.length,
-                                          itemBuilder: (context, index) => Row(
-                                            children: [
-                                              Expanded(
-                                                child: Stack(
-                                                  alignment: Alignment.center,
+                                        child: ReorderableListView(
+                                          scrollController: scText,
+                                          padding: const EdgeInsets.only(right: 16.0),
+                                          onReorder: (oldIndex, newIndex) {
+                                            if (newIndex > oldIndex) newIndex--;
+                                            final item = textStickers.removeAt(oldIndex);
+                                            textStickers.insert(newIndex, item);
+                                            setState(() {});
+                                          },
+                                          children: [
+                                            for (int index = 0; index < textStickers.length; index++)
+                                              Container(
+                                                key: ValueKey(textStickers[index]),
+                                                decoration: BoxDecoration(
+                                                  color: Utils.getBGColor().withOpacity(0.5),
+                                                  borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                                                ),
+                                                child: Column(
                                                   children: [
-                                                    Align(
+                                                    Stack(
                                                       alignment: Alignment.center,
-                                                      child: Container(
-                                                          height: 42.0,
-                                                          decoration: BoxDecoration(
-                                                            color: Utils.getBGColor().withOpacity(0.5),
-                                                            borderRadius:
-                                                                const BorderRadius.all(Radius.circular(4.0)),
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment.center,
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              if (isTextPosition == index) {
+                                                                isTextPosition = -1;
+                                                              } else {
+                                                                isTextPosition = index;
+                                                              }
+                                                              setState(() {});
+                                                            },
+                                                            child: Container(
+                                                                height: 42.0,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.symmetric(
+                                                                    horizontal: 24.0,
+                                                                    vertical: 10.0,
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      textStickers[index].textString!,
+                                                                      style: TextStyle(
+                                                                          fontSize: 16.0,
+                                                                          fontFamily: 'Sans',
+                                                                          fontStyle: FontStyle.normal,
+                                                                          fontWeight: FontWeight.w300,
+                                                                          color: Utils.getTextColor()),
+                                                                    ),
+                                                                  ),
+                                                                )),
                                                           ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.symmetric(
-                                                              horizontal: 24.0,
-                                                              vertical: 10.0,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                textStickers[index].textString!,
-                                                                style: TextStyle(
-                                                                    fontSize: 16.0,
-                                                                    fontFamily: 'Sans',
-                                                                    fontStyle: FontStyle.normal,
-                                                                    fontWeight: FontWeight.w300,
-                                                                    color: Utils.getTextColor()),
-                                                              ),
-                                                            ),
-                                                          )),
-                                                    ),
-                                                    Align(
-                                                      alignment: Alignment.centerRight,
-                                                      child: Row(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          InkWell(
-                                                              onTap: () {
-                                                                showDialog(
-                                                                    context: context,
-                                                                    builder: (BuildContext context) {
-                                                                      return DialogTextSticker(
-                                                                        sticker: textStickers[index],
-                                                                        stickerPos: index,
-                                                                        textSticker:
-                                                                            (TextSticker val, int pos) {
-                                                                          if (kDebugMode) {
-                                                                            print("Print: ${val.toString()}");
-                                                                          }
-                                                                          setState(() {
-                                                                            textStickers[pos] = val;
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 40.0),
+                                                          child: Align(
+                                                            alignment: Alignment.centerRight,
+                                                            child: Row(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              children: [
+                                                                InkWell(
+                                                                    onTap: () {
+                                                                      showDialog(
+                                                                          context: context,
+                                                                          builder: (BuildContext context) {
+                                                                            return DialogTextSticker(
+                                                                              sticker: textStickers[index],
+                                                                              stickerPos: index,
+                                                                              textSticker: (TextSticker val, int pos) {
+                                                                                if (kDebugMode) {
+                                                                                  print("Print: ${val.toString()}");
+                                                                                }
+                                                                                setState(() {
+                                                                                  textStickers[pos] = val;
+                                                                                });
+                                                                              },
+                                                                            );
                                                                           });
-                                                                        },
-                                                                      );
-                                                                    });
-                                                              },
-                                                              child: Container(
-                                                                width: 32,
-                                                                height: 32,
-                                                                decoration: BoxDecoration(
-                                                                  color: Utils.getAccentColor(),
-                                                                  borderRadius: const BorderRadius.all(
-                                                                      Radius.circular(4.0)),
-                                                                ),
-                                                                child: const Center(
-                                                                    child: Icon(
-                                                                  Icons.edit_outlined,
-                                                                  size: 22,
-                                                                  color: Colors.white,
-                                                                )),
-                                                              )),
-                                                          const SizedBox(width: 6.0),
-                                                          InkWell(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  textStickers.removeAt(index);
-                                                                });
-                                                              },
-                                                              child: Container(
-                                                                width: 32,
-                                                                height: 32,
-                                                                decoration: const BoxDecoration(
-                                                                  color: Colors.redAccent,
-                                                                  borderRadius: BorderRadius.all(
-                                                                      Radius.circular(4.0)),
-                                                                ),
-                                                                child: const Center(
-                                                                    child: Icon(
-                                                                  Icons.delete_outline,
-                                                                  size: 22,
-                                                                  color: Colors.white,
-                                                                )),
-                                                              )),
-                                                          const SizedBox(width: 6.0),
-                                                        ],
-                                                      ),
+                                                                    },
+                                                                    child: Container(
+                                                                      width: 32,
+                                                                      height: 32,
+                                                                      decoration: BoxDecoration(
+                                                                        color: Utils.getAccentColor(),
+                                                                        borderRadius: const BorderRadius.all(
+                                                                            Radius.circular(4.0)),
+                                                                      ),
+                                                                      child: const Center(
+                                                                          child: Icon(
+                                                                        Icons.edit_outlined,
+                                                                        size: 22,
+                                                                        color: Colors.white,
+                                                                      )),
+                                                                    )),
+                                                                const SizedBox(width: 6.0),
+                                                                InkWell(
+                                                                    onTap: () {
+                                                                      setState(() {
+                                                                        textStickers.removeAt(index);
+                                                                      });
+                                                                    },
+                                                                    child: Container(
+                                                                      width: 32,
+                                                                      height: 32,
+                                                                      decoration: const BoxDecoration(
+                                                                        color: Colors.redAccent,
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(4.0)),
+                                                                      ),
+                                                                      child: const Center(
+                                                                          child: Icon(
+                                                                        Icons.delete_outline,
+                                                                        size: 22,
+                                                                        color: Colors.white,
+                                                                      )),
+                                                                    )),
+                                                                const SizedBox(width: 6.0),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      height: 1.0,
+                                                      color: Colors.white10,
                                                     )
                                                   ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          separatorBuilder: (BuildContext context, int index) {
-                                            return Container(height: 4.0, color: Colors.transparent);
-                                          },
+                                              )
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -685,68 +697,68 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                 Row(
                                   children: [
                                     Expanded(
+                                        flex: 1,
                                         child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Image Stickers',
-                                              style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontFamily: 'Sans',
-                                                  fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Utils.getTextColor()),
-                                            ),
-                                          ),
-                                          Align(
-                                              alignment: Alignment.centerRight,
-                                              child: ElevatedButton.icon(
-                                                style: TextButton.styleFrom(
-                                                  elevation: 0.0,
-                                                  backgroundColor: Utils.getAccentColor(),
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 24.0,
-                                                    vertical: 18.0,
-                                                  ),
-                                                ),
-                                                onPressed: () async {
-                                                  showDialog(
-                                                      context: context,
-                                                      useSafeArea: true,
-                                                      builder: (BuildContext context) {
-                                                        return DialogImageSticker(
-                                                          sticker: null,
-                                                          stickerPos: -1,
-                                                          imageSticker: (ImageSticker val, int pos) {
-                                                            if (kDebugMode) {
-                                                              print("Print: ${val.toString()}");
-                                                            }
-                                                            setState(() {
-                                                              imageStickers.add(val);
-                                                            });
-                                                          },
-                                                        );
-                                                      });
-                                                },
-                                                icon: const Icon(Icons.add, size: 20.0),
-                                                label: Text(
-                                                  "Add",
+                                          padding: const EdgeInsets.only(left: 12.0, right: 4.0, top: 4.0, bottom: 4.0),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'Image Stickers',
                                                   style: TextStyle(
-                                                      fontSize: 16.0,
+                                                      fontSize: 18.0,
                                                       fontFamily: 'Sans',
                                                       fontStyle: FontStyle.normal,
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight: FontWeight.w500,
                                                       color: Utils.getTextColor()),
                                                 ),
-                                              ))
-                                        ],
-                                      ),
-                                    ))
+                                              ),
+                                              Align(
+                                                  alignment: Alignment.centerRight,
+                                                  child: ElevatedButton.icon(
+                                                    style: TextButton.styleFrom(
+                                                      elevation: 0.0,
+                                                      backgroundColor: Utils.getAccentColor(),
+                                                      padding: const EdgeInsets.symmetric(
+                                                        horizontal: 24.0,
+                                                        vertical: 18.0,
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      showDialog(
+                                                          context: context,
+                                                          useSafeArea: true,
+                                                          builder: (BuildContext context) {
+                                                            return DialogImageSticker(
+                                                              sticker: null,
+                                                              stickerPos: -1,
+                                                              imageSticker: (ImageSticker val, int pos) {
+                                                                if (kDebugMode) {
+                                                                  print("Print: ${val.toString()}");
+                                                                }
+                                                                setState(() {
+                                                                  imageStickers.add(val);
+                                                                });
+                                                              },
+                                                            );
+                                                          });
+                                                    },
+                                                    icon: const Icon(Icons.add, size: 20.0),
+                                                    label: Text(
+                                                      "Add",
+                                                      style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          fontFamily: 'Sans',
+                                                          fontStyle: FontStyle.normal,
+                                                          fontWeight: FontWeight.w300,
+                                                          color: Utils.getTextColor()),
+                                                    ),
+                                                  ))
+                                            ],
+                                          ),
+                                        ))
                                   ],
                                 ),
                                 if (imageStickers.isNotEmpty) ...[
@@ -759,124 +771,135 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Scrollbar(
-                                        thickness: 8,
-                                        thumbVisibility: true,
-                                        interactive: true,
-                                        controller: scImage,
-                                        child: ListView.separated(
-                                          shrinkWrap: true,
+                                          thickness: 8,
+                                          thumbVisibility: true,
+                                          interactive: true,
                                           controller: scImage,
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: imageStickers.length,
-                                          itemBuilder: (context, index) => Row(
+                                          child: ReorderableListView(
+                                            scrollController: scImage,
+                                            padding: const EdgeInsets.only(right: 16.0),
+                                            onReorder: (oldIndex, newIndex) {
+                                              if (newIndex > oldIndex) newIndex--;
+                                              final item = imageStickers.removeAt(oldIndex);
+                                              imageStickers.insert(newIndex, item);
+                                              setState(() {});
+                                            },
                                             children: [
-                                              Expanded(
-                                                child: Stack(
-                                                  alignment: Alignment.center,
-                                                  children: [
-                                                    Align(
-                                                      alignment: Alignment.center,
-                                                      child: Container(
-                                                          height: 42.0,
-                                                          decoration: BoxDecoration(
-                                                            color: Utils.getBGColor().withOpacity(0.5),
-                                                            borderRadius:
-                                                                const BorderRadius.all(Radius.circular(4.0)),
+                                              for (int index = 0; index < imageStickers.length; index++)
+                                                Container(
+                                                  key: ValueKey(imageStickers[index]),
+                                                  decoration: BoxDecoration(
+                                                    color: Utils.getBGColor().withOpacity(0.5),
+                                                    borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Stack(
+                                                        alignment: Alignment.center,
+                                                        children: [
+                                                          Align(
+                                                            alignment: Alignment.center,
+                                                            child: Container(
+                                                                height: 42.0,
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.symmetric(
+                                                                    horizontal: 24.0,
+                                                                    vertical: 10.0,
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      imageStickers[index].stickerPath!,
+                                                                      style: TextStyle(
+                                                                          fontSize: 16.0,
+                                                                          fontFamily: 'Sans',
+                                                                          fontStyle: FontStyle.normal,
+                                                                          fontWeight: FontWeight.w300,
+                                                                          color: Utils.getTextColor()),
+                                                                    ),
+                                                                  ),
+                                                                )),
                                                           ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.symmetric(
-                                                              horizontal: 24.0,
-                                                              vertical: 10.0,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                imageStickers[index].stickerPath!,
-                                                                style: TextStyle(
-                                                                    fontSize: 16.0,
-                                                                    fontFamily: 'Sans',
-                                                                    fontStyle: FontStyle.normal,
-                                                                    fontWeight: FontWeight.w300,
-                                                                    color: Utils.getTextColor()),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 40.0),
+                                                            child: Align(
+                                                              alignment: Alignment.centerRight,
+                                                              child: Row(
+                                                                mainAxisSize: MainAxisSize.min,
+                                                                children: [
+                                                                  InkWell(
+                                                                      onTap: () {
+                                                                        showDialog(
+                                                                            context: context,
+                                                                            useSafeArea: true,
+                                                                            builder: (BuildContext context) {
+                                                                              return DialogImageSticker(
+                                                                                sticker: imageStickers[index],
+                                                                                stickerPos: index,
+                                                                                imageSticker:
+                                                                                    (ImageSticker val, int pos) {
+                                                                                  if (kDebugMode) {
+                                                                                    print("Print: ${val.toString()}");
+                                                                                  }
+                                                                                  setState(() {
+                                                                                    imageStickers[pos] = val;
+                                                                                  });
+                                                                                },
+                                                                              );
+                                                                            });
+                                                                      },
+                                                                      child: Container(
+                                                                        width: 32,
+                                                                        height: 32,
+                                                                        decoration: BoxDecoration(
+                                                                          color: Utils.getAccentColor(),
+                                                                          borderRadius: const BorderRadius.all(
+                                                                              Radius.circular(4.0)),
+                                                                        ),
+                                                                        child: const Center(
+                                                                            child: Icon(
+                                                                          Icons.edit_outlined,
+                                                                          size: 22,
+                                                                          color: Colors.white,
+                                                                        )),
+                                                                      )),
+                                                                  const SizedBox(width: 6.0),
+                                                                  InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          imageStickers.removeAt(index);
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        width: 32,
+                                                                        height: 32,
+                                                                        decoration: const BoxDecoration(
+                                                                          color: Colors.redAccent,
+                                                                          borderRadius:
+                                                                              BorderRadius.all(Radius.circular(4.0)),
+                                                                        ),
+                                                                        child: const Center(
+                                                                            child: Icon(
+                                                                          Icons.delete_outline,
+                                                                          size: 22,
+                                                                          color: Colors.white,
+                                                                        )),
+                                                                      )),
+                                                                  const SizedBox(width: 6.0),
+                                                                ],
                                                               ),
                                                             ),
-                                                          )),
-                                                    ),
-                                                    Align(
-                                                      alignment: Alignment.centerRight,
-                                                      child: Row(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          InkWell(
-                                                              onTap: () {
-                                                                showDialog(
-                                                                    context: context,
-                                                                    useSafeArea: true,
-                                                                    builder: (BuildContext context) {
-                                                                      return DialogImageSticker(
-                                                                        sticker: imageStickers[index],
-                                                                        stickerPos: index,
-                                                                        imageSticker: (ImageSticker val, int pos) {
-                                                                          if (kDebugMode) {
-                                                                            print("Print: ${val.toString()}");
-                                                                          }
-                                                                          setState(() {
-                                                                            imageStickers[pos] = val;
-                                                                          });
-                                                                        },
-                                                                      );
-                                                                    });
-                                                              },
-                                                              child: Container(
-                                                                width: 32,
-                                                                height: 32,
-                                                                decoration: BoxDecoration(
-                                                                  color: Utils.getAccentColor(),
-                                                                  borderRadius: const BorderRadius.all(
-                                                                      Radius.circular(4.0)),
-                                                                ),
-                                                                child: const Center(
-                                                                    child: Icon(
-                                                                  Icons.edit_outlined,
-                                                                  size: 22,
-                                                                  color: Colors.white,
-                                                                )),
-                                                              )),
-                                                          const SizedBox(width: 6.0),
-                                                          InkWell(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  imageStickers.removeAt(index);
-                                                                });
-                                                              },
-                                                              child: Container(
-                                                                width: 32,
-                                                                height: 32,
-                                                                decoration: const BoxDecoration(
-                                                                  color: Colors.redAccent,
-                                                                  borderRadius: BorderRadius.all(
-                                                                      Radius.circular(4.0)),
-                                                                ),
-                                                                child: const Center(
-                                                                    child: Icon(
-                                                                  Icons.delete_outline,
-                                                                  size: 22,
-                                                                  color: Colors.white,
-                                                                )),
-                                                              )),
-                                                          const SizedBox(width: 6.0),
+                                                          )
                                                         ],
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
+                                                      Container(
+                                                        height: 1.0,
+                                                        color: Colors.white10,
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
                                             ],
-                                          ),
-                                          separatorBuilder: (BuildContext context, int index) {
-                                            return Container(height: 4.0, color: Colors.transparent);
-                                          },
-                                        ),
-                                      ),
+                                          )),
                                     ),
                                   ),
                                 ],
@@ -885,52 +908,109 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                           ),
                           SizedBox(height: heightSize * 0.04),
                           Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton.icon(
-                                style: TextButton.styleFrom(
-                                  elevation: 0.0,
-                                  backgroundColor: Utils.getAccentColor(),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0,
-                                    vertical: 18.0,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  var template = Template(
-                                    bgImage: _bgImageController.text,
-                                    bgColor: _bgColorController.text,
-                                    posterWidth: double.parse(_posterWidthController.text),
-                                    posterHeight: double.parse(_posterHeightController.text),
-                                    posterType: _posterTypeController.text,
-                                    textSticker: textStickers,
-                                    imageSticker: imageStickers,
-                                  );
-                                  JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-                                  String prettyprint = encoder.convert(template.toJson());
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Spacer(),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: ElevatedButton.icon(
+                                      style: TextButton.styleFrom(
+                                        elevation: 0.0,
+                                        backgroundColor: Utils.getAccentColor(),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24.0,
+                                          vertical: 18.0,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        FilePickerResult? result =
+                                            await FilePicker.platform.pickFiles(lockParentWindow: true);
 
-                                  String? outputFile = await FilePicker.platform.saveFile(
-                                      dialogTitle: 'Save your json to desire location',
-                                      fileName: "index.json");
+                                        if (result != null) {
+                                          File file = File(result.files.single.path!);
+                                          final contents = await file.readAsString();
 
-                                  try {
-                                    File returnedFile = File('$outputFile');
-                                    await returnedFile.writeAsString(prettyprint);
-                                  } catch (e) {}
-                                  if (kDebugMode) {
-                                    print("TEMPLATE: $prettyprint");
-                                  }
-                                },
-                                icon: const Icon(Icons.save_outlined, size: 20.0),
-                                label: Text(
-                                  "Save To Json",
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                          var encodedString = jsonEncode(contents);
+                                          Map<String, dynamic> valueMap = json.decode(contents);
+                                          Template template = Template.fromJson(valueMap);
+
+                                          _bgImageController.text = template.bgImage ?? "";
+                                          _bgColorController.text = template.bgColor ?? "";
+                                          _posterWidthController.text = template.posterWidth.toString();
+                                          _posterHeightController.text = template.posterHeight.toString();
+                                          _posterTypeController.text = template.posterType ?? "template";
+                                          textStickers = template.textSticker ?? [];
+                                          imageStickers = template.imageSticker ?? [];
+                                          setState(() {});
+                                        }
+                                      },
+                                      icon: const Icon(Icons.save_outlined, size: 20.0),
+                                      label: Text(
+                                        "Open Json",
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontFamily: 'Sans',
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w300,
+                                            color: Utils.getTextColor()),
+                                      ),
+                                    )),
+                                const SizedBox(
+                                  width: 16.0,
                                 ),
-                              )),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: ElevatedButton.icon(
+                                      style: TextButton.styleFrom(
+                                        elevation: 0.0,
+                                        backgroundColor: Utils.getAccentColor(),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24.0,
+                                          vertical: 18.0,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        var template = Template(
+                                          bgImage: _bgImageController.text,
+                                          bgColor: _bgColorController.text,
+                                          posterWidth: double.parse(_posterWidthController.text),
+                                          posterHeight: double.parse(_posterHeightController.text),
+                                          posterType: _posterTypeController.text,
+                                          textSticker: textStickers,
+                                          imageSticker: imageStickers,
+                                        );
+                                        JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                        String prettyprint = encoder.convert(template.toJson());
+
+                                        String? outputFile = await FilePicker.platform.saveFile(
+                                            dialogTitle: 'Save your json to desire location',
+                                            fileName: "index.json",
+                                            lockParentWindow: true);
+
+                                        try {
+                                          File returnedFile = File('$outputFile');
+                                          await returnedFile.writeAsString(prettyprint);
+                                        } catch (e) {}
+                                        if (kDebugMode) {
+                                          print("TEMPLATE: $prettyprint");
+                                        }
+                                      },
+                                      icon: const Icon(Icons.save_outlined, size: 20.0),
+                                      label: Text(
+                                        "Save To Json",
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontFamily: 'Sans',
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w300,
+                                            color: Utils.getTextColor()),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

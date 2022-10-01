@@ -28,6 +28,11 @@ class DialogImageStickerState extends State<DialogImageSticker> {
   FocusNode imageNameFocusNode = FocusNode();
   bool imageNameValid = false;
 
+
+  TextEditingController imagePointsController = TextEditingController();
+  FocusNode imagePointsFocusNode = FocusNode();
+  bool imagePointsValid = false;
+
   TextEditingController widthController = TextEditingController();
   FocusNode widthFocusNode = FocusNode();
   bool widthValid = false;
@@ -206,6 +211,119 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                   },
                                 ),
                               ),
+                            ],
+                          ),
+                          SizedBox(height: heightSize * 0.02),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: TextFormField(
+                                  focusNode: imagePointsFocusNode,
+                                  controller: imagePointsController,
+                                  cursorColor: Utils.getAccentColor(),
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty && imagePointsValid) {
+                                      setState(() {
+                                        imagePointsValid = false;
+                                      });
+                                    }
+                                  },
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontFamily: 'Sans',
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      color: Utils.getTextColor()),
+                                  decoration: InputDecoration(
+                                    labelText: "Points",
+                                    errorText: imagePointsValid ? "Enter Points" : null,
+                                    errorStyle: TextStyle(
+                                        fontSize: 12.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: imagePointsValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: imagePointsFocusNode.hasFocus
+                                            ? imagePointsValid
+                                            ? Utils.getErrorColor()
+                                            : Utils.getAccentColor()
+                                            : Utils.getHintColor()),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      FocusScope.of(context).requestFocus(imagePointsFocusNode);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: widthSize * 0.01),
+                              MaterialButton(
+                                color: Utils.getAccentColor(),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+                                padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
+                                onPressed: () async {
+                                  String points = imagePointsController.text;
+                                  var split = points.split(";");
+                                  var height, width, left, top;
+                                  for (String value in split) {
+                                    if (value.contains("height")) {
+                                      height = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                    if (value.contains("width")) {
+                                      width = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                    if (value.contains("left")) {
+                                      left = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                    if (value.contains("top")) {
+                                      top = value.split(":")[1].replaceAll("px", "");
+                                    }
+                                  }
+                                  setState(() {
+                                    widthController = TextEditingController(text: double.parse(width).toStringAsFixed(2).toString());
+                                    heightController = TextEditingController(text: double.parse(height).toStringAsFixed(2).toString());
+                                    posXController = TextEditingController(text: double.parse(left).toStringAsFixed(2).toString());
+                                    posYController = TextEditingController(text: double.parse(top).toStringAsFixed(2).toString());
+                                  });
+                                },
+                                child: Text(
+                                  'Evaluate',
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontFamily: 'Sans',
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.getTextColor()),
+                                ),
+                              )
                             ],
                           ),
                           SizedBox(height: heightSize * 0.02),

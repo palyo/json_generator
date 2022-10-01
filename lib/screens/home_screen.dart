@@ -112,7 +112,8 @@ class HomeScreenState extends State<HomeScreen> {
                                     var categories = <Categories>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
+                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var category = Categories();
@@ -126,35 +127,50 @@ class HomeScreenState extends State<HomeScreen> {
 
                                         var templates = <Templates>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)
+                                          ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                         for (FileSystemEntity file in subFiles) {
-                                          Directory childDirs = Directory(file.path);
-                                          List<FileSystemEntity> childFiles = childDirs.listSync(recursive: false);
                                           var template = Templates();
-                                          for (FileSystemEntity file in childFiles) {
-                                            if (file.path.split("\\").last.startsWith("thumb")) {
-                                              var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                              var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                              var imageFinalURL = parentUrl + imageChildUrl;
-                                              template.demoUrl = Uri.encodeFull(imageFinalURL);
-                                            } else if (file.path.split("\\").last.endsWith("zip")) {
-                                              var zipUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                              var zipChildUrl = zipUrl.replaceAll("\\", "/");
-                                              var zipFinalURL = parentUrl + zipChildUrl;
-                                              template.zipUrl = Uri.encodeFull(zipFinalURL);
-                                            } else if (file.path.split("\\").last.endsWith("isPremium")) {
-                                              template.isPremium = 1;
-                                            } else if (file.path.split("\\").last.endsWith("isTrending")) {
-                                              template.isTrending = 1;
+                                          FileStat fileStat = file.statSync();
+                                          if (fileStat.type.toString() == "directory") {
+                                            Directory childDirs = Directory(file.path);
+                                            List<FileSystemEntity> childFiles = childDirs.listSync(recursive: false);
+                                            for (FileSystemEntity file in childFiles) {
+                                              if (file.path.split("\\").last.startsWith("thumb")) {
+                                                var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                                var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                                var imageFinalURL = parentUrl + imageChildUrl;
+                                                template.demoUrl = Uri.encodeFull(imageFinalURL);
+                                              } else if (file.path.split("\\").last.endsWith("zip")) {
+                                                var zipUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                                var zipChildUrl = zipUrl.replaceAll("\\", "/");
+                                                var zipFinalURL = parentUrl + zipChildUrl;
+                                                template.zipUrl = Uri.encodeFull(zipFinalURL);
+                                              } else if (file.path.split("\\").last.endsWith("isPremium")) {
+                                                template.isPremium = 1;
+                                              } else if (file.path.split("\\").last.endsWith("isTrending")) {
+                                                template.isTrending = 1;
+                                              }
+                                            }
+
+                                            template.demoUrl = template.demoUrl ?? "";
+                                            template.zipUrl = template.zipUrl ?? "";
+                                            template.isPremium = template.isPremium ?? 0;
+                                            template.isTrending = template.isTrending ?? 0;
+
+                                            templates.add(template);
+                                          } else {
+                                            var path = file.path;
+                                            var filePath = path.split("\\").last;
+                                            if (kDebugMode) {
+                                              print(filePath);
+                                            }
+                                            if (filePath.endsWith(".type")) {
+                                              category.type = filePath.replaceAll(".type", "");
+                                            } else {
+                                              category.date = filePath;
                                             }
                                           }
-
-                                          template.demoUrl = template.demoUrl ?? "";
-                                          template.zipUrl = template.zipUrl ?? "";
-                                          template.isPremium = template.isPremium ?? 0;
-                                          template.isTrending = template.isTrending ?? 0;
-
-                                          templates.add(template);
                                         }
                                         category.templates = templates;
                                         categories.add(category);
@@ -208,7 +224,8 @@ class HomeScreenState extends State<HomeScreen> {
                                     var categories = <BGCategories>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
+                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var category = BGCategories();
@@ -297,7 +314,8 @@ class HomeScreenState extends State<HomeScreen> {
                                     var stickerPacks = <StickerPacks>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
+                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var stickerPack = StickerPacks();
@@ -381,7 +399,8 @@ class HomeScreenState extends State<HomeScreen> {
                                     var fontList = <Font>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
+                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int fontId = 0;
                                     for (FileSystemEntity file in files) {
                                       FileStat fileStat = file.statSync();
