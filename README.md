@@ -1,4 +1,4 @@
-# flutter_poster_studio_json_generator
+# Json Generator
 
 Generate template json file with us.
 
