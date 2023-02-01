@@ -1,5 +1,5 @@
-name: flutter_poster_studio_json_generator
-description: Generate template json with us.
+name: aani_generator
+description: Generate json with us.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

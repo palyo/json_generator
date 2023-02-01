@@ -20,7 +20,7 @@ void main() {
       const initialSize = Size(700, 800);
       win.minSize = initialSize;
       win.alignment = Alignment.center;
-      win.title = "Poster Studio";
+      win.title = "Aani Generator";
       win.show();
     });
   }
@@ -373,7 +373,7 @@ class _MainAppState extends State<MainApp> {
                               child: Padding(
                                 padding: const EdgeInsets.all(13.0),
                                 child: Text(
-                                  "@ 2022 Aanibrothers Infotech. All rights reserved",
+                                  "@ 2023 Aanibrothers Infotech. All rights reserved",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),

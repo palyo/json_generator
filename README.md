@@ -1,22 +1,25 @@
-# Json Generator
+![Logo](/art/ic_logo.png)
+# Aani Generator
 
 Generate template json file with us.
 
 ## 🚀 About Me
 
 I'm a Android Developer and Flutter beginner <br />
-Please remember one thing in developing: "Develop Innovative"
+Please remember one thing in developing: *"Develop Innovative"*
 
 ## Authors
 
-- [@techhuntdevelopers](https://github.com/techhuntdevelopers)
-- [@palyo](https://github.com/palyo)
+>- [@techhuntdevelopers](https://github.com/techhuntdevelopers)
+>- [@palyo](https://github.com/palyo)
+>- [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/thoriya-prahalad-1b6a82137)
+>- [![Stack_Overflow](https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white)](https://stackoverflow.com/users/9917404/thoriya-prahalad)
 
 ## License
 
 MIT License
 
-Copyright (c) 2022 Aani brothers infotech
+Copyright (c) 2023 Aani brothers infotech
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
