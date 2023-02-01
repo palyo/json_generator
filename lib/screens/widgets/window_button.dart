@@ -24,13 +24,13 @@ class WindowButtonsState extends State<WindowButtons> {
         MinimizeWindowButton(colors: Utils.buttonColors),
         appWindow.isMaximized
             ? RestoreWindowButton(
-          colors: Utils.buttonColors,
-          onPressed: maximizeOrRestore,
-        )
+                colors: Utils.buttonColors,
+                onPressed: maximizeOrRestore,
+              )
             : MaximizeWindowButton(
-          colors: Utils.buttonColors,
-          onPressed: maximizeOrRestore,
-        ),
+                colors: Utils.buttonColors,
+                onPressed: maximizeOrRestore,
+              ),
         CloseWindowButton(colors: Utils.closeButtonColors),
       ],
     );

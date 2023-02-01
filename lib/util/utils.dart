@@ -2,19 +2,9 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
+  static WindowButtonColors buttonColors = WindowButtonColors(iconNormal: Utils.getIconColor(), mouseOver: Utils.getAccentColor().withOpacity(.4), mouseDown: Utils.getAccentColor(), iconMouseOver: Utils.getIconColor(), iconMouseDown: Utils.getIconColor());
 
-  static WindowButtonColors  buttonColors = WindowButtonColors(
-      iconNormal: Utils.getIconColor(),
-      mouseOver: Utils.getAccentColor().withOpacity(.4),
-      mouseDown: Utils.getAccentColor(),
-      iconMouseOver: Utils.getIconColor(),
-      iconMouseDown: Utils.getIconColor());
-
-  static WindowButtonColors closeButtonColors = WindowButtonColors(
-      mouseOver: const Color(0xFFD32F2F),
-      mouseDown: const Color(0xFFB71C1C),
-      iconNormal: Utils.getIconColor(),
-      iconMouseOver: Colors.white);
+  static WindowButtonColors closeButtonColors = WindowButtonColors(mouseOver: const Color(0xFFD32F2F), mouseDown: const Color(0xFFB71C1C), iconNormal: Utils.getIconColor(), iconMouseOver: Colors.white);
 
   static Color colorFromHex(String hexColor) {
     final hexCode = hexColor.replaceAll('#', '');

@@ -3,6 +3,7 @@
 Generate template json file with us.
 
 ## 🚀 About Me
+
 I'm a Android Developer and Flutter beginner <br />
 Please remember one thing in developing: "Develop Innovative"
 
@@ -34,7 +35,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 
 ## Support
 

@@ -7,14 +7,7 @@ class Template {
   List<TextSticker>? textSticker = [];
   List<ImageSticker>? imageSticker = [];
 
-  Template(
-      {this.bgImage,
-      this.bgColor,
-      this.posterWidth,
-      this.posterHeight,
-      this.posterType,
-      this.textSticker,
-      this.imageSticker});
+  Template({this.bgImage, this.bgColor, this.posterWidth, this.posterHeight, this.posterType, this.textSticker, this.imageSticker});
 
   Template.fromJson(Map<String, dynamic> json) {
     bgImage = json['bgImage'];
@@ -73,25 +66,7 @@ class TextSticker {
   int? isBold;
   int? isItalic;
 
-  TextSticker(
-      {this.textString,
-      this.width,
-      this.height,
-      this.posY,
-      this.posX,
-      this.fontName,
-      this.textAlpha,
-      this.textColor,
-      this.textGravity,
-      this.type,
-      this.rotation,
-      this.shadowColor,
-      this.shadowProg,
-      this.bgColor,
-      this.bgDrawable,
-      this.bgAlpha,
-      this.isBold,
-      this.isItalic});
+  TextSticker({this.textString, this.width, this.height, this.posY, this.posX, this.fontName, this.textAlpha, this.textColor, this.textGravity, this.type, this.rotation, this.shadowColor, this.shadowProg, this.bgColor, this.bgDrawable, this.bgAlpha, this.isBold, this.isItalic});
 
   TextSticker.fromJson(Map<String, dynamic> json) {
     textString = json['textString'];
@@ -156,18 +131,7 @@ class ImageSticker {
   int? stcColor;
   int? stcHue;
 
-  ImageSticker(
-      {this.stickerPath,
-      this.width,
-      this.height,
-      this.posY,
-      this.posX,
-      this.stcOpacity,
-      this.rotation,
-      this.colorType,
-      this.type,
-      this.stcColor,
-      this.stcHue});
+  ImageSticker({this.stickerPath, this.width, this.height, this.posY, this.posX, this.stcOpacity, this.rotation, this.colorType, this.type, this.stcColor, this.stcHue});
 
   ImageSticker.fromJson(Map<String, dynamic> json) {
     stickerPath = json['stickerPath'];

@@ -28,8 +28,7 @@ class StickerPacks {
   String? zipUrl;
   String? thumbUrl;
 
-  StickerPacks(
-      {this.stickerPackName, this.stickerPackId, this.isPremium, this.zipUrl, this.thumbUrl});
+  StickerPacks({this.stickerPackName, this.stickerPackId, this.isPremium, this.zipUrl, this.thumbUrl});
 
   StickerPacks.fromJson(Map<String, dynamic> json) {
     stickerPackName = json['stickerPackName'];

@@ -56,7 +56,7 @@ class Backgrounds {
   String? backgroundThumbImage;
   int? isPremium;
 
-  Backgrounds({this.backgroundId, this.backgroundImage,this.backgroundThumbImage, this.isPremium});
+  Backgrounds({this.backgroundId, this.backgroundImage, this.backgroundThumbImage, this.isPremium});
 
   Backgrounds.fromJson(Map<String, dynamic> json) {
     backgroundId = json['background_id'];

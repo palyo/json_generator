@@ -10,10 +10,10 @@ import 'package:flutter_poster_studio_json_generator/model/sticker_pack.dart';
 import 'package:flutter_poster_studio_json_generator/views/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/menu_controller.dart';
-import '../model/backgrounds.dart';
-import '../model/poster_template.dart';
-import '../util/utils.dart';
+import '../../controller/menu_controller.dart';
+import '../../model/backgrounds.dart';
+import '../../model/poster_template.dart';
+import '../../util/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -40,8 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
         key: context.read<MenuController>().scaffoldKey,
         body: SafeArea(
             child: Container(
-          decoration:
-              BoxDecoration(color: Utils.getCardColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+          decoration: BoxDecoration(color: Utils.getCardColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
           child: SizedBox(
               height: heightSize,
               width: widthSize,
@@ -51,13 +50,11 @@ class HomeScreenState extends State<HomeScreen> {
                     alignment: Alignment.center,
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Opacity(
-                          opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
+                      child: Opacity(opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
+                    padding: EdgeInsets.only(left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -70,12 +67,7 @@ class HomeScreenState extends State<HomeScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Make Final Json',
-                            style: TextStyle(
-                                fontSize: 36.0,
-                                fontFamily: 'Sans',
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w700,
-                                color: Utils.getAccentColor()),
+                            style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getAccentColor()),
                           ),
                         ),
                         Align(
@@ -83,9 +75,7 @@ class HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               width: 36.0,
                               height: 4.0,
-                              decoration: BoxDecoration(
-                                  color: Utils.getAccentColor(),
-                                  borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+                              decoration: BoxDecoration(color: Utils.getAccentColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
                             )),
                         SizedBox(height: heightSize * 0.04),
                         Row(
@@ -105,15 +95,13 @@ class HomeScreenState extends State<HomeScreen> {
                                     saveFileName = "";
                                     prettyprint = "";
                                   });
-                                  String? outputFile = await FilePicker.platform
-                                      .getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
+                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
                                     var posterTemplate = PosterCategory();
                                     var categories = <Categories>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio/Posters";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
-                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var category = Categories();
@@ -127,8 +115,7 @@ class HomeScreenState extends State<HomeScreen> {
 
                                         var templates = <Templates>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)
-                                          ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                         for (FileSystemEntity file in subFiles) {
                                           var template = Templates();
                                           FileStat fileStat = file.statSync();
@@ -190,12 +177,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   "Posters Json",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),
                               ),
                             ),
@@ -217,15 +199,13 @@ class HomeScreenState extends State<HomeScreen> {
                                     saveFileName = "";
                                     prettyprint = "";
                                   });
-                                  String? outputFile = await FilePicker.platform
-                                      .getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
+                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
                                     var backgroundCategory = BackgroundCategory();
                                     var categories = <BGCategories>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
-                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var category = BGCategories();
@@ -252,9 +232,7 @@ class HomeScreenState extends State<HomeScreen> {
                                             var bgFinalURL = parentUrl + bgChildUrl;
                                             background.backgroundImage = Uri.encodeFull(bgFinalURL);
                                             String fileName = file.path.split("\\").last;
-                                            var bgThumbPath =
-                                                "${file.parent.path}/thumb/${fileName.replaceAll("jpg", "png")}"
-                                                    .replaceAll(file.parent.parent.parent.path, "");
+                                            var bgThumbPath = "${file.parent.path}/thumb/${fileName.replaceAll("jpg", "png")}".replaceAll(file.parent.parent.parent.path, "");
                                             var bgThumbChildUrl = bgThumbPath.replaceAll("\\", "/");
                                             var bgThumbFinalURL = parentUrl + bgThumbChildUrl;
                                             background.backgroundThumbImage = Uri.encodeFull(bgThumbFinalURL);
@@ -280,12 +258,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   "Backgrounds Json",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),
                               ),
                             ),
@@ -307,15 +280,13 @@ class HomeScreenState extends State<HomeScreen> {
                                     saveFileName = "";
                                     prettyprint = "";
                                   });
-                                  String? outputFile = await FilePicker.platform
-                                      .getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
+                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
                                     var stickers = Stickers();
                                     var stickerPacks = <StickerPacks>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
-                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
                                       var stickerPack = StickerPacks();
@@ -365,12 +336,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   "Stickers Json",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),
                               ),
                             ),
@@ -392,15 +358,13 @@ class HomeScreenState extends State<HomeScreen> {
                                     saveFileName = "";
                                     prettyprint = "";
                                   });
-                                  String? outputFile = await FilePicker.platform
-                                      .getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
+                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
                                     var fonts = Fonts();
                                     var fontList = <Font>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/PosterStudio";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)
-                                      ..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int fontId = 0;
                                     for (FileSystemEntity file in files) {
                                       FileStat fileStat = file.statSync();
@@ -420,10 +384,7 @@ class HomeScreenState extends State<HomeScreen> {
                                             var fontFinalURL = parentUrl + fontChildUrl;
                                             font.thumbUrl = Uri.encodeFull(fontFinalURL);
                                           }
-                                          if (file.path.split("\\").last.endsWith("ttf") ||
-                                              file.path.split("\\").last.endsWith("otf") ||
-                                              file.path.split("\\").last.endsWith("TTF") ||
-                                              file.path.split("\\").last.endsWith("OTF")) {
+                                          if (file.path.split("\\").last.endsWith("ttf") || file.path.split("\\").last.endsWith("otf") || file.path.split("\\").last.endsWith("TTF") || file.path.split("\\").last.endsWith("OTF")) {
                                             var fontUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
                                             var fontChildUrl = fontUrl.replaceAll("\\", "/");
                                             var fontFinalURL = parentUrl + fontChildUrl;
@@ -449,12 +410,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   "Fonts Json",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),
                               ),
                             ),
@@ -467,9 +423,7 @@ class HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Container(
                                   width: widthSize * 0.80,
-                                  decoration: BoxDecoration(
-                                      color: Utils.getBGColor(),
-                                      borderRadius: const BorderRadius.all(Radius.circular(8.0))),
+                                  decoration: BoxDecoration(color: Utils.getBGColor(), borderRadius: const BorderRadius.all(Radius.circular(8.0))),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SingleChildScrollView(
@@ -503,8 +457,7 @@ class HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         onPressed: () async {
-                                          String? outputFile = await FilePicker.platform.saveFile(
-                                              dialogTitle: 'Save your json to desire location', fileName: saveFileName);
+                                          String? outputFile = await FilePicker.platform.saveFile(dialogTitle: 'Save your json to desire location', fileName: saveFileName);
                                           try {
                                             File returnedFile = File('$outputFile');
                                             await returnedFile.writeAsString(prettyprint);
@@ -517,12 +470,7 @@ class HomeScreenState extends State<HomeScreen> {
                                         icon: const Icon(Icons.save_outlined, size: 20.0),
                                         label: Text(
                                           "Save",
-                                          style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontFamily: 'Sans',
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w300,
-                                              color: Utils.getTextColor()),
+                                          style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                         ),
                                       ),
                                     ),

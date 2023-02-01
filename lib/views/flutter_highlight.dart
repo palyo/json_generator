@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_poster_studio_json_generator/util/utils.dart';
 import 'package:highlight/highlight.dart' show highlight, Node;
@@ -13,13 +12,15 @@ class HighlightView extends StatelessWidget {
   final TextStyle? textStyle;
 
   HighlightView(
-    String input, {Key? key,
+    String input, {
+    Key? key,
     this.language,
     this.theme = const {},
     this.padding,
     this.textStyle,
     int tabSize = 8,
-  }) : source = input.replaceAll('\t', ' ' * tabSize), super(key: key);
+  })  : source = input.replaceAll('\t', ' ' * tabSize),
+        super(key: key);
 
   List<TextSpan> _convert(List<Node> nodes) {
     List<TextSpan> spans = [];
@@ -28,9 +29,7 @@ class HighlightView extends StatelessWidget {
 
     _traverse(Node node) {
       if (node.value != null) {
-        currentSpans.add(node.className == null
-            ? TextSpan(text: node.value)
-            : TextSpan(text: node.value, style: theme[node.className!]));
+        currentSpans.add(node.className == null ? TextSpan(text: node.value) : TextSpan(text: node.value, style: theme[node.className!]));
       } else if (node.children != null) {
         List<TextSpan> tmp = [];
         currentSpans.add(TextSpan(children: tmp, style: theme[node.className!]));
@@ -67,8 +66,7 @@ class HighlightView extends StatelessWidget {
     textStyle = textStyle.merge(textStyle);
 
     return Container(
-      decoration: BoxDecoration(
-          color: Utils.getBGColor(), borderRadius: const BorderRadius.all(Radius.circular(8.0))),
+      decoration: BoxDecoration(color: Utils.getBGColor(), borderRadius: const BorderRadius.all(Radius.circular(8.0))),
       padding: padding,
       child: SelectableText.rich(
         TextSpan(

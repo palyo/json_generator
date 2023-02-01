@@ -2,36 +2,34 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_poster_studio_json_generator/model/template.dart';
+import 'package:flutter_poster_studio_json_generator/util/utils.dart';
 
-import '../util/utils.dart';
-
-class DialogImageSticker extends StatefulWidget {
-  Function(ImageSticker, int) imageSticker;
-  ImageSticker? sticker;
+class DialogTextSticker extends StatefulWidget {
+  Function(TextSticker, int) textSticker;
+  TextSticker? sticker;
   int? stickerPos = -1;
 
-  DialogImageSticker({
+  DialogTextSticker({
     Key? key,
     required this.sticker,
     required this.stickerPos,
-    required this.imageSticker,
+    required this.textSticker,
   }) : super(key: key);
 
   @override
-  DialogImageStickerState createState() => DialogImageStickerState();
+  DialogTextStickerState createState() => DialogTextStickerState();
 }
 
-class DialogImageStickerState extends State<DialogImageSticker> {
+class DialogTextStickerState extends State<DialogTextSticker> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController imageNameController = TextEditingController(text: "sticker1.png");
-  FocusNode imageNameFocusNode = FocusNode();
-  bool imageNameValid = false;
+  TextEditingController textController = TextEditingController();
+  FocusNode textFocusNode = FocusNode();
+  bool textValid = false;
 
-
-  TextEditingController imagePointsController = TextEditingController();
-  FocusNode imagePointsFocusNode = FocusNode();
-  bool imagePointsValid = false;
+  TextEditingController textPointsController = TextEditingController();
+  FocusNode textPointsFocusNode = FocusNode();
+  bool textPointsValid = false;
 
   TextEditingController widthController = TextEditingController();
   FocusNode widthFocusNode = FocusNode();
@@ -49,37 +47,59 @@ class DialogImageStickerState extends State<DialogImageSticker> {
   FocusNode posYFocusNode = FocusNode();
   bool posYValid = false;
 
-  TextEditingController opacityController = TextEditingController(text: "255");
-  FocusNode opacityFocusNode = FocusNode();
-  bool opacityValid = false;
+  TextEditingController fontNameController = TextEditingController(text: "font1.ttf");
+  FocusNode fontNameFocusNode = FocusNode();
+  bool fontNameValid = false;
+
+  TextEditingController alphaController = TextEditingController(text: "255");
+  FocusNode alphaFocusNode = FocusNode();
+  bool alphaValid = false;
+
+  TextEditingController textColorController = TextEditingController(text: "#FFFFFF");
+  FocusNode textColorFocusNode = FocusNode();
+  bool textColorValid = false;
 
   TextEditingController rotationController = TextEditingController(text: "0");
   FocusNode rotationFocusNode = FocusNode();
   bool rotationValid = false;
 
-  Function(ImageSticker, int)? imageSticker;
-  ImageSticker? sticker;
+  bool isBoldText = false;
+  bool isItalicText = false;
+
+  Function(TextSticker, int)? textSticker;
+  TextSticker? sticker;
 
   int? stickerPos = -1;
   String? status;
 
+  var textAlign = "left";
+
   @override
   void initState() {
     super.initState();
-    imageSticker = widget.imageSticker;
-
+    textSticker = widget.textSticker;
     sticker = widget.sticker;
     stickerPos = widget.stickerPos;
     if (sticker == null) {
       status = "Add";
     } else {
-      imageNameController = TextEditingController(text: sticker!.stickerPath);
+      textController = TextEditingController(text: sticker!.textString);
       widthController = TextEditingController(text: sticker!.width.toString());
       heightController = TextEditingController(text: sticker!.height.toString());
       posXController = TextEditingController(text: sticker!.posX.toString());
       posYController = TextEditingController(text: sticker!.posY.toString());
-      opacityController = TextEditingController(text: sticker!.stcOpacity.toString());
+      fontNameController = TextEditingController(text: sticker!.fontName);
+      alphaController = TextEditingController(text: sticker!.textAlpha.toString());
+      textColorController = TextEditingController(text: sticker!.textColor);
       rotationController = TextEditingController(text: sticker!.rotation.toString());
+      if (sticker!.isBold == 1) {
+        isBoldText = true;
+      }
+      if (sticker!.isItalic == 1) {
+        isItalicText = true;
+      }
+
+      textAlign = sticker!.textGravity!;
       status = "Update";
     }
   }
@@ -88,6 +108,7 @@ class DialogImageStickerState extends State<DialogImageSticker> {
   Widget build(BuildContext context) {
     final double widthSize = MediaQuery.of(context).size.width;
     final double heightSize = MediaQuery.of(context).size.height;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -111,8 +132,7 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                 children: [
                   Opacity(opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
                   Padding(
-                    padding: EdgeInsets.only(
-                        left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
+                    padding: EdgeInsets.only(left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -121,13 +141,8 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '$status Image Sticker',
-                              style: TextStyle(
-                                  fontSize: 36.0,
-                                  fontFamily: 'Sans',
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: Utils.getAccentColor()),
+                              '$status Text Sticker',
+                              style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getAccentColor()),
                             ),
                           ),
                           SizedBox(height: heightSize * 0.01),
@@ -136,9 +151,7 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                               child: Container(
                                 width: 36.0,
                                 height: 4.0,
-                                decoration: BoxDecoration(
-                                    color: Utils.getAccentColor(),
-                                    borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+                                decoration: BoxDecoration(color: Utils.getAccentColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
                               )),
                           SizedBox(height: heightSize * 0.04),
                           Row(
@@ -146,40 +159,30 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                               Expanded(
                                 flex: 1,
                                 child: TextFormField(
-                                  focusNode: imageNameFocusNode,
-                                  controller: imageNameController,
+                                  focusNode: textFocusNode,
+                                  controller: textController,
                                   cursorColor: Utils.getAccentColor(),
                                   keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
-                                    if (value.isNotEmpty && imageNameValid) {
+                                    if (value.isNotEmpty && textValid) {
                                       setState(() {
-                                        imageNameValid = false;
+                                        textValid = false;
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
-                                    labelText: "Image Name",
-                                    errorText: imageNameValid ? "Image Name" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: imageNameValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelText: "Text",
+                                    errorText: textValid ? "Enter Text" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: textValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: imageNameFocusNode.hasFocus
-                                            ? imageNameValid
+                                        color: textFocusNode.hasFocus
+                                            ? textValid
                                                 ? Utils.getErrorColor()
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
@@ -206,9 +209,60 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                   ),
                                   onTap: () {
                                     setState(() {
-                                      FocusScope.of(context).requestFocus(imageNameFocusNode);
+                                      FocusScope.of(context).requestFocus(textFocusNode);
                                     });
                                   },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: heightSize * 0.02),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('Align Left', style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor())),
+                                  leading: Radio(
+                                    value: "left",
+                                    groupValue: textAlign,
+                                    activeColor: Utils.getAccentColor(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        textAlign = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('Align Center', style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor())),
+                                  leading: Radio(
+                                    value: "center",
+                                    groupValue: textAlign,
+                                    activeColor: Utils.getAccentColor(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        textAlign = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  title: Text('Align Right', style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor())),
+                                  leading: Radio(
+                                    value: "right",
+                                    groupValue: textAlign,
+                                    activeColor: Utils.getAccentColor(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        textAlign = value!;
+                                      });
+                                    },
+                                  ),
                                 ),
                               ),
                             ],
@@ -219,42 +273,32 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                               Expanded(
                                 flex: 1,
                                 child: TextFormField(
-                                  focusNode: imagePointsFocusNode,
-                                  controller: imagePointsController,
+                                  focusNode: textPointsFocusNode,
+                                  controller: textPointsController,
                                   cursorColor: Utils.getAccentColor(),
                                   keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
-                                    if (value.isNotEmpty && imagePointsValid) {
+                                    if (value.isNotEmpty && textPointsValid) {
                                       setState(() {
-                                        imagePointsValid = false;
+                                        textPointsValid = false;
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Points",
-                                    errorText: imagePointsValid ? "Enter Points" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: imagePointsValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorText: textPointsValid ? "Enter Points" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: textValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: imagePointsFocusNode.hasFocus
-                                            ? imagePointsValid
-                                            ? Utils.getErrorColor()
-                                            : Utils.getAccentColor()
+                                        color: textPointsFocusNode.hasFocus
+                                            ? textPointsValid
+                                                ? Utils.getErrorColor()
+                                                : Utils.getAccentColor()
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -279,7 +323,7 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                   ),
                                   onTap: () {
                                     setState(() {
-                                      FocusScope.of(context).requestFocus(imagePointsFocusNode);
+                                      FocusScope.of(context).requestFocus(textPointsFocusNode);
                                     });
                                   },
                                 ),
@@ -290,7 +334,7 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                                 padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
                                 onPressed: () async {
-                                  String points = imagePointsController.text;
+                                  String points = textPointsController.text;
                                   var split = points.split(";");
                                   var height, width, left, top;
                                   for (String value in split) {
@@ -316,12 +360,7 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                 },
                                 child: Text(
                                   'Evaluate',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w500,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
                                 ),
                               )
                             ],
@@ -347,21 +386,11 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Width",
                                     errorText: widthValid ? "Enter Width" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: widthValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: widthValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -419,21 +448,11 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Height",
                                     errorText: heightValid ? "Enter Height" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: heightValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: heightValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -491,21 +510,11 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "PosY",
                                     errorText: posYValid ? "Enter PosY" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: posYValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: posYValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -563,21 +572,11 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "PosX",
                                     errorText: posXValid ? "Enter PosX" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: posXValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: posXValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -624,43 +623,30 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                               Expanded(
                                 flex: 1,
                                 child: TextFormField(
-                                  focusNode: opacityFocusNode,
-                                  controller: opacityController,
+                                  focusNode: fontNameFocusNode,
+                                  controller: fontNameController,
                                   cursorColor: Utils.getAccentColor(),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
-                                  ],
+                                  keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
-                                    if (value.isNotEmpty && opacityValid) {
+                                    if (value.isNotEmpty && fontNameValid) {
                                       setState(() {
-                                        opacityValid = false;
+                                        fontNameValid = false;
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
-                                    labelText: "Opacity",
-                                    errorText: opacityValid ? "Enter Opacity" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: opacityValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelText: "Font name with extension",
+                                    errorText: fontNameValid ? "Enter Font name with extension" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: fontNameValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w300,
-                                        color: opacityFocusNode.hasFocus
-                                            ? opacityValid
+                                        color: fontNameFocusNode.hasFocus
+                                            ? fontNameValid
                                                 ? Utils.getErrorColor()
                                                 : Utils.getAccentColor()
                                             : Utils.getHintColor()),
@@ -687,7 +673,128 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                   ),
                                   onTap: () {
                                     setState(() {
-                                      FocusScope.of(context).requestFocus(opacityFocusNode);
+                                      FocusScope.of(context).requestFocus(fontNameFocusNode);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: widthSize * 0.01),
+                              Expanded(
+                                flex: 1,
+                                child: TextFormField(
+                                  focusNode: alphaFocusNode,
+                                  controller: alphaController,
+                                  cursorColor: Utils.getAccentColor(),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
+                                  ],
+                                  maxLines: 1,
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty && alphaValid) {
+                                      setState(() {
+                                        alphaValid = false;
+                                      });
+                                    }
+                                  },
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
+                                  decoration: InputDecoration(
+                                    labelText: "Text Alpha",
+                                    errorText: alphaValid ? "Text Alpha" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: alphaValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: alphaFocusNode.hasFocus
+                                            ? alphaValid
+                                                ? Utils.getErrorColor()
+                                                : Utils.getAccentColor()
+                                            : Utils.getHintColor()),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      FocusScope.of(context).requestFocus(alphaFocusNode);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: widthSize * 0.01),
+                              Expanded(
+                                flex: 1,
+                                child: TextFormField(
+                                  focusNode: textColorFocusNode,
+                                  controller: textColorController,
+                                  cursorColor: Utils.getAccentColor(),
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty && textColorValid) {
+                                      setState(() {
+                                        textColorValid = false;
+                                      });
+                                    }
+                                  },
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
+                                  decoration: InputDecoration(
+                                    labelText: "Text Color",
+                                    errorText: textColorValid ? "Enter Text Color" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: textColorValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: textColorFocusNode.hasFocus
+                                            ? textColorValid
+                                                ? Utils.getErrorColor()
+                                                : Utils.getAccentColor()
+                                            : Utils.getHintColor()),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      FocusScope.of(context).requestFocus(textColorFocusNode);
                                     });
                                   },
                                 ),
@@ -711,21 +818,11 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
-                                    labelText: "Rotation",
-                                    errorText: rotationValid ? "Enter Rotation" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: rotationValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelText: "Text Rotation",
+                                    errorText: rotationValid ? "Enter Text Rotation" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: rotationValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -767,35 +864,72 @@ class DialogImageStickerState extends State<DialogImageSticker> {
                             ],
                           ),
                           SizedBox(height: heightSize * 0.02),
+                          Row(
+                            children: [
+                              Checkbox(
+                                checkColor: Utils.getWhiteColor(),
+                                activeColor: Utils.getAccentColor(),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+                                value: isBoldText,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isBoldText = value!;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "isBold",
+                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isBoldText ? Utils.getAccentColor() : Utils.getTextColor()),
+                              ),
+                              SizedBox(width: widthSize * 0.01),
+                              Checkbox(
+                                checkColor: Utils.getWhiteColor(),
+                                activeColor: Utils.getAccentColor(),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+                                value: isItalicText,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isItalicText = value!;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "isItalic",
+                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isItalicText ? Utils.getAccentColor() : Utils.getTextColor()),
+                              ),
+                            ],
+                          ),
                           SizedBox(height: heightSize * 0.04),
                           MaterialButton(
                             color: Utils.getAccentColor(),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                             padding: const EdgeInsets.fromLTRB(100, 18, 100, 18),
                             onPressed: () async {
-                              var image = ImageSticker(
-                                  stickerPath: imageNameController.text,
+                              var text = TextSticker(
+                                  textString: textController.text,
                                   width: double.parse(widthController.text),
                                   height: double.parse(heightController.text),
                                   posY: double.parse(posYController.text),
                                   posX: double.parse(posXController.text),
-                                  stcOpacity: int.parse(opacityController.text),
+                                  fontName: fontNameController.text,
+                                  textAlpha: int.parse(alphaController.text),
+                                  textColor: textColorController.text,
+                                  textGravity: textAlign,
+                                  type: "TEXT",
                                   rotation: int.parse(rotationController.text),
-                                  colorType: "colored",
-                                  type: "STICKER",
-                                  stcColor: 0,
-                                  stcHue: 0);
-                              imageSticker!(image, stickerPos!);
+                                  shadowColor: 0,
+                                  shadowProg: 1,
+                                  bgColor: 0,
+                                  bgDrawable: "0",
+                                  bgAlpha: 0,
+                                  isBold: (isBoldText ? 1 : 0),
+                                  isItalic: (isItalicText ? 1 : 0));
+                              textSticker!(text, stickerPos!);
                               Navigator.pop(context, true);
                             },
                             child: Text(
-                              '$status Sticker',
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontFamily: 'Sans',
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500,
-                                  color: Utils.getTextColor()),
+                              '$status Text',
+                              style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
                             ),
                           ),
                           SizedBox(height: heightSize * 0.04),

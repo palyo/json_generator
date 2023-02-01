@@ -5,12 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_poster_studio_json_generator/screens/add_image_sticker.dart';
+import 'package:flutter_poster_studio_json_generator/controller/menu_controller.dart';
+import 'package:flutter_poster_studio_json_generator/model/template.dart';
+import 'package:flutter_poster_studio_json_generator/screens/poster_studio/add_image_sticker.dart';
+import 'package:flutter_poster_studio_json_generator/util/utils.dart';
 import 'package:provider/provider.dart';
 
-import '../controller/menu_controller.dart';
-import '../model/template.dart';
-import '../util/utils.dart';
 import 'add_text_sticker.dart';
 
 class GenerateJsonScreen extends StatefulWidget {
@@ -59,8 +59,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
         key: context.read<MenuController>().scaffoldKey,
         body: SafeArea(
             child: Container(
-          decoration:
-              BoxDecoration(color: Utils.getCardColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+          decoration: BoxDecoration(color: Utils.getCardColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
           child: SizedBox(
               height: heightSize,
               width: widthSize,
@@ -70,15 +69,13 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                     alignment: Alignment.center,
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Opacity(
-                          opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
+                      child: Opacity(opacity: 0.02, child: Image.asset("assets/images/ic_banner_bg.png", fit: BoxFit.cover)),
                     ),
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
+                      padding: EdgeInsets.only(left: widthSize * 0.05, right: widthSize * 0.05, top: heightSize * 0, bottom: heightSize * 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -91,12 +88,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Generate Json',
-                              style: TextStyle(
-                                  fontSize: 36.0,
-                                  fontFamily: 'Sans',
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: Utils.getAccentColor()),
+                              style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getAccentColor()),
                             ),
                           ),
                           SizedBox(height: heightSize * 0.01),
@@ -105,9 +97,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                               child: Container(
                                 width: 36.0,
                                 height: 4.0,
-                                decoration: BoxDecoration(
-                                    color: Utils.getAccentColor(),
-                                    borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+                                decoration: BoxDecoration(color: Utils.getAccentColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
                               )),
                           SizedBox(height: heightSize * 0.04),
                           Row(
@@ -127,21 +117,11 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Background Image",
                                     errorText: _isBgImageValid ? "Enter Background Image" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: _isBgImageValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: _isBgImageValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -196,21 +176,10 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Background Color",
-                                    labelStyle: TextStyle(
-                                        fontSize: 16.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color:
-                                            _bgColorFocusNode.hasFocus ? Utils.getAccentColor() : Utils.getHintColor()),
+                                    labelStyle: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: _bgColorFocusNode.hasFocus ? Utils.getAccentColor() : Utils.getHintColor()),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
@@ -247,21 +216,11 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Poster Type",
                                     errorText: _isPosterTypeValid ? "Enter Poster Type!" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: _isPosterTypeValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: _isPosterTypeValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -323,21 +282,11 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Poster Width",
                                     errorText: _isPosterWidthValid ? "Enter valid Poster Width" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: _isPosterWidthValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: _isPosterWidthValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -395,21 +344,11 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       });
                                     }
                                   },
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontFamily: 'Sans',
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      color: Utils.getTextColor()),
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                   decoration: InputDecoration(
                                     labelText: "Poster Height",
                                     errorText: _isPosterHeightValid ? "Enter valid Poster Height!" : null,
-                                    errorStyle: TextStyle(
-                                        fontSize: 12.0,
-                                        fontFamily: 'Sans',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w300,
-                                        color: _isPosterHeightValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: _isPosterHeightValid ? Utils.getErrorColor() : Utils.getHintColor()),
                                     labelStyle: TextStyle(
                                         fontSize: 16.0,
                                         fontFamily: 'Sans',
@@ -475,12 +414,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   'Text Stickers',
-                                                  style: TextStyle(
-                                                      fontSize: 18.0,
-                                                      fontFamily: 'Sans',
-                                                      fontStyle: FontStyle.normal,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: Utils.getTextColor()),
+                                                  style: TextStyle(fontSize: 18.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
                                                 ),
                                               ),
                                               Align(
@@ -515,12 +449,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                     icon: const Icon(Icons.add, size: 20.0),
                                                     label: Text(
                                                       "Add",
-                                                      style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          fontFamily: 'Sans',
-                                                          fontStyle: FontStyle.normal,
-                                                          fontWeight: FontWeight.w300,
-                                                          color: Utils.getTextColor()),
+                                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                                     ),
                                                   ))
                                             ],
@@ -585,12 +514,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                   child: Center(
                                                                     child: Text(
                                                                       textStickers[index].textString!,
-                                                                      style: TextStyle(
-                                                                          fontSize: 16.0,
-                                                                          fontFamily: 'Sans',
-                                                                          fontStyle: FontStyle.normal,
-                                                                          fontWeight: FontWeight.w300,
-                                                                          color: Utils.getTextColor()),
+                                                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                                                     ),
                                                                   ),
                                                                 )),
@@ -627,8 +551,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                       height: 32,
                                                                       decoration: BoxDecoration(
                                                                         color: Utils.getAccentColor(),
-                                                                        borderRadius: const BorderRadius.all(
-                                                                            Radius.circular(4.0)),
+                                                                        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                                                       ),
                                                                       child: const Center(
                                                                           child: Icon(
@@ -649,8 +572,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                       height: 32,
                                                                       decoration: const BoxDecoration(
                                                                         color: Colors.redAccent,
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(4.0)),
+                                                                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
                                                                       ),
                                                                       child: const Center(
                                                                           child: Icon(
@@ -707,12 +629,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   'Image Stickers',
-                                                  style: TextStyle(
-                                                      fontSize: 18.0,
-                                                      fontFamily: 'Sans',
-                                                      fontStyle: FontStyle.normal,
-                                                      fontWeight: FontWeight.w500,
-                                                      color: Utils.getTextColor()),
+                                                  style: TextStyle(fontSize: 18.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
                                                 ),
                                               ),
                                               Align(
@@ -748,12 +665,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                     icon: const Icon(Icons.add, size: 20.0),
                                                     label: Text(
                                                       "Add",
-                                                      style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          fontFamily: 'Sans',
-                                                          fontStyle: FontStyle.normal,
-                                                          fontWeight: FontWeight.w300,
-                                                          color: Utils.getTextColor()),
+                                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                                     ),
                                                   ))
                                             ],
@@ -809,12 +721,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                   child: Center(
                                                                     child: Text(
                                                                       imageStickers[index].stickerPath!,
-                                                                      style: TextStyle(
-                                                                          fontSize: 16.0,
-                                                                          fontFamily: 'Sans',
-                                                                          fontStyle: FontStyle.normal,
-                                                                          fontWeight: FontWeight.w300,
-                                                                          color: Utils.getTextColor()),
+                                                                      style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                                                     ),
                                                                   ),
                                                                 )),
@@ -835,8 +742,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                               return DialogImageSticker(
                                                                                 sticker: imageStickers[index],
                                                                                 stickerPos: index,
-                                                                                imageSticker:
-                                                                                    (ImageSticker val, int pos) {
+                                                                                imageSticker: (ImageSticker val, int pos) {
                                                                                   if (kDebugMode) {
                                                                                     print("Print: ${val.toString()}");
                                                                                   }
@@ -852,8 +758,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                         height: 32,
                                                                         decoration: BoxDecoration(
                                                                           color: Utils.getAccentColor(),
-                                                                          borderRadius: const BorderRadius.all(
-                                                                              Radius.circular(4.0)),
+                                                                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                                                         ),
                                                                         child: const Center(
                                                                             child: Icon(
@@ -874,8 +779,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                                                         height: 32,
                                                                         decoration: const BoxDecoration(
                                                                           color: Colors.redAccent,
-                                                                          borderRadius:
-                                                                              BorderRadius.all(Radius.circular(4.0)),
+                                                                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
                                                                         ),
                                                                         child: const Center(
                                                                             child: Icon(
@@ -925,8 +829,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        FilePickerResult? result =
-                                            await FilePicker.platform.pickFiles(lockParentWindow: true);
+                                        FilePickerResult? result = await FilePicker.platform.pickFiles(lockParentWindow: true);
 
                                         if (result != null) {
                                           File file = File(result.files.single.path!);
@@ -949,12 +852,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       icon: const Icon(Icons.save_outlined, size: 20.0),
                                       label: Text(
                                         "Open Json",
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontFamily: 'Sans',
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w300,
-                                            color: Utils.getTextColor()),
+                                        style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                       ),
                                     )),
                                 const SizedBox(
@@ -984,10 +882,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                         JsonEncoder encoder = const JsonEncoder.withIndent('  ');
                                         String prettyprint = encoder.convert(template.toJson());
 
-                                        String? outputFile = await FilePicker.platform.saveFile(
-                                            dialogTitle: 'Save your json to desire location',
-                                            fileName: "index.json",
-                                            lockParentWindow: true);
+                                        String? outputFile = await FilePicker.platform.saveFile(dialogTitle: 'Save your json to desire location', fileName: "index.json", lockParentWindow: true);
 
                                         try {
                                           File returnedFile = File('$outputFile');
@@ -1000,12 +895,7 @@ class GenerateJsonState extends State<GenerateJsonScreen> {
                                       icon: const Icon(Icons.save_outlined, size: 20.0),
                                       label: Text(
                                         "Save To Json",
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontFamily: 'Sans',
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w300,
-                                            color: Utils.getTextColor()),
+                                        style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                       ),
                                     )),
                               ],
