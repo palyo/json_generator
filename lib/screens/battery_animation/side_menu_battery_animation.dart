@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/main.dart';
+import 'package:aani_generator/main.dart';
 
 import '../../util/utils.dart';
 import '../widgets/drawer_list_custom_tiles.dart';

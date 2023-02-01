@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/util/utils.dart';
+import 'package:aani_generator/util/utils.dart';
 import 'package:highlight/highlight.dart' show highlight, Node;
 
 class HighlightView extends StatelessWidget {

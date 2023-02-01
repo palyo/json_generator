@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/util/utils.dart';
+import 'package:aani_generator/util/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'controller/dashboard_controller.dart';

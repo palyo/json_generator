@@ -1,6 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/screens/invitation/side_menu_invitation.dart';
+import 'package:aani_generator/screens/invitation/side_menu_invitation.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/invitation_menu_controller.dart';

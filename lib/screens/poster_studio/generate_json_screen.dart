@@ -5,10 +5,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_poster_studio_json_generator/controller/menu_controller.dart';
-import 'package:flutter_poster_studio_json_generator/model/template.dart';
-import 'package:flutter_poster_studio_json_generator/screens/poster_studio/add_image_sticker.dart';
-import 'package:flutter_poster_studio_json_generator/util/utils.dart';
+import 'package:aani_generator/controller/menu_controller.dart';
+import 'package:aani_generator/model/template.dart';
+import 'package:aani_generator/screens/poster_studio/add_image_sticker.dart';
+import 'package:aani_generator/util/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'add_text_sticker.dart';

@@ -1,6 +1,6 @@
 {
-  "name": "flutter_poster_studio_json_generator",
-  "short_name": "flutter_poster_studio_json_generator",
+  "name": "aani_generator",
+  "short_name": "aani_generator",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0175C2",

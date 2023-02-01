@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_poster_studio_json_generator/model/template.dart';
+import 'package:aani_generator/model/template.dart';
 
 import '../../util/utils.dart';
 

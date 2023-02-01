@@ -5,9 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
-import 'package:flutter_poster_studio_json_generator/model/fonts.dart';
-import 'package:flutter_poster_studio_json_generator/model/sticker_pack.dart';
-import 'package:flutter_poster_studio_json_generator/views/flutter_highlight.dart';
+import 'package:aani_generator/model/fonts.dart';
+import 'package:aani_generator/model/sticker_pack.dart';
+import 'package:aani_generator/views/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/menu_controller.dart';

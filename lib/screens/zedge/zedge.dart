@@ -1,7 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/screens/zedge/side_menu_zedge.dart';
-import 'package:flutter_poster_studio_json_generator/screens/zedge/zedge_dashboard_screen.dart';
+import 'package:aani_generator/screens/zedge/side_menu_zedge.dart';
+import 'package:aani_generator/screens/zedge/zedge_dashboard_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/zedge_menu_controller.dart';

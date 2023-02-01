@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(flutter_poster_studio_json_generator LANGUAGES CXX)
+project(aani_generator LANGUAGES CXX)
 
-set(BINARY_NAME "flutter_poster_studio_json_generator")
+set(BINARY_NAME "aani_generator")
 
 cmake_policy(SET CMP0063 NEW)
 

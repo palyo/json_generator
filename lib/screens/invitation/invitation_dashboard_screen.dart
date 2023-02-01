@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/controller/invitation_menu_controller.dart';
+import 'package:aani_generator/controller/invitation_menu_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../../util/utils.dart';

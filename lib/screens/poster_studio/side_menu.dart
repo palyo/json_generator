@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_poster_studio_json_generator/main.dart';
+import 'package:aani_generator/main.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/menu_controller.dart';

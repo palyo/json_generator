@@ -5,8 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
-import 'package:flutter_poster_studio_json_generator/model/battery.dart';
-import 'package:flutter_poster_studio_json_generator/views/flutter_highlight.dart';
+import 'package:aani_generator/model/battery.dart';
+import 'package:aani_generator/views/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/battery_menu_controller.dart';

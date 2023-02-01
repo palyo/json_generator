@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_poster_studio_json_generator/model/template.dart';
-import 'package:flutter_poster_studio_json_generator/util/utils.dart';
+import 'package:aani_generator/model/template.dart';
+import 'package:aani_generator/util/utils.dart';
 
 class DialogTextSticker extends StatefulWidget {
   Function(TextSticker, int) textSticker;
