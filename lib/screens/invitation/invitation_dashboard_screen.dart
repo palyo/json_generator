@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/invitaion_category.dart';
+import '../../model/invitation_category.dart';
 import '../../util/utils.dart';
 import '../../views/flutter_highlight.dart';
 
