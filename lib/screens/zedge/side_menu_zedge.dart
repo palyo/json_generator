@@ -24,7 +24,7 @@ class SideMenuZedgePlus extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Zedge',
+                    'Ringer',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getWhiteColor()),
                   )

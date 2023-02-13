@@ -25,14 +25,18 @@ class ZedgeRingtoneCategory {
 
 class ZedgeRingtone {
   String? categoryName;
+  String? categoryThumb;
   int? categoryId;
+  int? ringtoneCount;
   List<Ringtone>? ringtones;
 
   ZedgeRingtone({this.categoryName, this.categoryId, this.ringtones});
 
   ZedgeRingtone.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
+    categoryThumb = json['categoryThumb'];
     categoryId = json['categoryId'];
+    ringtoneCount = json['ringtoneCount'];
     if (json['templates'] != null) {
       ringtones = <Ringtone>[];
       json['ringtones'].forEach((v) {
@@ -44,7 +48,9 @@ class ZedgeRingtone {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['categoryName'] = categoryName;
+    data['categoryThumb'] = categoryThumb;
     data['categoryId'] = categoryId;
+    data['ringtoneCount'] = ringtoneCount;
     if (ringtones != null) {
       data['ringtones'] = ringtones!.map((v) => v.toJson()).toList();
     }

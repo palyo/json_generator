@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aani_generator/controller/zedge_menu_controller.dart';
+import 'package:aani_generator/model/ringer_stickers.dart';
+import 'package:aani_generator/model/ringer_wallpaper.dart';
+import 'package:aani_generator/views/flutter_highlight.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
-import 'package:aani_generator/controller/zedge_menu_controller.dart';
-import 'package:aani_generator/views/flutter_highlight.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/sticker_pack.dart';
 import '../../model/zedge_ringtone.dart';
 import '../../util/utils.dart';
 
@@ -27,8 +28,7 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
   String language = 'json';
   String theme = 'androidstudio';
   final scText = ScrollController(initialScrollOffset: 0);
-
-  String saveFileName = "batteryAnimationTemplates.json";
+  String saveFileName = "ringerTone.json";
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                   try {
                                     var ringtoneCategory = ZedgeRingtoneCategory();
                                     var categories = <ZedgeRingtone>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Zedge";
+                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
                                     Directory directory = Directory('$outputFile');
                                     List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
@@ -109,21 +109,24 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                         for (FileSystemEntity file in subFiles) {
                                           itemId++;
                                           var path = file.path;
+
                                           var filename = path.split("\\").last;
                                           var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
-                                          var ringtone = Ringtone();
-                                          var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                          var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                          var imageFinalURL = parentUrl + imageChildUrl;
-                                          ringtone.ringtoneTitle = fileNameWithoutExtension;
-                                          ringtone.ringtoneUrl = Uri.encodeFull(imageFinalURL);
-                                          ringtone.ringtoneId = itemId;
-                                          ringtone.ringtoneTitle = ringtone.ringtoneTitle ?? "";
-                                          ringtone.ringtoneUrl = ringtone.ringtoneUrl ?? "";
-                                          ringtone.ringtoneId = ringtone.ringtoneId ?? 1;
-                                          ringtones.add(ringtone);
-                                        }
 
+                                            var ringtone = Ringtone();
+                                            var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                            var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                            var imageFinalURL = parentUrl + imageChildUrl;
+                                            ringtone.ringtoneTitle = fileNameWithoutExtension;
+                                            ringtone.ringtoneUrl = Uri.encodeFull(imageFinalURL);
+                                            ringtone.ringtoneId = itemId;
+                                            ringtone.ringtoneTitle = ringtone.ringtoneTitle ?? "";
+                                            ringtone.ringtoneUrl = ringtone.ringtoneUrl ?? "";
+                                            ringtone.ringtoneId = ringtone.ringtoneId ?? 1;
+                                            ringtones.add(ringtone);
+                                        }
+                                        category.categoryThumb = "";
+                                        category.ringtoneCount = itemId;
                                         category.ringtones = ringtones;
                                         categories.add(category);
                                       }
@@ -131,7 +134,7 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                     ringtoneCategory.categories = categories;
                                     JsonEncoder encoder = const JsonEncoder.withIndent('  ');
                                     setState(() {
-                                      saveFileName = "zedgeRingtones.json";
+                                      saveFileName = "ringerRingtones.json";
                                       prettyprint = encoder.convert(ringtoneCategory.toJson());
                                     });
                                   } catch (e) {}
@@ -159,64 +162,147 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  setState(() {
-                                    saveFileName = "";
-                                    prettyprint = "";
-                                  });
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var stickers = Stickers();
-                                    var stickerPacks = <StickerPacks>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Zedge";
+                                    var stickerCategory = RingerStickerCategory();
+                                    var categories = <RingerSticker>[];
+                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
                                     Directory directory = Directory('$outputFile');
                                     List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var stickerPack = StickerPacks();
+                                      var category = RingerSticker();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;
                                         var path = file.path;
                                         var filename = path.split("\\").last;
-                                        stickerPack.stickerPackName = filename;
-                                        stickerPack.stickerPackId = categoryId;
-
+                                        category.categoryName = filename;
+                                        category.categoryId = categoryId;
+                                        var stickers = <Sticker>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false);
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        int itemId = 0;
                                         for (FileSystemEntity file in subFiles) {
-                                          if (file.path.split("\\").last.startsWith("thumb")) {
-                                            var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                            var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                            var imageFinalURL = parentUrl + imageChildUrl;
-                                            stickerPack.thumbUrl = Uri.encodeFull(imageFinalURL);
-                                          } else if (file.path.split("\\").last.endsWith("zip")) {
-                                            var zipUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                            var zipChildUrl = zipUrl.replaceAll("\\", "/");
-                                            var zipFinalURL = parentUrl + zipChildUrl;
-                                            stickerPack.zipUrl = Uri.encodeFull(zipFinalURL);
-                                          } else if (file.path.split("\\").last.endsWith("isPremium")) {
-                                            stickerPack.isPremium = 1;
+                                          var path = file.path;
+                                          var filename = path.split("\\").last;
+                                          var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
+
+                                          var sticker = Sticker();
+                                          var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                          var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                          var imageFinalURL = parentUrl + imageChildUrl;
+                                          if (itemId == 0) {
+                                            category.categoryThumb = Uri.encodeFull(imageFinalURL);
                                           }
+                                          itemId++;
+
+                                          sticker.stickerTitle = fileNameWithoutExtension;
+                                          sticker.stickerUrl = Uri.encodeFull(imageFinalURL);
+                                          sticker.stickerId = itemId;
+                                          sticker.stickerTitle = sticker.stickerTitle ?? "";
+                                          sticker.stickerUrl = sticker.stickerUrl ?? "";
+                                          sticker.stickerId = sticker.stickerId ?? 1;
+                                          stickers.add(sticker);
                                         }
+
+                                        category.stickerCount = itemId;
+                                        category.stickers = stickers;
+                                        categories.add(category);
                                       }
-
-                                      stickerPack.thumbUrl = stickerPack.thumbUrl ?? "";
-                                      stickerPack.zipUrl = stickerPack.zipUrl ?? "";
-                                      stickerPack.isPremium = stickerPack.isPremium ?? 0;
-                                      stickerPacks.add(stickerPack);
                                     }
-                                    stickers.stickerPacks = stickerPacks;
-
+                                    stickerCategory.categories = categories;
                                     JsonEncoder encoder = const JsonEncoder.withIndent('  ');
                                     setState(() {
-                                      saveFileName = "zedgeStickers.json";
-                                      prettyprint = encoder.convert(stickers.toJson());
+                                      saveFileName = "ringerStickers.json";
+                                      prettyprint = encoder.convert(stickerCategory.toJson());
                                     });
                                   } catch (e) {}
                                 },
                                 icon: const Icon(Icons.theater_comedy_rounded, size: 20.0),
                                 label: Text(
                                   "Stickers Json",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 12.0,
+                            ),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                style: TextButton.styleFrom(
+                                  elevation: 0.0,
+                                  backgroundColor: Colors.redAccent,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                    vertical: 18.0,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
+                                  try {
+                                    var wallpaperCategory = RingerWallpaperCategory();
+                                    var categories = <RingerWallpaper>[];
+                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
+                                    Directory directory = Directory('$outputFile');
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    int categoryId = 0;
+                                    for (FileSystemEntity file in files) {
+                                      var category = RingerWallpaper();
+                                      FileStat fileStat = file.statSync();
+                                      if (fileStat.type.toString() == "directory") {
+                                        categoryId++;
+                                        var path = file.path;
+                                        var filename = path.split("\\").last;
+                                        category.categoryName = filename;
+                                        category.categoryId = categoryId;
+                                        var wallpapers = <Wallpaper>[];
+                                        Directory subDirs = Directory(file.path);
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        int itemId = 0;
+                                        for (FileSystemEntity file in subFiles) {
+                                          var path = file.path;
+                                          var filename = path.split("\\").last;
+                                          var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
+
+                                          var wallpaper = Wallpaper();
+                                          var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                          var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                          var imageFinalURL = parentUrl + imageChildUrl;
+                                          if (itemId == 0) {
+                                            category.categoryThumb = Uri.encodeFull(imageFinalURL);
+                                          }
+                                          itemId++;
+
+                                          wallpaper.wallpaperTitle = fileNameWithoutExtension;
+                                          wallpaper.wallpaperUrl = Uri.encodeFull(imageFinalURL);
+                                          wallpaper.wallpaperId = itemId;
+                                          wallpaper.wallpaperTitle = wallpaper.wallpaperTitle ?? "";
+                                          wallpaper.wallpaperUrl = wallpaper.wallpaperUrl ?? "";
+                                          wallpaper.wallpaperId = wallpaper.wallpaperId ?? 1;
+                                          wallpaper.isPremium = 0;
+                                          wallpapers.add(wallpaper);
+                                        }
+
+                                        category.wallpaperCount = itemId;
+                                        category.wallpapers = wallpapers;
+                                        categories.add(category);
+                                      }
+                                    }
+                                    wallpaperCategory.categories = categories;
+                                    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                    setState(() {
+                                      saveFileName = "ringerWallpapers.json";
+                                      prettyprint = encoder.convert(wallpaperCategory.toJson());
+                                    });
+                                  } catch (e) {}
+                                },
+                                icon: const Icon(Icons.photo, size: 20.0),
+                                label: Text(
+                                  "Wallpaper Json",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),

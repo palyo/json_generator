@@ -274,7 +274,7 @@ class _MainAppState extends State<MainApp> {
                                               height: 16.0,
                                             ),
                                             Text(
-                                              "Zedge+",
+                                              "Ringer",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),

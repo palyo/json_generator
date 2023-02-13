@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:aani_generator/controller/invitation_menu_controller.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:aani_generator/controller/invitation_menu_controller.dart';
+import 'package:flutter_highlight/theme_map.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/invitaion_category.dart';
 import '../../util/utils.dart';
+import '../../views/flutter_highlight.dart';
 
 class InvitationDashboard extends StatefulWidget {
   const InvitationDashboard({
@@ -61,7 +68,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                               decoration: const BoxDecoration(color: Colors.pinkAccent, borderRadius: BorderRadius.all(Radius.circular(2.0))),
                             )),
                         SizedBox(height: heightSize * 0.04),
-                        /*Row(
+                        Row(
                           children: [
                             const SizedBox(
                               width: 12.0,
@@ -79,148 +86,51 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                 onPressed: () async {
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var batteryAnimation = BatteryAnimationCategory();
-                                    var categories = <BatteryCategories>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/BatteryAnimation";
+                                    var invitationCategory = InvitationCategory();
+                                    var categories = <Categories>[];
+                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/InvitationCard";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var category = BatteryCategories();
+                                      var category = Categories();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;
-                                        var path = file.path;
-                                        var filename = path.split("\\").last;
-                                        category.categoryName = filename;
                                         category.categoryId = categoryId;
-
-                                        var animations = <Animations>[];
-                                        Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
-                                        for (FileSystemEntity file in subFiles) {
-                                          var animation = Animations();
-                                          FileStat fileStat = file.statSync();
-                                          if (fileStat.type.toString() == "directory") {
-                                            Directory childDirs = Directory(file.path);
-                                            List<FileSystemEntity> childFiles = childDirs.listSync(recursive: false);
-                                            for (FileSystemEntity file in childFiles) {
-                                              if (file.path.split("\\").last.startsWith("thumb")) {
-                                                var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                                var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                                var imageFinalURL = parentUrl + imageChildUrl;
-                                                animation.thumbUrl = Uri.encodeFull(imageFinalURL);
-                                              } else if (file.path.split("\\").last.endsWith("zip")) {
-                                                var zipUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                                var zipChildUrl = zipUrl.replaceAll("\\", "/");
-                                                var zipFinalURL = parentUrl + zipChildUrl;
-                                                animation.zipUrl = Uri.encodeFull(zipFinalURL);
-                                              }
-                                            }
-
-                                            animation.thumbUrl = animation.thumbUrl ?? "";
-                                            animation.zipUrl = animation.zipUrl ?? "";
-                                            animations.add(animation);
+                                        Directory invitationDirectory = Directory(file.path);
+                                        List<FileSystemEntity> invitationDirectories = invitationDirectory.listSync(recursive: false);
+                                        for (FileSystemEntity file in invitationDirectories) {
+                                          var path = file.path;
+                                          var filename = path.split("\\").last;
+                                          if(filename.endsWith(".title")){
+                                            category.categoryName = filename.replaceAll(".title", "");
+                                          }
+                                          if(filename.endsWith(".desc")){
+                                            category.categoryDesc = filename.replaceAll(".desc", "");
+                                          }
+                                          if(filename.startsWith("thumb.")){
+                                            var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                            var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                            var imageFinalURL = parentUrl + imageChildUrl;
+                                            category.categoryThumb = Uri.encodeFull(imageFinalURL);
                                           }
                                         }
 
-                                        category.animations = animations;
                                         categories.add(category);
                                       }
                                     }
-                                    batteryAnimation.categories = categories;
+                                    invitationCategory.categories = categories;
                                     JsonEncoder encoder = const JsonEncoder.withIndent('  ');
                                     setState(() {
-                                      saveFileName = "batteryAnimationTemplates.json";
-                                      prettyprint = encoder.convert(batteryAnimation.toJson());
+                                      saveFileName = "invitationTemplates.json";
+                                      prettyprint = encoder.convert(invitationCategory.toJson());
                                     });
                                   } catch (e) {}
                                 },
-                                icon: const Icon(Icons.music_note_rounded, size: 20.0),
+                                icon: const Icon(Icons.card_giftcard_rounded, size: 20.0),
                                 label: Text(
-                                  "Tune Json",
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 12.0,
-                            ),
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                style: TextButton.styleFrom(
-                                  elevation: 0.0,
-                                  backgroundColor: Colors.pinkAccent,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0,
-                                    vertical: 18.0,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
-                                  try {
-                                    var batteryAnimation = BatteryAnimationCategory();
-                                    var categories = <BatteryCategories>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/BatteryAnimation";
-                                    Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
-                                    int categoryId = 0;
-                                    for (FileSystemEntity file in files) {
-                                      var category = BatteryCategories();
-                                      FileStat fileStat = file.statSync();
-                                      if (fileStat.type.toString() == "directory") {
-                                        categoryId++;
-                                        var path = file.path;
-                                        var filename = path.split("\\").last;
-                                        category.categoryName = filename;
-                                        category.categoryId = categoryId;
-
-                                        var animations = <Animations>[];
-                                        Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
-                                        for (FileSystemEntity file in subFiles) {
-                                          var animation = Animations();
-                                          FileStat fileStat = file.statSync();
-                                          if (fileStat.type.toString() == "directory") {
-                                            Directory childDirs = Directory(file.path);
-                                            List<FileSystemEntity> childFiles = childDirs.listSync(recursive: false);
-                                            for (FileSystemEntity file in childFiles) {
-                                              if (file.path.split("\\").last.startsWith("thumb")) {
-                                                var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                                var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                                var imageFinalURL = parentUrl + imageChildUrl;
-                                                animation.thumbUrl = Uri.encodeFull(imageFinalURL);
-                                              } else if (file.path.split("\\").last.endsWith("zip")) {
-                                                var zipUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                                var zipChildUrl = zipUrl.replaceAll("\\", "/");
-                                                var zipFinalURL = parentUrl + zipChildUrl;
-                                                animation.zipUrl = Uri.encodeFull(zipFinalURL);
-                                              }
-                                            }
-
-                                            animation.thumbUrl = animation.thumbUrl ?? "";
-                                            animation.zipUrl = animation.zipUrl ?? "";
-                                            animations.add(animation);
-                                          }
-                                        }
-
-                                        category.animations = animations;
-                                        categories.add(category);
-                                      }
-                                    }
-                                    batteryAnimation.categories = categories;
-                                    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-                                    setState(() {
-                                      saveFileName = "batteryAnimationTemplates.json";
-                                      prettyprint = encoder.convert(batteryAnimation.toJson());
-                                    });
-                                  } catch (e) {}
-                                },
-                                icon: const Icon(Icons.theater_comedy_rounded, size: 20.0),
-                                label: Text(
-                                  "Sticker Json",
+                                  "Card Json",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
@@ -266,7 +176,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                       child: ElevatedButton.icon(
                                         style: TextButton.styleFrom(
                                           elevation: 0.0,
-                                          backgroundColor: Utils.getAccentColor(),
+                                          backgroundColor: Colors.pinkAccent,
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 24.0,
                                             vertical: 18.0,
@@ -286,7 +196,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                         icon: const Icon(Icons.save_outlined, size: 20.0),
                                         label: const Text(
                                           "Save",
-                                          style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Colors.redAccent),
+                                          style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Colors.white),
                                         ),
                                       ),
                                     ),
@@ -295,7 +205,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                               ],
                             ),
                           )
-                        ]*/
+                        ]
                       ],
                     ),
                   )
