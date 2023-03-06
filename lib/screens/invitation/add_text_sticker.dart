@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:aani_generator/model/template.dart';
 import 'package:aani_generator/util/utils.dart';
+
+import 'models/invitation_card.dart';
 
 class DialogTextSticker extends StatefulWidget {
   Function(TextSticker, int) textSticker;
@@ -141,7 +143,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               '$status Text Sticker',
-                              style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getAccentColor()),
+                              style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Colors.pinkAccent),
                             ),
                           ),
                           SizedBox(height: heightSize * 0.01),
@@ -150,7 +152,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                               child: Container(
                                 width: 36.0,
                                 height: 4.0,
-                                decoration: BoxDecoration(color: Utils.getAccentColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
+                                decoration: BoxDecoration(color: Colors.pinkAccent, borderRadius: const BorderRadius.all(Radius.circular(2.0))),
                               )),
                           SizedBox(height: heightSize * 0.04),
                           Row(
@@ -160,7 +162,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: textFocusNode,
                                   controller: textController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
@@ -183,7 +185,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: textFocusNode.hasFocus
                                             ? textValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -202,7 +204,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -225,7 +227,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   leading: Radio(
                                     value: "left",
                                     groupValue: textAlign,
-                                    activeColor: Utils.getAccentColor(),
+                                    activeColor: Colors.pinkAccent,
                                     onChanged: (String? value) {
                                       setState(() {
                                         textAlign = value!;
@@ -240,7 +242,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   leading: Radio(
                                     value: "center",
                                     groupValue: textAlign,
-                                    activeColor: Utils.getAccentColor(),
+                                    activeColor: Colors.pinkAccent,
                                     onChanged: (String? value) {
                                       setState(() {
                                         textAlign = value!;
@@ -255,7 +257,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   leading: Radio(
                                     value: "right",
                                     groupValue: textAlign,
-                                    activeColor: Utils.getAccentColor(),
+                                    activeColor: Colors.pinkAccent,
                                     onChanged: (String? value) {
                                       setState(() {
                                         textAlign = value!;
@@ -274,7 +276,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: textPointsFocusNode,
                                   controller: textPointsController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
@@ -297,7 +299,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: textPointsFocusNode.hasFocus
                                             ? textPointsValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -316,7 +318,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -329,7 +331,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                               ),
                               SizedBox(width: widthSize * 0.01),
                               MaterialButton(
-                                color: Utils.getAccentColor(),
+                                color: Colors.pinkAccent,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                                 padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
                                 onPressed: () async {
@@ -372,7 +374,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: widthFocusNode,
                                   controller: widthController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
@@ -398,7 +400,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: widthFocusNode.hasFocus
                                             ? widthValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -417,7 +419,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -434,7 +436,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: heightFocusNode,
                                   controller: heightController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
@@ -460,7 +462,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: heightFocusNode.hasFocus
                                             ? heightValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -479,7 +481,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -496,7 +498,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: posYFocusNode,
                                   controller: posYController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
@@ -522,7 +524,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: posYFocusNode.hasFocus
                                             ? posYValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -541,7 +543,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -558,7 +560,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: posXFocusNode,
                                   controller: posXController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
@@ -584,7 +586,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: posXFocusNode.hasFocus
                                             ? posXValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -603,7 +605,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -624,7 +626,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: fontNameFocusNode,
                                   controller: fontNameController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
@@ -647,7 +649,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: fontNameFocusNode.hasFocus
                                             ? fontNameValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -666,7 +668,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -683,7 +685,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: alphaFocusNode,
                                   controller: alphaController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
@@ -709,7 +711,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: alphaFocusNode.hasFocus
                                             ? alphaValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -728,7 +730,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -745,7 +747,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: textColorFocusNode,
                                   controller: textColorController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.text,
                                   maxLines: 1,
                                   onChanged: (value) {
@@ -768,7 +770,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: textColorFocusNode.hasFocus
                                             ? textColorValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -787,7 +789,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -804,7 +806,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                 child: TextFormField(
                                   focusNode: rotationFocusNode,
                                   controller: rotationController,
-                                  cursorColor: Utils.getAccentColor(),
+                                  cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
@@ -830,7 +832,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                         color: rotationFocusNode.hasFocus
                                             ? rotationValid
                                                 ? Utils.getErrorColor()
-                                                : Utils.getAccentColor()
+                                                : Colors.pinkAccent
                                             : Utils.getHintColor()),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
@@ -849,7 +851,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Utils.getAccentColor(), width: 2.0),
+                                      borderSide: BorderSide(color: Colors.pinkAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(4.0),
                                     ),
                                   ),
@@ -867,7 +869,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                             children: [
                               Checkbox(
                                 checkColor: Utils.getWhiteColor(),
-                                activeColor: Utils.getAccentColor(),
+                                activeColor: Colors.pinkAccent,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                                 value: isBoldText,
                                 onChanged: (value) {
@@ -878,12 +880,12 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                               ),
                               Text(
                                 "isBold",
-                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isBoldText ? Utils.getAccentColor() : Utils.getTextColor()),
+                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isBoldText ? Colors.pinkAccent : Utils.getTextColor()),
                               ),
                               SizedBox(width: widthSize * 0.01),
                               Checkbox(
                                 checkColor: Utils.getWhiteColor(),
-                                activeColor: Utils.getAccentColor(),
+                                activeColor: Colors.pinkAccent,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                                 value: isItalicText,
                                 onChanged: (value) {
@@ -894,13 +896,13 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                               ),
                               Text(
                                 "isItalic",
-                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isItalicText ? Utils.getAccentColor() : Utils.getTextColor()),
+                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isItalicText ? Colors.pinkAccent : Utils.getTextColor()),
                               ),
                             ],
                           ),
                           SizedBox(height: heightSize * 0.04),
                           MaterialButton(
-                            color: Utils.getAccentColor(),
+                            color: Colors.pinkAccent,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
                             padding: const EdgeInsets.fromLTRB(100, 18, 100, 18),
                             onPressed: () async {

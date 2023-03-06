@@ -1,6 +1,7 @@
+import 'package:aani_generator/screens/invitation/invitation_card_json_generator.dart';
+import 'package:aani_generator/screens/invitation/side_menu_invitation.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:aani_generator/screens/invitation/side_menu_invitation.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/invitation_menu_controller.dart';
@@ -74,12 +75,16 @@ class InvitationRightSide extends StatelessWidget {
             ),
           ),
           if (provider!.pageIndex == 0) ...[
-            Expanded(child: InvitationDashboard())
+            const Expanded(child: InvitationDashboard())
           ] else ...[
-            Expanded(
-                child: Container(
-              color: Utils.getCardColor(),
-            ))
+            if (provider!.pageIndex == 1) ...[
+              const Expanded(child: InvitationCardJsonGenerator())
+            ] else ...[
+              Expanded(
+                  child: Container(
+                color: Utils.getCardColor(),
+              ))
+            ]
           ]
         ]),
       ),

@@ -1,5 +1,7 @@
+import 'package:aani_generator/controller/invitation_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:aani_generator/main.dart';
+import 'package:provider/provider.dart';
 
 import '../../util/utils.dart';
 import '../widgets/drawer_list_custom_tiles.dart';
@@ -39,6 +41,20 @@ class InvitationSideMenu extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const MainApp()),
                 );
+              },
+            ),
+            DrawerListTileCustomize(
+              icon: Icons.code_outlined,
+              title: "Main Json",
+              press: () {
+                Provider.of<InvitationMenuController>(context, listen: false).setPageIndex(0);
+              },
+            ),
+            DrawerListTileCustomize(
+              icon: Icons.code_outlined,
+              title: "Invitation Card",
+              press: () {
+                Provider.of<InvitationMenuController>(context, listen: false).setPageIndex(1);
               },
             ),
           ],

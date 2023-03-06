@@ -1,13 +1,13 @@
 class InvitationCategory {
-  List<Categories>? categories;
+  List<InvitationSubCategory>? categories;
 
   InvitationCategory({this.categories});
 
   InvitationCategory.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <Categories>[];
+      categories = <InvitationSubCategory>[];
       json['categories'].forEach((v) {
-        categories!.add(Categories.fromJson(v));
+        categories!.add(InvitationSubCategory.fromJson(v));
       });
     }
   }
@@ -21,22 +21,50 @@ class InvitationCategory {
   }
 }
 
-class Categories {
+class InvitationSubCategory {
   String? categoryName;
-  String? categoryDesc;
-  String? categoryThumb;
-  int? categoryId;
+  List<Categories>? categories;
+
+  InvitationSubCategory({this.categories});
+
+  InvitationSubCategory.fromJson(Map<String, dynamic> json) {
+    categoryName = json['categoryName'];
+    if (json['subCategories'] != null) {
+      categories = <Categories>[];
+      json['subCategories'].forEach((v) {
+        categories!.add(Categories.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['categoryName'] = categoryName;
+    if (categories != null) {
+      data['subCategories'] = categories?.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Categories {
+  String? subCategoryName;
+  String? subCategoryDesc;
+  String? subCategoryThumb;
+  String? templateJsonUrl;
+  int? subCategoryId;
 
   // List<Templates>? templates;
 
-  Categories({this.categoryName, this.categoryDesc, this.categoryThumb, this.categoryId /*, this.templates*/
+  Categories({this.subCategoryName, this.subCategoryDesc, this.subCategoryThumb, this.subCategoryId /*, this.templates*/
       });
 
   Categories.fromJson(Map<String, dynamic> json) {
-    categoryName = json['categoryName'];
-    categoryDesc = json['categoryDesc'];
-    categoryThumb = json['categoryThumb'];
-    categoryId = json['categoryId'];
+    subCategoryName = json['subCategoryName'];
+    subCategoryDesc = json['subCategoryDesc'];
+    subCategoryThumb = json['subCategoryThumb'];
+    templateJsonUrl = json['templateJsonUrl'];
+    subCategoryId = json['subCategoryId'];
     // if (json['templates'] != null) {
     //   templates = <Templates>[];
     //   json['templates'].forEach((v) {
@@ -47,10 +75,11 @@ class Categories {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['categoryName'] = categoryName;
-    data['categoryDesc'] = categoryDesc;
-    data['categoryThumb'] = categoryThumb;
-    data['categoryId'] = categoryId;
+    data['subCategoryName'] = subCategoryName;
+    data['subCategoryDesc'] = subCategoryDesc;
+    data['subCategoryThumb'] = subCategoryThumb;
+    data['templateJsonUrl'] = templateJsonUrl;
+    data['subCategoryId'] = subCategoryId;
     // if (this.templates != null) {
     //   data['templates'] = this.templates!.map((v) => v.toJson()).toList();
     // }
