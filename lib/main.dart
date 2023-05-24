@@ -10,7 +10,7 @@ import 'screens/battery_animation/battery_animation.dart';
 import 'screens/invitation/invitation.dart';
 import 'screens/poster_studio/poster_studio.dart';
 import 'screens/widgets/window_button.dart';
-import 'screens/zedge/zedge.dart';
+import 'screens/tunewalls/tunewalls.dart';
 
 void main() {
   runApp(const MainApp());
@@ -237,7 +237,7 @@ class _MainAppState extends State<MainApp> {
                                       onTap: () {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const ZedgePlus()),
+                                          MaterialPageRoute(builder: (context) => const TuneWalls()),
                                         );
                                       },
                                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -274,7 +274,7 @@ class _MainAppState extends State<MainApp> {
                                               height: 16.0,
                                             ),
                                             Text(
-                                              "Ringer",
+                                              "TuneWalls",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
@@ -360,7 +360,7 @@ class _MainAppState extends State<MainApp> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "@ Created by Honted House",
+                                  "@ Created by Honted Space",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),

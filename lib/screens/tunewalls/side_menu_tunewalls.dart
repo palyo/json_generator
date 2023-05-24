@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:aani_generator/main.dart';
+import 'package:provider/provider.dart';
 
+import '../../controller/tunewalls_menu_controller.dart';
 import '../../util/utils.dart';
 import '../widgets/drawer_list_custom_tiles.dart';
 
-class SideMenuZedgePlus extends StatelessWidget {
-  const SideMenuZedgePlus({
+class SideMenuTuneWalls extends StatelessWidget {
+  const SideMenuTuneWalls({
     Key? key,
   }) : super(key: key);
 
@@ -24,7 +26,7 @@ class SideMenuZedgePlus extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Ringer',
+                    'TuneWalls',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getWhiteColor()),
                   )
@@ -39,6 +41,20 @@ class SideMenuZedgePlus extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const MainApp()),
                 );
+              },
+            ),
+            DrawerListTileCustomize(
+              icon: Icons.code_outlined,
+              title: "Main Json",
+              press: () {
+                Provider.of<TuneWallsMenuController>(context, listen: false).setPageIndex(0);
+              },
+            ),
+            DrawerListTileCustomize(
+              icon: Icons.code_outlined,
+              title: "Notification",
+              press: () {
+                Provider.of<TuneWallsMenuController>(context, listen: false).setPageIndex(1);
               },
             ),
           ],

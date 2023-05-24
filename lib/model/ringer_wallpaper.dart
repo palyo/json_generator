@@ -26,33 +26,49 @@ class RingerWallpaperCategory {
 class RingerWallpaper {
   String? categoryName;
   String? categoryThumb = "";
+  String? categoryJson = "";
   int? categoryId;
   int? wallpaperCount;
-  List<Wallpaper>? wallpapers;
 
-  RingerWallpaper({this.categoryName, this.categoryId, this.wallpapers});
+  RingerWallpaper({this.categoryName, this.categoryId});
 
   RingerWallpaper.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
     categoryThumb = json['categoryThumb'];
+    categoryJson = json['categoryJson'];
     categoryId = json['categoryId'];
     wallpaperCount = json['wallpaperCount'];
-    if (json['templates'] != null) {
-      wallpapers = <Wallpaper>[];
-      json['wallpapers'].forEach((v) {
-        wallpapers!.add(Wallpaper.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['categoryName'] = categoryName;
     data['categoryThumb'] = categoryThumb;
+    data['categoryJson'] = categoryJson;
     data['categoryId'] = categoryId;
     data['wallpaperCount'] = wallpaperCount;
+    return data;
+  }
+}
+
+class Wallpapers {
+  List<Wallpaper>? wallpapers;
+
+  Wallpapers({this.wallpapers});
+
+  Wallpapers.fromJson(Map<String, dynamic> json) {
+    if (json['wallpapers'] != null) {
+      wallpapers = <Wallpaper>[];
+      json['wallpapers'].forEach((v) {
+        wallpapers?.add(Wallpaper.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (wallpapers != null) {
-      data['wallpapers'] = wallpapers!.map((v) => v.toJson()).toList();
+      data['wallpapers'] = wallpapers?.map((v) => v.toJson()).toList();
     }
     return data;
   }

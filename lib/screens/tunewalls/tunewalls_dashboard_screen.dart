@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aani_generator/controller/zedge_menu_controller.dart';
+import 'package:aani_generator/controller/tunewalls_menu_controller.dart';
 import 'package:aani_generator/model/ringer_stickers.dart';
 import 'package:aani_generator/model/ringer_wallpaper.dart';
 import 'package:aani_generator/views/flutter_highlight.dart';
@@ -14,16 +14,16 @@ import 'package:provider/provider.dart';
 import '../../model/zedge_ringtone.dart';
 import '../../util/utils.dart';
 
-class ZedgePlusDashboard extends StatefulWidget {
-  const ZedgePlusDashboard({
+class TuneWallsDashboard extends StatefulWidget {
+  const TuneWallsDashboard({
     Key? key,
   }) : super(key: key);
 
   @override
-  ZedgePlusDashboardState createState() => ZedgePlusDashboardState();
+  TuneWallsDashboardState createState() => TuneWallsDashboardState();
 }
 
-class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
+class TuneWallsDashboardState extends State<TuneWallsDashboard> {
   String prettyprint = "";
   String language = 'json';
   String theme = 'androidstudio';
@@ -35,7 +35,7 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
     final double widthSize = MediaQuery.of(context).size.width;
     final double heightSize = MediaQuery.of(context).size.height;
     return Scaffold(
-        key: context.read<ZedgeMenuController>().scaffoldKey,
+        key: context.read<TuneWallsMenuController>().scaffoldKey,
         body: SafeArea(
             child: Container(
           decoration: BoxDecoration(color: Utils.getBGColor(), borderRadius: const BorderRadius.all(Radius.circular(2.0))),
@@ -113,17 +113,17 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                           var filename = path.split("\\").last;
                                           var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
 
-                                            var ringtone = Ringtone();
-                                            var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
-                                            var imageChildUrl = imageUrl.replaceAll("\\", "/");
-                                            var imageFinalURL = parentUrl + imageChildUrl;
-                                            ringtone.ringtoneTitle = fileNameWithoutExtension;
-                                            ringtone.ringtoneUrl = Uri.encodeFull(imageFinalURL);
-                                            ringtone.ringtoneId = itemId;
-                                            ringtone.ringtoneTitle = ringtone.ringtoneTitle ?? "";
-                                            ringtone.ringtoneUrl = ringtone.ringtoneUrl ?? "";
-                                            ringtone.ringtoneId = ringtone.ringtoneId ?? 1;
-                                            ringtones.add(ringtone);
+                                          var ringtone = Ringtone();
+                                          var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                          var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                          var imageFinalURL = parentUrl + imageChildUrl;
+                                          ringtone.ringtoneTitle = fileNameWithoutExtension;
+                                          ringtone.ringtoneUrl = Uri.encodeFull(imageFinalURL);
+                                          ringtone.ringtoneId = itemId;
+                                          ringtone.ringtoneTitle = ringtone.ringtoneTitle ?? "";
+                                          ringtone.ringtoneUrl = ringtone.ringtoneUrl ?? "";
+                                          ringtone.ringtoneId = ringtone.ringtoneId ?? 1;
+                                          ringtones.add(ringtone);
                                         }
                                         category.categoryThumb = "";
                                         category.ringtoneCount = itemId;
@@ -259,7 +259,7 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                         var filename = path.split("\\").last;
                                         category.categoryName = filename;
                                         category.categoryId = categoryId;
-                                        var wallpapers = <Wallpaper>[];
+                                        // var wallpapers = <Wallpaper>[];
                                         Directory subDirs = Directory(file.path);
                                         List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                         int itemId = 0;
@@ -268,27 +268,30 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                           var filename = path.split("\\").last;
                                           var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
 
-                                          var wallpaper = Wallpaper();
+                                          // var wallpaper = Wallpaper();
                                           var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
                                           var imageChildUrl = imageUrl.replaceAll("\\", "/");
                                           var imageFinalURL = parentUrl + imageChildUrl;
-                                          if (itemId == 0) {
+                                          if (category.categoryThumb == "" && !imageFinalURL.endsWith("json")) {
                                             category.categoryThumb = Uri.encodeFull(imageFinalURL);
+                                          }
+                                          if (imageFinalURL.endsWith("json")) {
+                                            category.categoryJson = Uri.encodeFull(imageFinalURL);
                                           }
                                           itemId++;
 
-                                          wallpaper.wallpaperTitle = fileNameWithoutExtension;
-                                          wallpaper.wallpaperUrl = Uri.encodeFull(imageFinalURL);
-                                          wallpaper.wallpaperId = itemId;
-                                          wallpaper.wallpaperTitle = wallpaper.wallpaperTitle ?? "";
-                                          wallpaper.wallpaperUrl = wallpaper.wallpaperUrl ?? "";
-                                          wallpaper.wallpaperId = wallpaper.wallpaperId ?? 1;
-                                          wallpaper.isPremium = 0;
-                                          wallpapers.add(wallpaper);
+                                          // wallpaper.wallpaperTitle = fileNameWithoutExtension;
+                                          // wallpaper.wallpaperUrl = Uri.encodeFull(imageFinalURL);
+                                          // wallpaper.wallpaperId = itemId;
+                                          // wallpaper.wallpaperTitle = wallpaper.wallpaperTitle ?? "";
+                                          // wallpaper.wallpaperUrl = wallpaper.wallpaperUrl ?? "";
+                                          // wallpaper.wallpaperId = wallpaper.wallpaperId ?? 1;
+                                          // wallpaper.isPremium = 0;
+                                          // wallpapers.add(wallpaper);
                                         }
 
                                         category.wallpaperCount = itemId;
-                                        category.wallpapers = wallpapers;
+                                        // category.wallpapers = wallpapers;
                                         categories.add(category);
                                       }
                                     }
@@ -303,6 +306,68 @@ class ZedgePlusDashboardState extends State<ZedgePlusDashboard> {
                                 icon: const Icon(Icons.photo, size: 20.0),
                                 label: Text(
                                   "Wallpaper Json",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 12.0,
+                            ),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                style: TextButton.styleFrom(
+                                  elevation: 0.0,
+                                  backgroundColor: Colors.redAccent,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0,
+                                    vertical: 18.0,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
+                                  try {
+                                    var wallpaperCategory = Wallpapers();
+                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
+                                    Directory directory = Directory('$outputFile');
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    var wallpapers = <Wallpaper>[];
+                                    int itemId = 0;
+                                    for (FileSystemEntity file in files) {
+                                      var path = file.path;
+                                      var filename = path.split("\\").last;
+                                      var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
+                                      if (!filename.endsWith("json")) {
+                                        itemId++;
+                                        var wallpaper = Wallpaper();
+                                        var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
+                                        var imageChildUrl = imageUrl.replaceAll("\\", "/");
+                                        var imageFinalURL = parentUrl + imageChildUrl;
+
+                                        wallpaper.wallpaperTitle = fileNameWithoutExtension;
+                                        wallpaper.wallpaperUrl = Uri.encodeFull(imageFinalURL);
+                                        wallpaper.wallpaperId = itemId;
+                                        wallpaper.wallpaperTitle = wallpaper.wallpaperTitle ?? "";
+                                        wallpaper.wallpaperUrl = wallpaper.wallpaperUrl ?? "";
+                                        wallpaper.wallpaperId = wallpaper.wallpaperId ?? 1;
+                                        wallpaper.isPremium = 0;
+                                        wallpapers.add(wallpaper);
+                                      }
+                                    }
+                                    wallpaperCategory.wallpapers = wallpapers;
+                                    JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+                                    var path = directory.path;
+                                    var filename = path.split("\\").last;
+                                    setState(() {
+                                      saveFileName = "${filename.toLowerCase().replaceAll(" ", "_")}.json";
+                                      prettyprint = encoder.convert(wallpaperCategory.toJson());
+                                    });
+                                  } catch (e) {}
+                                },
+                                icon: const Icon(Icons.photo, size: 20.0),
+                                label: Text(
+                                  "Sub Wallpaper",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                   style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),

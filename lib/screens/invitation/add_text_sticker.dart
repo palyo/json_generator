@@ -1,7 +1,6 @@
-
+import 'package:aani_generator/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:aani_generator/util/utils.dart';
 
 import 'models/invitation_card.dart';
 
@@ -64,7 +63,12 @@ class DialogTextStickerState extends State<DialogTextSticker> {
   FocusNode rotationFocusNode = FocusNode();
   bool rotationValid = false;
 
+  TextEditingController letterSpacingController = TextEditingController(text: "0.0");
+  FocusNode letterSpacingFocusNode = FocusNode();
+  bool letterSpacingValid = false;
+
   bool isBoldText = false;
+  bool isCapitalize = false;
   bool isItalicText = false;
 
   Function(TextSticker, int)? textSticker;
@@ -90,7 +94,8 @@ class DialogTextStickerState extends State<DialogTextSticker> {
       posXController = TextEditingController(text: sticker!.posX.toString());
       posYController = TextEditingController(text: sticker!.posY.toString());
       fontNameController = TextEditingController(text: sticker!.fontName);
-      alphaController = TextEditingController(text: sticker!.textAlpha.toString());
+      alphaController = TextEditingController(text: (sticker?.textAlpha ?? 255).toString());
+      letterSpacingController = TextEditingController(text: (sticker?.letterSpacing ?? 0.0).toString());
       textColorController = TextEditingController(text: sticker!.textColor);
       rotationController = TextEditingController(text: sticker!.rotation.toString());
       if (sticker!.isBold == 1) {
@@ -98,6 +103,9 @@ class DialogTextStickerState extends State<DialogTextSticker> {
       }
       if (sticker!.isItalic == 1) {
         isItalicText = true;
+      }
+      if (sticker!.isCapitalize == 1) {
+        isCapitalize = true;
       }
 
       textAlign = sticker!.textGravity!;
@@ -163,8 +171,8 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   focusNode: textFocusNode,
                                   controller: textController,
                                   cursorColor: Colors.pinkAccent,
-                                  keyboardType: TextInputType.text,
-                                  maxLines: 1,
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: null,
                                   onChanged: (value) {
                                     if (value.isNotEmpty && textValid) {
                                       setState(() {
@@ -867,6 +875,81 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                           SizedBox(height: heightSize * 0.02),
                           Row(
                             children: [
+                              Expanded(
+                                flex: 1,
+                                child: TextFormField(
+                                  focusNode: letterSpacingFocusNode,
+                                  controller: letterSpacingController,
+                                  cursorColor: Colors.pinkAccent,
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty && fontNameValid) {
+                                      setState(() {
+                                        letterSpacingValid = false;
+                                      });
+                                    }
+                                  },
+                                  style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
+                                  decoration: InputDecoration(
+                                    labelText: "Letter Spacing",
+                                    errorText: letterSpacingValid ? "Enter Letter Spacing" : null,
+                                    errorStyle: TextStyle(fontSize: 12.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: letterSpacingValid ? Utils.getErrorColor() : Utils.getHintColor()),
+                                    labelStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Sans',
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: letterSpacingFocusNode.hasFocus
+                                            ? letterSpacingValid
+                                                ? Utils.getErrorColor()
+                                                : Colors.pinkAccent
+                                            : Utils.getHintColor()),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getErrorColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    disabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Utils.getHintColor(), width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.pinkAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      FocusScope.of(context).requestFocus(letterSpacingFocusNode);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: widthSize * 0.02),
+                              Checkbox(
+                                checkColor: Utils.getWhiteColor(),
+                                activeColor: Colors.pinkAccent,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+                                value: isCapitalize,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isCapitalize = value!;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "isCapitalize",
+                                style: TextStyle(fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: isCapitalize ? Colors.pinkAccent : Utils.getTextColor()),
+                              ),
+                              SizedBox(width: widthSize * 0.01),
                               Checkbox(
                                 checkColor: Utils.getWhiteColor(),
                                 activeColor: Colors.pinkAccent,
@@ -900,7 +983,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                               ),
                             ],
                           ),
-                          SizedBox(height: heightSize * 0.04),
+                          SizedBox(height: heightSize * 0.05),
                           MaterialButton(
                             color: Colors.pinkAccent,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
@@ -914,6 +997,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   posX: double.parse(posXController.text),
                                   fontName: fontNameController.text,
                                   textAlpha: int.parse(alphaController.text),
+                                  letterSpacing: double.parse(letterSpacingController.text),
                                   textColor: textColorController.text,
                                   textGravity: textAlign,
                                   type: "TEXT",
@@ -923,6 +1007,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   bgColor: 0,
                                   bgDrawable: "0",
                                   bgAlpha: 0,
+                                  isCapitalize: (isCapitalize ? 1 : 0),
                                   isBold: (isBoldText ? 1 : 0),
                                   isItalic: (isItalicText ? 1 : 0));
                               textSticker!(text, stickerPos!);

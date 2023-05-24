@@ -1,20 +1,21 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:aani_generator/screens/zedge/side_menu_zedge.dart';
-import 'package:aani_generator/screens/zedge/zedge_dashboard_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/zedge_menu_controller.dart';
+import '../../controller/tunewalls_menu_controller.dart';
 import '../../util/utils.dart';
 import '../widgets/window_button.dart';
+import 'side_menu_tunewalls.dart';
+import 'tunewalls_dashboard_screen.dart';
+import 'tunewalls_notify_screen.dart';
 
-class ZedgePlus extends StatelessWidget {
-  const ZedgePlus({Key? key}) : super(key: key);
+class TuneWalls extends StatelessWidget {
+  const TuneWalls({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ZedgeMenuController(),
+      create: (context) => TuneWallsMenuController(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Json Generator',
@@ -22,14 +23,14 @@ class ZedgePlus extends StatelessWidget {
           scaffoldBackgroundColor: Utils.getBGColor(),
           canvasColor: Utils.getBGColor(),
         ),
-        home: Consumer<ZedgeMenuController>(
+        home: Consumer<TuneWallsMenuController>(
           builder: (context, provider, child) {
             return Scaffold(
               body: WindowBorder(
                 color: Utils.getBGColor(),
                 width: 1,
                 child: Row(
-                  children: [const LeftSideZedgePlus(), RightSideZedgePlus(provider: provider)],
+                  children: [const LeftSideTuneWalls(), RightSideTuneWalls(provider: provider)],
                 ),
               ),
             );
@@ -40,8 +41,8 @@ class ZedgePlus extends StatelessWidget {
   }
 }
 
-class LeftSideZedgePlus extends StatelessWidget {
-  const LeftSideZedgePlus({Key? key}) : super(key: key);
+class LeftSideTuneWalls extends StatelessWidget {
+  const LeftSideTuneWalls({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +50,15 @@ class LeftSideZedgePlus extends StatelessWidget {
         color: Colors.redAccent,
         height: MediaQuery.of(context).size.height,
         child: Column(
-          children: [WindowTitleBarBox(child: MoveWindow()), const Expanded(child: SideMenuZedgePlus())],
+          children: [WindowTitleBarBox(child: MoveWindow()), const Expanded(child: SideMenuTuneWalls())],
         ));
   }
 }
 
-class RightSideZedgePlus extends StatelessWidget {
-  ZedgeMenuController? provider;
+class RightSideTuneWalls extends StatelessWidget {
+  TuneWallsMenuController? provider;
 
-  RightSideZedgePlus({Key? key, this.provider}) : super(key: key);
+  RightSideTuneWalls({Key? key, this.provider}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,9 @@ class RightSideZedgePlus extends StatelessWidget {
             ),
           ),
           if (provider!.pageIndex == 0) ...[
-            const Expanded(child: ZedgePlusDashboard())
+            const Expanded(child: TuneWallsDashboard())
+          ] else if (provider!.pageIndex == 1) ...[
+            const Expanded(child: TuneWallsNotify())
           ] else ...[
             Expanded(
                 child: Container(

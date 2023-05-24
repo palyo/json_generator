@@ -94,6 +94,7 @@ class TextSticker {
   double? posX;
   String? fontName;
   int? textAlpha;
+  double? letterSpacing;
   String? textColor;
   String? type;
   int? rotation;
@@ -103,10 +104,11 @@ class TextSticker {
   String? bgDrawable;
   int? bgAlpha;
   String? textGravity;
+  int? isCapitalize;
   int? isBold;
   int? isItalic;
 
-  TextSticker({this.textString, this.width, this.height, this.posY, this.posX, this.fontName, this.textAlpha, this.textColor, this.textGravity, this.type, this.rotation, this.shadowColor, this.shadowProg, this.bgColor, this.bgDrawable, this.bgAlpha, this.isBold, this.isItalic});
+  TextSticker({this.textString, this.width, this.height, this.posY, this.posX, this.fontName, this.textAlpha, this.letterSpacing, this.textColor, this.textGravity, this.type, this.rotation, this.shadowColor, this.shadowProg, this.bgColor, this.bgDrawable, this.bgAlpha, this.isCapitalize, this.isBold, this.isItalic});
 
   TextSticker.fromJson(Map<String, dynamic> json) {
     textString = json['textString'];
@@ -116,6 +118,7 @@ class TextSticker {
     posX = json['posX'];
     fontName = json['fontName'];
     textAlpha = json['textAlpha'];
+    letterSpacing = json['letterSpacing'];
     textColor = json['textColor'];
     textGravity = json['gravity'];
     type = json['type'];
@@ -125,6 +128,7 @@ class TextSticker {
     bgColor = json['bgColor'];
     bgDrawable = json['bgDrawable'];
     bgAlpha = json['bgAlpha'];
+    isCapitalize = json['isCapitalize'];
     isBold = json['isBold'];
     isItalic = json['isItalic'];
   }
@@ -138,6 +142,7 @@ class TextSticker {
     data['posX'] = posX;
     data['fontName'] = fontName;
     data['textAlpha'] = textAlpha;
+    data['letterSpacing'] = letterSpacing;
     data['textColor'] = textColor;
     data['gravity'] = textGravity;
     data['type'] = type;
@@ -147,6 +152,7 @@ class TextSticker {
     data['bgColor'] = bgColor;
     data['bgDrawable'] = bgDrawable;
     data['bgAlpha'] = bgAlpha;
+    data['isCapitalize'] = isCapitalize;
     data['isBold'] = isBold;
     data['isItalic'] = isItalic;
     return data;
