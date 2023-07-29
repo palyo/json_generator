@@ -1,13 +1,13 @@
+import 'package:aani_generator/screens/invitation/extra/invitation_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:aani_generator/main.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/menu_controller.dart';
-import '../../util/utils.dart';
-import '../widgets/drawer_list_custom_tiles.dart';
+import '../../../util/utils.dart';
+import '../../widgets/drawer_list_custom_tiles.dart';
 
-class SideMenu extends StatelessWidget {
-  const SideMenu({
+class InvitationSideMenu extends StatelessWidget {
+  const InvitationSideMenu({
     Key? key,
   }) : super(key: key);
 
@@ -16,7 +16,7 @@ class SideMenu extends StatelessWidget {
     return Drawer(
       elevation: 1.0,
       child: Ink(
-        color: Utils.getAccentColor(),
+        color: Colors.pinkAccent,
         child: ListView(
           children: [
             DrawerHeader(
@@ -25,11 +25,11 @@ class SideMenu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    "assets/icons/ic_logo_icon.png",
-                    height: 100,
-                    width: 100,
-                  ),
+                  Text(
+                    'Invitation',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getWhiteColor()),
+                  )
                 ],
               ),
             ),
@@ -47,21 +47,14 @@ class SideMenu extends StatelessWidget {
               icon: Icons.code_outlined,
               title: "Main Json",
               press: () {
-                Provider.of<MenuController>(context, listen: false).setPageIndex(0);
+                Provider.of<InvitationMenuController>(context, listen: false).setPageIndex(0);
               },
             ),
             DrawerListTileCustomize(
               icon: Icons.code_outlined,
-              title: "Poster Json",
+              title: "Invitation Card",
               press: () {
-                Provider.of<MenuController>(context, listen: false).setPageIndex(1);
-              },
-            ),
-            DrawerListTileCustomize(
-              icon: Icons.settings_outlined,
-              title: "Settings",
-              press: () {
-                Provider.of<MenuController>(context, listen: false).setPageIndex(2);
+                Provider.of<InvitationMenuController>(context, listen: false).setPageIndex(1);
               },
             ),
           ],

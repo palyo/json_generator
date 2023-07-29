@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aani_generator/controller/tunewalls_menu_controller.dart';
+import 'package:aani_generator/screens/tunewalls/extra/tunewalls_menu_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

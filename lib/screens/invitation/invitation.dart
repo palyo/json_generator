@@ -1,10 +1,10 @@
 import 'package:aani_generator/screens/invitation/invitation_card_json_generator.dart';
-import 'package:aani_generator/screens/invitation/side_menu_invitation.dart';
+import 'package:aani_generator/screens/invitation/extra/side_menu_invitation.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/invitation_menu_controller.dart';
+import 'extra/invitation_menu_controller.dart';
 import '../../util/utils.dart';
 import '../widgets/window_button.dart';
 import 'invitation_dashboard_screen.dart';

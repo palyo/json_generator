@@ -1,15 +1,15 @@
 
 
-class RingerWallpaperCategory {
-  List<RingerWallpaper>? categories;
+class TuneWallpaperCategory {
+  List<TuneWallpaper>? categories;
 
-  RingerWallpaperCategory({this.categories});
+  TuneWallpaperCategory({this.categories});
 
-  RingerWallpaperCategory.fromJson(Map<String, dynamic> json) {
+  TuneWallpaperCategory.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <RingerWallpaper>[];
+      categories = <TuneWallpaper>[];
       json['categories'].forEach((v) {
-        categories!.add(RingerWallpaper.fromJson(v));
+        categories!.add(TuneWallpaper.fromJson(v));
       });
     }
   }
@@ -23,16 +23,16 @@ class RingerWallpaperCategory {
   }
 }
 
-class RingerWallpaper {
+class TuneWallpaper {
   String? categoryName;
   String? categoryThumb = "";
   String? categoryJson = "";
   int? categoryId;
   int? wallpaperCount;
 
-  RingerWallpaper({this.categoryName, this.categoryId});
+  TuneWallpaper({this.categoryName, this.categoryId});
 
-  RingerWallpaper.fromJson(Map<String, dynamic> json) {
+  TuneWallpaper.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
     categoryThumb = json['categoryThumb'];
     categoryJson = json['categoryJson'];
@@ -75,24 +75,30 @@ class Wallpapers {
 }
 
 class Wallpaper {
+  String? categoryName;
   String? wallpaperTitle;
   String? wallpaperUrl;
+  String? userName;
   int? wallpaperId = 0;
   int? isPremium = 0;
 
   Wallpaper({this.wallpaperTitle, this.wallpaperUrl, this.wallpaperId});
 
   Wallpaper.fromJson(Map<String, dynamic> json) {
+    categoryName = json['categoryName'];
     wallpaperTitle = json['wallpaperTitle'];
     wallpaperUrl = json['wallpaperUrl'];
+    userName = json['userName'];
     wallpaperId = json['wallpaperId'];
     isPremium = json['isPremium'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['categoryName'] = categoryName;
     data['wallpaperTitle'] = wallpaperTitle;
     data['wallpaperUrl'] = wallpaperUrl;
+    data['userName'] = userName;
     data['wallpaperId'] = wallpaperId;
     data['isPremium'] = isPremium;
     return data;

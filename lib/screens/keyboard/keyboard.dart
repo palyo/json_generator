@@ -1,20 +1,21 @@
+import 'package:aani_generator/screens/keyboard/extra/side_menu_keyboard.dart';
+import 'package:aani_generator/screens/keyboard/keyboard_dashboard_screen.dart';
+import 'package:aani_generator/screens/keyboard/keyboard_upload_screen.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/battery_menu_controller.dart';
 import '../../util/utils.dart';
 import '../widgets/window_button.dart';
-import 'battery_animation_dashboard_screen.dart';
-import 'side_menu_battery_animation.dart';
+import 'keyboard_menu_controller.dart';
 
-class BatteryAnimation extends StatelessWidget {
-  const BatteryAnimation({Key? key}) : super(key: key);
+class Keyboard extends StatelessWidget {
+  const Keyboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => BatteryMenuController(),
+      create: (context) => KeyboardMenuController(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Json Generator',
@@ -22,14 +23,14 @@ class BatteryAnimation extends StatelessWidget {
           scaffoldBackgroundColor: Utils.getBGColor(),
           canvasColor: Utils.getBGColor(),
         ),
-        home: Consumer<BatteryMenuController>(
+        home: Consumer<KeyboardMenuController>(
           builder: (context, provider, child) {
             return Scaffold(
               body: WindowBorder(
                 color: Utils.getBGColor(),
                 width: 1,
                 child: Row(
-                  children: [const LeftSideBatteryAnimation(), RightSideBatteryAnimation(provider: provider)],
+                  children: [const KeyboardLeftSide(), KeyboardRightSide(provider: provider)],
                 ),
               ),
             );
@@ -40,24 +41,24 @@ class BatteryAnimation extends StatelessWidget {
   }
 }
 
-class LeftSideBatteryAnimation extends StatelessWidget {
-  const LeftSideBatteryAnimation({Key? key}) : super(key: key);
+class KeyboardLeftSide extends StatelessWidget {
+  const KeyboardLeftSide({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.green,
+        color: Colors.blueAccent,
         height: MediaQuery.of(context).size.height,
         child: Column(
-          children: [WindowTitleBarBox(child: MoveWindow()), const Expanded(child: SideMenuBatteryAnimation())],
+          children: [WindowTitleBarBox(child: MoveWindow()), Expanded(child: SideMenuKeyboard())],
         ));
   }
 }
 
-class RightSideBatteryAnimation extends StatelessWidget {
-  BatteryMenuController? provider;
+class KeyboardRightSide extends StatelessWidget {
+  KeyboardMenuController? provider;
 
-  RightSideBatteryAnimation({Key? key, this.provider}) : super(key: key);
+  KeyboardRightSide({Key? key, this.provider}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +75,13 @@ class RightSideBatteryAnimation extends StatelessWidget {
             ),
           ),
           if (provider!.pageIndex == 0) ...[
-            const Expanded(child: BatteryAnimationDashboard())
+            const Expanded(child: KeyboardDashboard())
+          ] else if (provider!.pageIndex == 1) ...[
+            const Expanded(child: KeyboardUpload())
           ] else ...[
             Expanded(
                 child: Container(
-              color: Utils.getBGColor(),
+              color: Utils.getCardColor(),
             ))
           ]
         ]),

@@ -1,13 +1,13 @@
-class Fonts {
-  List<Font>? fonts;
+class InvitationFonts {
+  List<InvitationFont>? fonts;
 
-  Fonts({this.fonts});
+  InvitationFonts({this.fonts});
 
-  Fonts.fromJson(Map<String, dynamic> json) {
+  InvitationFonts.fromJson(Map<String, dynamic> json) {
     if (json['fonts'] != null) {
-      fonts = <Font>[];
+      fonts = <InvitationFont>[];
       json['fonts'].forEach((v) {
-        fonts!.add(Font.fromJson(v));
+        fonts!.add(InvitationFont.fromJson(v));
       });
     }
   }
@@ -21,16 +21,16 @@ class Fonts {
   }
 }
 
-class Font {
+class InvitationFont {
   String? fontName;
   String? locale;
   int? fontId;
   String? fontUrl;
   String? thumbUrl;
 
-  Font({this.fontName, this.fontId, this.fontUrl});
+  InvitationFont({this.fontName, this.fontId, this.fontUrl});
 
-  Font.fromJson(Map<String, dynamic> json) {
+  InvitationFont.fromJson(Map<String, dynamic> json) {
     fontName = json['fontName'];
     locale = json['locale'];
     fontId = json['fontId'];

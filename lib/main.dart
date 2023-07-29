@@ -1,14 +1,13 @@
 import 'dart:io';
 
+import 'package:aani_generator/screens/keyboard/keyboard.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:aani_generator/util/utils.dart';
 import 'package:provider/provider.dart';
 
-import 'controller/dashboard_controller.dart';
-import 'screens/battery_animation/battery_animation.dart';
+import 'screens/keyboard/extra/dashboard_controller.dart';
 import 'screens/invitation/invitation.dart';
-import 'screens/poster_studio/poster_studio.dart';
 import 'screens/widgets/window_button.dart';
 import 'screens/tunewalls/tunewalls.dart';
 
@@ -94,131 +93,6 @@ class _MainAppState extends State<MainApp> {
                                   style: TextStyle(fontSize: 14.0, fontFamily: 'Sans', letterSpacing: 1, fontStyle: FontStyle.normal, fontWeight: FontWeight.w300, color: Utils.getTextColor()),
                                 ),
                               ],
-                            ),
-                            const SizedBox(
-                              height: 36.0,
-                            ),
-                            SizedBox(
-                              width: widthSize * 0.5,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const SizedBox(
-                                    width: 36.0,
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const PosterStudio()),
-                                        );
-                                      },
-                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                      child: Ink(
-                                        padding: const EdgeInsets.all(24.0),
-                                        decoration: BoxDecoration(
-                                          color: Utils.getAccentColor().withOpacity(0.2),
-                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(8),
-                                              height: 56.0,
-                                              width: 56.0,
-                                              decoration: BoxDecoration(
-                                                color: Utils.getAccentColor(),
-                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: SizedBox(
-                                                  child: Icon(
-                                                    Icons.dashboard_outlined,
-                                                    color: Utils.getIconColor(),
-                                                    size: 24.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 16.0,
-                                            ),
-                                            Text(
-                                              "Poster Studio",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 36.0,
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const BatteryAnimation()),
-                                        );
-                                      },
-                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                      child: Ink(
-                                        padding: const EdgeInsets.all(24.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.2),
-                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(8),
-                                              height: 56.0,
-                                              width: 56.0,
-                                              decoration: const BoxDecoration(
-                                                color: Colors.green,
-                                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: SizedBox(
-                                                  child: Icon(
-                                                    Icons.battery_charging_full_rounded,
-                                                    color: Utils.getIconColor(),
-                                                    size: 24.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 16.0,
-                                            ),
-                                            Text(
-                                              "Battery Animation",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 36.0,
-                                  ),
-                                ],
-                              ),
                             ),
                             const SizedBox(
                               height: 36.0,
@@ -341,6 +215,58 @@ class _MainAppState extends State<MainApp> {
                                   ),
                                   const SizedBox(
                                     width: 36.0,
+                                  ),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const Keyboard()),
+                                        );
+                                      },
+                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                      child: Ink(
+                                        padding: const EdgeInsets.all(24.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blueAccent.withOpacity(0.2),
+                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              height: 56.0,
+                                              width: 56.0,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.blueAccent,
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: SizedBox(
+                                                  child: Icon(
+                                                    Icons.keyboard_alt_outlined,
+                                                    color: Utils.getIconColor(),
+                                                    size: 24.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 16.0,
+                                            ),
+                                            Text(
+                                              "Keyboard",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(fontSize: 16.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Utils.getTextColor()),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

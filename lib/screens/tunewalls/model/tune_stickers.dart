@@ -1,15 +1,15 @@
 
 
-class RingerStickerCategory {
-  List<RingerSticker>? categories;
+class TuneStickerCategory {
+  List<TuneSticker>? categories;
 
-  RingerStickerCategory({this.categories});
+  TuneStickerCategory({this.categories});
 
-  RingerStickerCategory.fromJson(Map<String, dynamic> json) {
+  TuneStickerCategory.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <RingerSticker>[];
+      categories = <TuneSticker>[];
       json['categories'].forEach((v) {
-        categories!.add(RingerSticker.fromJson(v));
+        categories!.add(TuneSticker.fromJson(v));
       });
     }
   }
@@ -23,24 +23,30 @@ class RingerStickerCategory {
   }
 }
 
-class RingerSticker {
+class TuneSticker {
   String? categoryName;
   String? categoryThumb = "";
+  String? categoryBanner = "";
+  String? sourceData = "";
   int? categoryId;
+  String? categoryColor = "";
   int? stickerCount;
-  List<Sticker>? stickers;
+  List<Sticker>? previews;
 
-  RingerSticker({this.categoryName, this.categoryId, this.stickers});
+  TuneSticker({this.categoryName, this.categoryId, this.previews});
 
-  RingerSticker.fromJson(Map<String, dynamic> json) {
+  TuneSticker.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
     categoryThumb = json['categoryThumb'];
+    categoryBanner = json['categoryBanner'];
+    sourceData = json['sourceData'];
     categoryId = json['categoryId'];
+    categoryColor = json['categoryColor'];
     stickerCount = json['stickerCount'];
     if (json['templates'] != null) {
-      stickers = <Sticker>[];
-      json['stickers'].forEach((v) {
-        stickers!.add(Sticker.fromJson(v));
+      previews = <Sticker>[];
+      json['previews'].forEach((v) {
+        previews!.add(Sticker.fromJson(v));
       });
     }
   }
@@ -49,33 +55,30 @@ class RingerSticker {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['categoryName'] = categoryName;
     data['categoryThumb'] = categoryThumb;
+    data['categoryBanner'] = categoryBanner;
+    data['sourceData'] = sourceData;
     data['categoryId'] = categoryId;
+    data['categoryColor'] = categoryColor;
     data['stickerCount'] = stickerCount;
-    if (stickers != null) {
-      data['stickers'] = stickers!.map((v) => v.toJson()).toList();
+    if (previews != null) {
+      data['previews'] = previews!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Sticker {
-  String? stickerTitle;
   String? stickerUrl;
-  int? stickerId = 0;
 
-  Sticker({this.stickerTitle, this.stickerUrl, this.stickerId});
+  Sticker({this.stickerUrl});
 
   Sticker.fromJson(Map<String, dynamic> json) {
-    stickerTitle = json['stickerTitle'];
     stickerUrl = json['stickerUrl'];
-    stickerId = json['stickerId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['stickerTitle'] = stickerTitle;
     data['stickerUrl'] = stickerUrl;
-    data['stickerId'] = stickerId;
     return data;
   }
 }

@@ -1,11 +1,13 @@
+import 'package:aani_generator/screens/keyboard/keyboard_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:aani_generator/main.dart';
+import 'package:provider/provider.dart';
 
-import '../../util/utils.dart';
-import '../widgets/drawer_list_custom_tiles.dart';
+import '../../../util/utils.dart';
+import '../../widgets/drawer_list_custom_tiles.dart';
 
-class SideMenuBatteryAnimation extends StatelessWidget {
-  const SideMenuBatteryAnimation({
+class SideMenuKeyboard extends StatelessWidget {
+  const SideMenuKeyboard({
     Key? key,
   }) : super(key: key);
 
@@ -14,7 +16,7 @@ class SideMenuBatteryAnimation extends StatelessWidget {
     return Drawer(
       elevation: 1.0,
       child: Ink(
-        color: Colors.green,
+        color: Colors.blueAccent,
         child: ListView(
           children: [
             DrawerHeader(
@@ -24,7 +26,7 @@ class SideMenuBatteryAnimation extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Battery\nAnimation',
+                    'Keyboard',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getWhiteColor()),
                   )
@@ -39,6 +41,20 @@ class SideMenuBatteryAnimation extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const MainApp()),
                 );
+              },
+            ),
+            DrawerListTileCustomize(
+              icon: Icons.code_outlined,
+              title: "Generate",
+              press: () {
+                Provider.of<KeyboardMenuController>(context, listen: false).setPageIndex(0);
+              },
+            ),
+            DrawerListTileCustomize(
+              icon: Icons.code_outlined,
+              title: "Uploads",
+              press: () {
+                Provider.of<KeyboardMenuController>(context, listen: false).setPageIndex(1);
               },
             ),
           ],

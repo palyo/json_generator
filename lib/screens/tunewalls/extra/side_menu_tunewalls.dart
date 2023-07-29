@@ -1,13 +1,13 @@
-import 'package:aani_generator/controller/invitation_menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:aani_generator/main.dart';
 import 'package:provider/provider.dart';
 
-import '../../util/utils.dart';
-import '../widgets/drawer_list_custom_tiles.dart';
+import 'tunewalls_menu_controller.dart';
+import '../../../util/utils.dart';
+import '../../widgets/drawer_list_custom_tiles.dart';
 
-class InvitationSideMenu extends StatelessWidget {
-  const InvitationSideMenu({
+class SideMenuTuneWalls extends StatelessWidget {
+  const SideMenuTuneWalls({
     Key? key,
   }) : super(key: key);
 
@@ -16,7 +16,7 @@ class InvitationSideMenu extends StatelessWidget {
     return Drawer(
       elevation: 1.0,
       child: Ink(
-        color: Colors.pinkAccent,
+        color: Colors.redAccent,
         child: ListView(
           children: [
             DrawerHeader(
@@ -26,7 +26,7 @@ class InvitationSideMenu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Invitation',
+                    'TuneWalls',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 36.0, fontFamily: 'Sans', fontStyle: FontStyle.normal, fontWeight: FontWeight.w700, color: Utils.getWhiteColor()),
                   )
@@ -47,14 +47,14 @@ class InvitationSideMenu extends StatelessWidget {
               icon: Icons.code_outlined,
               title: "Main Json",
               press: () {
-                Provider.of<InvitationMenuController>(context, listen: false).setPageIndex(0);
+                Provider.of<TuneWallsMenuController>(context, listen: false).setPageIndex(0);
               },
             ),
             DrawerListTileCustomize(
               icon: Icons.code_outlined,
-              title: "Invitation Card",
+              title: "Notification",
               press: () {
-                Provider.of<InvitationMenuController>(context, listen: false).setPageIndex(1);
+                Provider.of<TuneWallsMenuController>(context, listen: false).setPageIndex(1);
               },
             ),
           ],

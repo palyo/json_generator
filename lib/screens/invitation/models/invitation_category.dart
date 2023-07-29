@@ -50,6 +50,7 @@ class InvitationSubCategory {
 class Categories {
   String? subCategoryName;
   String? subCategoryDesc;
+  String? subCategoryColor;
   String? subCategoryThumb;
   String? templateJsonUrl;
   int? subCategoryId;
@@ -62,27 +63,20 @@ class Categories {
   Categories.fromJson(Map<String, dynamic> json) {
     subCategoryName = json['subCategoryName'];
     subCategoryDesc = json['subCategoryDesc'];
+    subCategoryColor = json['subCategoryColor'];
     subCategoryThumb = json['subCategoryThumb'];
     templateJsonUrl = json['templateJsonUrl'];
     subCategoryId = json['subCategoryId'];
-    // if (json['templates'] != null) {
-    //   templates = <Templates>[];
-    //   json['templates'].forEach((v) {
-    //     templates!.add(new Templates.fromJson(v));
-    //   });
-    // }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['subCategoryName'] = subCategoryName;
     data['subCategoryDesc'] = subCategoryDesc;
+    data['subCategoryColor'] = subCategoryColor;
     data['subCategoryThumb'] = subCategoryThumb;
     data['templateJsonUrl'] = templateJsonUrl;
     data['subCategoryId'] = subCategoryId;
-    // if (this.templates != null) {
-    //   data['templates'] = this.templates!.map((v) => v.toJson()).toList();
-    // }
     return data;
   }
 }

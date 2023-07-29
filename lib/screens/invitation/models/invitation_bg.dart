@@ -1,13 +1,13 @@
-class BackgroundCategory {
-  List<BGCategories>? categories;
+class InvitationBGCategories {
+  List<InvitationBGCategory>? categories;
 
-  BackgroundCategory({this.categories});
+  InvitationBGCategories({this.categories});
 
-  BackgroundCategory.fromJson(Map<String, dynamic> json) {
+  InvitationBGCategories.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <BGCategories>[];
+      categories = <InvitationBGCategory>[];
       json['categories'].forEach((v) {
-        categories!.add(BGCategories.fromJson(v));
+        categories!.add(InvitationBGCategory.fromJson(v));
       });
     }
   }
@@ -21,20 +21,20 @@ class BackgroundCategory {
   }
 }
 
-class BGCategories {
+class InvitationBGCategory {
   int? bgCategoryId;
   String? bgCategoryName;
-  List<Backgrounds>? backgrounds;
+  List<InvitationBG>? backgrounds;
 
-  BGCategories({this.bgCategoryId, this.bgCategoryName, this.backgrounds});
+  InvitationBGCategory({this.bgCategoryId, this.bgCategoryName, this.backgrounds});
 
-  BGCategories.fromJson(Map<String, dynamic> json) {
+  InvitationBGCategory.fromJson(Map<String, dynamic> json) {
     bgCategoryId = json['bg_category_id'];
     bgCategoryName = json['bg_category_name'];
     if (json['backgrounds'] != null) {
-      backgrounds = <Backgrounds>[];
+      backgrounds = <InvitationBG>[];
       json['backgrounds'].forEach((v) {
-        backgrounds!.add(Backgrounds.fromJson(v));
+        backgrounds!.add(InvitationBG.fromJson(v));
       });
     }
   }
@@ -50,15 +50,15 @@ class BGCategories {
   }
 }
 
-class Backgrounds {
+class InvitationBG {
   int? backgroundId;
   String? backgroundImage;
   String? backgroundThumbImage;
   int? isPremium;
 
-  Backgrounds({this.backgroundId, this.backgroundImage, this.backgroundThumbImage, this.isPremium});
+  InvitationBG({this.backgroundId, this.backgroundImage, this.backgroundThumbImage, this.isPremium});
 
-  Backgrounds.fromJson(Map<String, dynamic> json) {
+  InvitationBG.fromJson(Map<String, dynamic> json) {
     backgroundId = json['background_id'];
     backgroundImage = json['background_image'];
     backgroundThumbImage = json['background_thumb_image'];

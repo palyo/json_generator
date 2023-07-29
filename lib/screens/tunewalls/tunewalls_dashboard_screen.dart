@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aani_generator/controller/tunewalls_menu_controller.dart';
-import 'package:aani_generator/model/ringer_stickers.dart';
-import 'package:aani_generator/model/ringer_wallpaper.dart';
+import 'package:aani_generator/screens/tunewalls/extra/tunewalls_menu_controller.dart';
+import 'package:aani_generator/screens/tunewalls/model/tune_stickers.dart';
 import 'package:aani_generator/views/flutter_highlight.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -11,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/zedge_ringtone.dart';
 import '../../util/utils.dart';
+import 'model/tune_wallpaper.dart';
+import 'model/tune_ringtone.dart';
 
 class TuneWallsDashboard extends StatefulWidget {
   const TuneWallsDashboard({
@@ -29,6 +29,13 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
   String theme = 'androidstudio';
   final scText = ScrollController(initialScrollOffset: 0);
   String saveFileName = "ringerTone.json";
+
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +94,20 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                 onPressed: () async {
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var ringtoneCategory = ZedgeRingtoneCategory();
-                                    var categories = <ZedgeRingtone>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
+                                    var ringtoneCategory = TuneRingtoneCategory();
+                                    var categories = <TuneRingtone>[];
+                                    var parentUrl = "/Ringer";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    files.sort((l, r) {
+                                      String nameL = l.path.split('/').last;
+                                      String nameR = r.path.split('/').last;
+
+                                      return compareNames(nameL, nameR);
+                                    });
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var category = ZedgeRingtone();
+                                      var category = TuneRingtone();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;
@@ -104,7 +117,13 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                         category.categoryId = categoryId;
                                         var ringtones = <Ringtone>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false);
+                                        files.sort((l, r) {
+                                          String nameL = l.path.split('/').last;
+                                          String nameR = r.path.split('/').last;
+
+                                          return compareNames(nameL, nameR);
+                                        });
                                         int itemId = 0;
                                         for (FileSystemEntity file in subFiles) {
                                           itemId++;
@@ -164,14 +183,14 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                 onPressed: () async {
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var stickerCategory = RingerStickerCategory();
-                                    var categories = <RingerSticker>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
+                                    var stickerCategory = TuneStickerCategory();
+                                    var categories = <TuneSticker>[];
+                                    var parentUrl = "/Ringer";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var category = RingerSticker();
+                                      var category = TuneSticker();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;
@@ -181,7 +200,13 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                         category.categoryId = categoryId;
                                         var stickers = <Sticker>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false);
+                                        files.sort((l, r) {
+                                          String nameL = l.path.split('/').last;
+                                          String nameR = r.path.split('/').last;
+
+                                          return compareNames(nameL, nameR);
+                                        });
                                         int itemId = 0;
                                         for (FileSystemEntity file in subFiles) {
                                           var path = file.path;
@@ -192,22 +217,26 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                           var imageUrl = file.path.replaceAll(file.parent.parent.parent.path, "");
                                           var imageChildUrl = imageUrl.replaceAll("\\", "/");
                                           var imageFinalURL = parentUrl + imageChildUrl;
-                                          if (itemId == 0) {
+                                          if (imageFinalURL.endsWith("icon.png")) {
                                             category.categoryThumb = Uri.encodeFull(imageFinalURL);
                                           }
-                                          itemId++;
+                                          if (imageFinalURL.endsWith("banner.png")) {
+                                            category.categoryBanner = Uri.encodeFull(imageFinalURL);
+                                          }
+                                          if (imageFinalURL.endsWith("source.zip")) {
+                                            category.sourceData = Uri.encodeFull(imageFinalURL);
+                                          }
 
-                                          sticker.stickerTitle = fileNameWithoutExtension;
-                                          sticker.stickerUrl = Uri.encodeFull(imageFinalURL);
-                                          sticker.stickerId = itemId;
-                                          sticker.stickerTitle = sticker.stickerTitle ?? "";
-                                          sticker.stickerUrl = sticker.stickerUrl ?? "";
-                                          sticker.stickerId = sticker.stickerId ?? 1;
-                                          stickers.add(sticker);
+                                          // itemId++;
+                                          if (imageFinalURL.endsWith(".webp")) {
+                                            sticker.stickerUrl = Uri.encodeFull(imageFinalURL);
+                                            sticker.stickerUrl = sticker.stickerUrl ?? "";
+                                            stickers.add(sticker);
+                                          }
                                         }
 
                                         category.stickerCount = itemId;
-                                        category.stickers = stickers;
+                                        category.previews = stickers;
                                         categories.add(category);
                                       }
                                     }
@@ -244,14 +273,20 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                 onPressed: () async {
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var wallpaperCategory = RingerWallpaperCategory();
-                                    var categories = <RingerWallpaper>[];
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
+                                    var wallpaperCategory = TuneWallpaperCategory();
+                                    var categories = <TuneWallpaper>[];
+                                    var parentUrl = "/Ringer";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    files.sort((l, r) {
+                                      String nameL = l.path.split('/').last;
+                                      String nameR = r.path.split('/').last;
+
+                                      return compareNames(nameL, nameR);
+                                    });
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var category = RingerWallpaper();
+                                      var category = TuneWallpaper();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;
@@ -261,7 +296,13 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                         category.categoryId = categoryId;
                                         // var wallpapers = <Wallpaper>[];
                                         Directory subDirs = Directory(file.path);
-                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                        List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false);
+                                        files.sort((l, r) {
+                                          String nameL = l.path.split('/').last;
+                                          String nameR = r.path.split('/').last;
+
+                                          return compareNames(nameL, nameR);
+                                        });
                                         int itemId = 0;
                                         for (FileSystemEntity file in subFiles) {
                                           var path = file.path;
@@ -280,14 +321,6 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                           }
                                           itemId++;
 
-                                          // wallpaper.wallpaperTitle = fileNameWithoutExtension;
-                                          // wallpaper.wallpaperUrl = Uri.encodeFull(imageFinalURL);
-                                          // wallpaper.wallpaperId = itemId;
-                                          // wallpaper.wallpaperTitle = wallpaper.wallpaperTitle ?? "";
-                                          // wallpaper.wallpaperUrl = wallpaper.wallpaperUrl ?? "";
-                                          // wallpaper.wallpaperId = wallpaper.wallpaperId ?? 1;
-                                          // wallpaper.isPremium = 0;
-                                          // wallpapers.add(wallpaper);
                                         }
 
                                         category.wallpaperCount = itemId;
@@ -329,14 +362,21 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
                                     var wallpaperCategory = Wallpapers();
-                                    var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/Ringer";
+                                    var parentUrl = "/Ringer";
                                     Directory directory = Directory('$outputFile');
-                                    List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
+                                    List<FileSystemEntity> files = directory.listSync(recursive: false);
+                                    files.sort((l, r) {
+                                      String nameL = l.path.split('/').last;
+                                      String nameR = r.path.split('/').last;
+
+                                      return compareNames(nameL, nameR);
+                                    });
                                     var wallpapers = <Wallpaper>[];
                                     int itemId = 0;
                                     for (FileSystemEntity file in files) {
                                       var path = file.path;
                                       var filename = path.split("\\").last;
+                                      var directoryName = file.parent.path.split("\\").last;
                                       var fileNameWithoutExtension = filename.substring(0, filename.indexOf('.'));
                                       if (!filename.endsWith("json")) {
                                         itemId++;
@@ -345,6 +385,7 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                         var imageChildUrl = imageUrl.replaceAll("\\", "/");
                                         var imageFinalURL = parentUrl + imageChildUrl;
 
+                                        wallpaper.categoryName = directoryName;
                                         wallpaper.wallpaperTitle = fileNameWithoutExtension;
                                         wallpaper.wallpaperUrl = Uri.encodeFull(imageFinalURL);
                                         wallpaper.wallpaperId = itemId;
@@ -352,6 +393,7 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                                         wallpaper.wallpaperUrl = wallpaper.wallpaperUrl ?? "";
                                         wallpaper.wallpaperId = wallpaper.wallpaperId ?? 1;
                                         wallpaper.isPremium = 0;
+                                        wallpaper.userName = Utils.getRandomSocialName();
                                         wallpapers.add(wallpaper);
                                       }
                                     }
@@ -449,5 +491,65 @@ class TuneWallsDashboardState extends State<TuneWallsDashboard> {
                 ],
               )),
         )));
+  }
+
+  int compareNames(String name1, String name2) {
+    List<String> segments1 = getSegments(name1);
+    List<String> segments2 = getSegments(name2);
+
+    for (int i = 0; i < segments1.length && i < segments2.length; i++) {
+      String segment1 = segments1[i];
+      String segment2 = segments2[i];
+
+      if (isNumeric(segment1) && isNumeric(segment2)) {
+        int numericComparison = compareNumericValues(segment1, segment2);
+        if (numericComparison != 0) {
+          return numericComparison;
+        }
+      } else {
+        int stringComparison = segment1.compareTo(segment2);
+        if (stringComparison != 0) {
+          return stringComparison;
+        }
+      }
+    }
+
+    return segments1.length.compareTo(segments2.length);
+  }
+
+  List<String> getSegments(String name) {
+    List<String> segments = [];
+    String currentSegment = '';
+
+    for (int i = 0; i < name.length; i++) {
+      String char = name[i];
+
+      if (isNumeric(char)) {
+        currentSegment += char;
+      } else {
+        if (currentSegment.isNotEmpty) {
+          segments.add(currentSegment);
+          currentSegment = '';
+        }
+        segments.add(char);
+      }
+    }
+
+    if (currentSegment.isNotEmpty) {
+      segments.add(currentSegment);
+    }
+
+    return segments;
+  }
+
+  int compareNumericValues(String value1, String value2) {
+    int intValue1 = int.parse(value1);
+    int intValue2 = int.parse(value2);
+
+    return intValue1.compareTo(intValue2);
+  }
+
+  bool isNumeric(String value) {
+    return int.tryParse(value) != null;
   }
 }

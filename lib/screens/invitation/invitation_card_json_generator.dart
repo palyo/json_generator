@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aani_generator/controller/invitation_menu_controller.dart';
+import 'package:aani_generator/screens/invitation/extra/invitation_menu_controller.dart';
 import 'package:aani_generator/screens/invitation/invitation_add_page.dart';
 import 'package:aani_generator/screens/invitation/models/invitation_card.dart';
 import 'package:file_picker/file_picker.dart';

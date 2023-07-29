@@ -817,7 +817,7 @@ class DialogTextStickerState extends State<DialogTextSticker> {
                                   cursorColor: Colors.pinkAccent,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(RegExp(r'[0.0-9.9]')),
+                                    FilteringTextInputFormatter.allow(RegExp("^-?\\d*")),
                                   ],
                                   maxLines: 1,
                                   onChanged: (value) {

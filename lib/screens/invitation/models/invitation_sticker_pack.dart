@@ -1,13 +1,13 @@
-class Stickers {
-  List<StickerPacks>? stickerPacks;
+class InvitationStickerPacks {
+  List<InvitationStickerPack>? stickerPacks;
 
-  Stickers({this.stickerPacks});
+  InvitationStickerPacks({this.stickerPacks});
 
-  Stickers.fromJson(Map<String, dynamic> json) {
+  InvitationStickerPacks.fromJson(Map<String, dynamic> json) {
     if (json['stickerPacks'] != null) {
-      stickerPacks = <StickerPacks>[];
+      stickerPacks = <InvitationStickerPack>[];
       json['stickerPacks'].forEach((v) {
-        stickerPacks!.add(StickerPacks.fromJson(v));
+        stickerPacks!.add(InvitationStickerPack.fromJson(v));
       });
     }
   }
@@ -21,16 +21,16 @@ class Stickers {
   }
 }
 
-class StickerPacks {
+class InvitationStickerPack {
   String? stickerPackName;
   int? stickerPackId;
   int? isPremium = 0;
   String? zipUrl;
   String? thumbUrl;
 
-  StickerPacks({this.stickerPackName, this.stickerPackId, this.isPremium, this.zipUrl, this.thumbUrl});
+  InvitationStickerPack({this.stickerPackName, this.stickerPackId, this.isPremium, this.zipUrl, this.thumbUrl});
 
-  StickerPacks.fromJson(Map<String, dynamic> json) {
+  InvitationStickerPack.fromJson(Map<String, dynamic> json) {
     stickerPackName = json['stickerPackName'];
     stickerPackId = json['stickerPackId'];
     isPremium = json['isPremium'];

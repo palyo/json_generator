@@ -1,15 +1,15 @@
 
 
-class ZedgeRingtoneCategory {
-  List<ZedgeRingtone>? categories;
+class TuneRingtoneCategory {
+  List<TuneRingtone>? categories;
 
-  ZedgeRingtoneCategory({this.categories});
+  TuneRingtoneCategory({this.categories});
 
-  ZedgeRingtoneCategory.fromJson(Map<String, dynamic> json) {
+  TuneRingtoneCategory.fromJson(Map<String, dynamic> json) {
     if (json['categories'] != null) {
-      categories = <ZedgeRingtone>[];
+      categories = <TuneRingtone>[];
       json['categories'].forEach((v) {
-        categories!.add(ZedgeRingtone.fromJson(v));
+        categories!.add(TuneRingtone.fromJson(v));
       });
     }
   }
@@ -23,16 +23,16 @@ class ZedgeRingtoneCategory {
   }
 }
 
-class ZedgeRingtone {
+class TuneRingtone {
   String? categoryName;
   String? categoryThumb;
   int? categoryId;
   int? ringtoneCount;
   List<Ringtone>? ringtones;
 
-  ZedgeRingtone({this.categoryName, this.categoryId, this.ringtones});
+  TuneRingtone({this.categoryName, this.categoryId, this.ringtones});
 
-  ZedgeRingtone.fromJson(Map<String, dynamic> json) {
+  TuneRingtone.fromJson(Map<String, dynamic> json) {
     categoryName = json['categoryName'];
     categoryThumb = json['categoryThumb'];
     categoryId = json['categoryId'];

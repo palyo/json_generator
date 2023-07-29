@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aani_generator/controller/invitation_menu_controller.dart';
-import 'package:aani_generator/screens/invitation/models/backgrounds.dart';
-import 'package:aani_generator/screens/invitation/models/sticker_pack.dart';
+import 'package:aani_generator/screens/invitation/extra/invitation_menu_controller.dart';
+import 'package:aani_generator/screens/invitation/models/invitation_bg.dart';
+import 'package:aani_generator/screens/invitation/models/invitation_sticker_pack.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/invitation_category.dart';
+import 'models/invitation_category.dart';
 import '../../util/utils.dart';
 import '../../views/flutter_highlight.dart';
 import 'models/invitation_fonts.dart';
@@ -123,6 +123,9 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                               }
                                               if (filename.endsWith(".desc")) {
                                                 subCategory.subCategoryDesc = filename.replaceAll(".desc", "");
+                                              }
+                                              if (filename.endsWith(".color")) {
+                                                subCategory.subCategoryColor = filename.replaceAll(".color", "");
                                               }
                                               if (filename == "template.json") {
                                                 var imageUrl = file.path.replaceAll(file.parent.parent.parent.parent.path, "");
@@ -258,14 +261,14 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                   });
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var backgroundCategory = BackgroundCategory();
-                                    var categories = <BGCategories>[];
+                                    var backgroundCategory = InvitationBGCategories();
+                                    var categories = <InvitationBGCategory>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/InvitationCard";
                                     Directory directory = Directory('$outputFile');
                                     List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var category = BGCategories();
+                                      var category = InvitationBGCategory();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;
@@ -274,7 +277,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                         category.bgCategoryName = filename;
                                         category.bgCategoryId = categoryId;
 
-                                        var backgrounds = <Backgrounds>[];
+                                        var backgrounds = <InvitationBG>[];
                                         Directory subDirs = Directory(file.path);
                                         List<FileSystemEntity> subFiles = subDirs.listSync(recursive: false);
                                         int backgroundId = 0;
@@ -282,7 +285,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                           FileStat subFileStat = file.statSync();
                                           if (subFileStat.type.toString() != "directory") {
                                             backgroundId++;
-                                            var background = Backgrounds();
+                                            var background = InvitationBG();
                                             background.backgroundId = backgroundId;
                                             var bgPath = file.path.replaceAll(file.parent.parent.parent.path, "");
                                             var bgChildUrl = bgPath.replaceAll("\\", "/");
@@ -339,8 +342,8 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                   });
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var fonts = Fonts();
-                                    var fontList = <Font>[];
+                                    var fonts = InvitationFonts();
+                                    var fontList = <InvitationFont>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/InvitationCard";
                                     Directory directory = Directory('$outputFile');
                                     List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
@@ -355,7 +358,7 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                         for (FileSystemEntity file in subFiles) {
                                           FileStat fileStat = file.statSync();
                                           if (fileStat.type.toString() == "directory") {
-                                            var font = Font();
+                                            var font = InvitationFont();
                                             fontId++;
                                             var path = file.path;
                                             var filename = path.split("\\").last;
@@ -423,14 +426,14 @@ class InvitationDashboardState extends State<InvitationDashboard> {
                                   });
                                   String? outputFile = await FilePicker.platform.getDirectoryPath(dialogTitle: 'Select Directory', lockParentWindow: false);
                                   try {
-                                    var stickers = Stickers();
-                                    var stickerPacks = <StickerPacks>[];
+                                    var stickers = InvitationStickerPacks();
+                                    var stickerPacks = <InvitationStickerPack>[];
                                     var parentUrl = "https://filedn.eu/lT5MTrPP9oSbL8W0tjWsva5/InvitationCard";
                                     Directory directory = Directory('$outputFile');
                                     List<FileSystemEntity> files = directory.listSync(recursive: false)..sort((l, r) => r.statSync().modified.compareTo(l.statSync().modified));
                                     int categoryId = 0;
                                     for (FileSystemEntity file in files) {
-                                      var stickerPack = StickerPacks();
+                                      var stickerPack = InvitationStickerPack();
                                       FileStat fileStat = file.statSync();
                                       if (fileStat.type.toString() == "directory") {
                                         categoryId++;

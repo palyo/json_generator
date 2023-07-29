@@ -2,10 +2,10 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/tunewalls_menu_controller.dart';
+import 'extra/tunewalls_menu_controller.dart';
 import '../../util/utils.dart';
 import '../widgets/window_button.dart';
-import 'side_menu_tunewalls.dart';
+import 'extra/side_menu_tunewalls.dart';
 import 'tunewalls_dashboard_screen.dart';
 import 'tunewalls_notify_screen.dart';
 
